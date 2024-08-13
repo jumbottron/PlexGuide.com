@@ -10,6 +10,10 @@ NC="\033[0m" # No color
 # Clear the screen at the start
 clear
 
+# Ensure /pg/scripts/basics.sh is executable, then run it in the background
+chmod +x /pg/scripts/basics.sh
+/pg/scripts/basics.sh &
+
 # Function to source the configuration file
 load_config() {
     if [[ -f "$CONFIG_FILE" ]]; then
