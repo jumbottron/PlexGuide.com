@@ -33,19 +33,14 @@ main_menu() {
 
     case $choice in
       1)
-        clear
-        echo "Executed selection 1"
-        read -p "Press Enter to continue..."
+        /pg/scripts/running.sh
         ;;
       2)
-        clear
-        echo "Executed selection 2"
-        read -p "Press Enter to continue..."
+        /pg/scripts/deployment.sh
         ;;
       3)
         clear
         echo "Executed selection 3"
-        read -p "Press Enter to continue..."
         ;;
       4)
         exit 0
@@ -63,4 +58,3 @@ main_menu() {
 
 # Call the main menu function
 main_menu
-
