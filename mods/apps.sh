@@ -39,8 +39,7 @@ main_menu() {
         /pg/scripts/deployment.sh
         ;;
       3)
-        clear
-        echo "Executed selection 3"
+        /pg/scripts/destroy.sh
         ;;
       4)
         exit 0
