@@ -1,23 +1,13 @@
 #!/bin/bash
 
-# Prompt the user for the Cloudflare token tunnel
-read -p "Please enter your Cloudflare token tunnel: " CF_TUNNEL_TOKEN
+# Prompt the user for the Cloudflare Tunnel token
+read -p "Enter your Cloudflare Tunnel token: " TUNNEL_TOKEN
 
-# Check if the token is not empty
-if [ -z "$CF_TUNNEL_TOKEN" ]; then
-  echo "Error: Cloudflare token tunnel cannot be empty."
-  exit 1
-fi
+# Pull the Cloudflare Tunnel Docker image
+docker pull cloudflare/cloudflared:latest
 
-# Create the Docker container with the provided token
-docker run -d \
-  --name cloudflare-tunnel \
-  -e TUNNEL_TOKEN="$CF_TUNNEL_TOKEN" \
-  cloudflare/cloudflared:latest
-
-# Confirm that the container has been created
-if [ $? -eq 0 ]; then
-  echo "Cloudflare Tunnel Docker container created successfully."
-else
-  echo "Failed to create the Cloudflare Tunnel Docker container."
-fi
+# Run the Cloudflare Tunnel Docker container
+docker run -d --name=cf_tunnel \
+  --restart unless-stopped \
+  cloudflare/cloudflared:latest \
+  tunnel --no-autoupdate run --token $TUNNEL_TOKEN
