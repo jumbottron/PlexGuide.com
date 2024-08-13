@@ -3,6 +3,10 @@
 # Configuration file path
 CONFIG_FILE="/pg/config/config.cfg"
 
+# ANSI color codes for blue
+BLUE="\033[0;34m"
+NC="\033[0m" # No color
+
 # Clear the screen at the start
 clear
 
@@ -39,12 +43,12 @@ load_config
 main_menu() {
   while true; do
     clear
-    echo "Welcome to PlexGuide: $VERSION"
+    echo -e "${BLUE}Welcome to PlexGuide: $VERSION${NC}"
     echo ""  # Blank line for separation
     # Display the main menu options
     echo "Please select an option:"
     echo "1) CloudFlare Tunnel (Domains)"
-    echo "2) Test A2"
+    echo "2) Apps Management"
     echo "3) Test B1"
     echo "4) Test B2"
     echo "5) Test C1"
@@ -60,8 +64,7 @@ main_menu() {
         /pg/scripts/cf_tunnel.sh
         ;;
       2)
-        clear
-        echo "Executed Test A2"
+        /pg/scripts/apps.sh
         ;;
       3)
         clear
