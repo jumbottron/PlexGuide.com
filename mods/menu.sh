@@ -69,29 +69,32 @@ main_menu() {
       3)
         clear
         echo "Executed Test B1"
+        read -p "Press Enter to continue..."
         ;;
       4)
         clear
         echo "Executed Test B2"
+        read -p "Press Enter to continue..."
         ;;
       5)
         clear
         echo "Executed Test C1"
+        read -p "Press Enter to continue..."
         ;;
       6)
         clear
         echo "Executed Test C2"
+        read -p "Press Enter to continue..."
         ;;
       7)
         exit 0
         ;;
       *)
         echo "Invalid option, please try again."
+        read -p "Press Enter to continue..."
         ;;
     esac
 
-    # Prompt the user to press Enter to continue...
-    read -p "Press Enter to continue..."
   done
 }
 
