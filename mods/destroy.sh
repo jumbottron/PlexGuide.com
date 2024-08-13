@@ -22,6 +22,14 @@ main_menu() {
         # Get the list of running Docker apps, excluding cf_tunnel
         APP_LIST=$(list_running_docker_apps)
 
+        if [[ -z "$APP_LIST" ]]; then
+            clear
+            echo -e "${RED}Cannot Destroy Apps as None Exist.${NC}"
+            echo ""  # Blank line for separation
+            read -p "$(echo -e "${RED}Press Enter to continue...${NC}")"
+            exit 0
+        fi
+
         echo -e "${BLUE}PG: App Destroy - App to Destroy${NC}"
         echo ""  # Blank line for separation
 
