@@ -10,22 +10,6 @@ NC="\033[0m" # No color
 # Clear the screen at the start
 clear
 
-# Function to check and create symbolic links for plexguide and pg commands
-check_and_create_commands() {
-    if [[ ! -f "/usr/local/bin/plexguide" ]]; then
-        sudo ln -s /pg/scripts/menu.sh /usr/local/bin/plexguide
-        sudo chmod +x /usr/local/bin/plexguide
-    fi
-
-    if [[ ! -f "/usr/local/bin/pg" ]]; then
-        sudo ln -s /pg/scripts/menu.sh /usr/local/bin/pg
-        sudo chmod +x /usr/local/bin/pg
-    fi
-}
-
-# Run the check and create commands if necessary
-check_and_create_commands
-
 # Function to source the configuration file
 load_config() {
     if [[ -f "$CONFIG_FILE" ]]; then
