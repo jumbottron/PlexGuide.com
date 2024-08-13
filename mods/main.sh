@@ -6,6 +6,22 @@ CONFIG_FILE="/pg/config/config.cfg"
 # Clear the screen at the start
 clear
 
+# Function to check and create symbolic links for plexguide and pg commands
+check_and_create_commands() {
+    if [[ ! -f "/usr/local/bin/plexguide" ]]; then
+        sudo ln -s /pg/scripts/menu.sh /usr/local/bin/plexguide
+        sudo chmod +x /usr/local/bin/plexguide
+    fi
+
+    if [[ ! -f "/usr/local/bin/pg" ]]; then
+        sudo ln -s /pg/scripts/menu.sh /usr/local/bin/pg
+        sudo chmod +x /usr/local/bin/pg
+    fi
+}
+
+# Run the check and create commands if necessary
+check_and_create_commands
+
 # Function to source the configuration file
 load_config() {
     if [[ -f "$CONFIG_FILE" ]]; then
@@ -18,19 +34,6 @@ load_config() {
 
 # Load the configuration
 load_config
-
-# Function to check and apply executable permissions
-check_and_fix_permissions() {
-    for script in /pg/scripts/*; do
-        if [[ ! -x "$script" ]]; then
-            chmod +x /pg/scripts/* &
-            break
-        fi
-    done
-}
-
-# Run the permission check in the background
-check_and_fix_permissions &
 
 # Function for the main menu
 main_menu() {
