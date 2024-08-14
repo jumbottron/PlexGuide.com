@@ -26,7 +26,7 @@ create_directories() {
         # Set ownership to user with UID and GID 1000
         chown -R 1000:1000 "$dir"
         # Set the directories as executable
-        chmod -R 755 "$dir"
+        chmod -R +x "$dir"
     done
 }
 
@@ -59,4 +59,3 @@ fi
 
 # Continue with the installation process
 # Add the necessary commands below to complete the installation
-
