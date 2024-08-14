@@ -3,8 +3,6 @@
 Working on PG11
 
 ----
-### **Reference Shortcut -** https://plexguide.com/wiki
-----
 _**Table of Contents**_
 
 1. [PG YouTube](#1-pg-youtube)
