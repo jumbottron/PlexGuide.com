@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 
 # Function to check and create symbolic links for plexguide and pg commands
 check_and_create_commands() {
