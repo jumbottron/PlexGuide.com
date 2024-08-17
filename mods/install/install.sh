@@ -107,6 +107,14 @@ move_apps() {
     fi
 }
 
+# Function to check and install Docker if not installed
+check_and_install_docker() {
+    if ! command -v docker &> /dev/null; then
+        echo -e "\e[38;5;196mD\e[38;5;202mO\e[38;5;214mC\e[38;5;226mK\e[38;5;118mE\e[38;5;51mR \e[38;5;201mI\e[38;5;141mS \e[38;5;93mI\e[38;5;87mN\e[38;5;129mS\e[38;5;166mT\e[38;5;208mA\e[38;5;226mL\e[38;5;190mL\e[38;5;82mI\e[38;5;40mN\e[38;5;32mG\e[0m"
+        bash /pg/scripts/docker.sh
+    fi
+}
+
 # Check if the configuration file exists
 if [[ -f "$CONFIG_FILE" ]]; then
     # Prompt the user for reinstallation
@@ -117,6 +125,7 @@ if [[ -f "$CONFIG_FILE" ]]; then
         Y|y)
             echo "Reinstalling PlexGuide..."
             # Reinstallation process
+            check_and_install_docker
             create_directories
             download_repository
             move_scripts
@@ -134,6 +143,7 @@ if [[ -f "$CONFIG_FILE" ]]; then
 else
     echo "No existing installation detected. Proceeding with a new installation..."
     # New installation process
+    check_and_install_docker
     create_directories
     download_repository
     move_scripts
