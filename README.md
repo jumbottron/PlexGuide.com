@@ -2,8 +2,13 @@
 
 Working on PG11
 
-* Simple, debloated, no fancy menus!
-* Executes for exactly what you need!
+* Simple, debloated, no fancy menus and executes for exactly what you need!
+* To Test (Use Ubuntu or Debian) CMD Line: 
+
+```bash
+curl -o /tmp/install.sh https://raw.githubusercontent.com/plexguide/PlexGuide.com/v11/mods/install/install.sh && chmod +x /tmp/install.sh && /tmp/install.sh
+```
+
 
 <p align="center">
   <img src="https://i.imgur.com/ePfpheb.jpeg" alt="MD5 Process" width="45%">
