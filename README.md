@@ -9,6 +9,8 @@ Working on PG11
   <img src="https://i.imgur.com/ePfpheb.jpeg" alt="MD5 Process" width="45%">
 </p>
 
+Stuff below is old and dataed and not relevant. Update will be done when completed.
+
 ----
 _**Table of Contents**_
 
