@@ -62,7 +62,7 @@ apps_interface() {
             D|d)
                 if [[ -f "$app_path" ]]; then
                     echo "Deploying $app_name ..."
-                    bash "$app_path"
+                    bash "$app_path" "$app_name"
 
                     # Notify the user that the app has been deployed and display the app name in blue
                     echo ""
