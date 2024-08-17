@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# Default Port: 3000
+
+# Specify the config file path
+config_path="/pg/config/$1.cfg"
+
+# Source the configuration file to get the appdata_path and app_name
+if [[ -f "$config_path" ]]; then
+    source "$config_path"
+else
+    echo "Error: Configuration file not found at $config_path."
+    exit 1
+fi
+
+# Pull the latest AdGuard Home Docker image
+docker pull $DOCKER_IMAGE
+
+# Run the AdGuard Home Docker container with the specified settings
+docker run --name adguardhome \
+    --restart unless-stopped \
+    -v "${appdata_path}"/workdir:/opt/adguardhome/work \
+    -v "${appdata_path}"/confdir:/opt/adguardhome/conf \
+    -p 53:53/tcp -p 53:53/udp \
+    -p 67:67/udp -p 68:68/udp \
+    -p 80:80/tcp -p 443:443/tcp -p 443:443/udp -p "${port_number}":3000/tcp \
+    -p 853:853/tcp \
+    -p 853:853/udp \
+    -p 5443:5443/tcp -p 5443:5443/udp \
+    -p 6060:6060/tcp \
+    -d adguard/adguardhome
+
+# Verify the Docker container is running
+docker ps | grep "$app_name"
