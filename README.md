@@ -3,7 +3,7 @@
 Working on PG11
 
 <p align="center">
-  <img src="https://i.imgur.com/ePfpheb.jpeg" alt="MD5 Process" width="30%">
+  <img src="https://i.imgur.com/ePfpheb.jpeg" alt="MD5 Process" width="45%">
 </p>
 
 ----
