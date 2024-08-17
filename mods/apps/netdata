@@ -27,3 +27,6 @@ docker run -d --name="$app_name" \
   --cap-add SYS_PTRACE \
   --security-opt apparmor=unconfined \
   netdata/netdata
+
+# Verify the Docker container is running
+docker ps | grep "$app_name"
