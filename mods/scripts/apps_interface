@@ -18,6 +18,26 @@ apps_interface() {
         fi
     }
 
+    # Function to get and store the port number
+    get_port_number() {
+        if ! grep -q '^port_number=' "$config_path"; then
+            if [[ -f "$app_path" ]]; then
+                port_number=$(grep -m 1 '# Default Port:' "$app_path" | awk '{print $NF}')
+                if [[ -n "$port_number" ]]; then
+                    echo "port_number=${port_number}" >> "$config_path"
+                else
+                    echo "Error: Default port not found in $app_path."
+                    exit 1
+                fi
+            else
+                echo "Error: App script not found at $app_path."
+                exit 1
+            fi
+        else
+            source "$config_path"
+        fi
+    }
+
     # Create config file if it doesn't exist
     if [[ ! -f "$config_path" ]]; then
         touch "$config_path"
@@ -33,7 +53,10 @@ apps_interface() {
         echo "appdata_path=${default_appdata_path}" >> "$config_path"
     fi
 
-    # Read appdata_path from the config file
+    # Get the port number from the config or app script
+    get_port_number
+
+    # Read appdata_path and port_number from the config file
     source "$config_path"
     
     # Ensure the appdata directory exists and is executable
@@ -48,6 +71,7 @@ apps_interface() {
         check_deployment_status  # Display the initial status
         echo ""
         echo "1) Appdata Path: $appdata_path"
+        echo "3) Port: $port_number"
         echo "D) Deploy $app_name"
         echo "Z) Exit"
         echo ""
@@ -57,6 +81,10 @@ apps_interface() {
         case $choice in
             1)
                 echo "Appdata Path: $appdata_path"
+                read -p "Press Enter to continue..."
+                ;;
+            3)
+                echo "Port: $port_number"
                 read -p "Press Enter to continue..."
                 ;;
             D|d)
