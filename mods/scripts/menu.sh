@@ -37,7 +37,7 @@ main_menu() {
     echo "Please select an option:"
     echo "1) CloudFlare Tunnel (Domains)"
     echo "2) Apps Management"
-    echo "3) Test B1"
+    echo "3) Update PlexGuide"
     echo "4) Exit"
     echo ""  # Space between options and input prompt
 
@@ -53,7 +53,8 @@ main_menu() {
         ;;
       3)
         clear
-        echo "Executed Test B1"
+        echo "Updating PlexGuide..."
+        # Add the code or script to update PlexGuide here
         read -p "Press Enter to continue..."
         ;;
       4)
