@@ -78,11 +78,19 @@ move_scripts() {
 
 # Function to move apps from /pg/stage/mods/apps to /pg/apps/
 move_apps() {
+    echo "Clearing the /pg/apps/ directory..."
+    
+    # Clear the /pg/apps/ directory, including hidden files
+    if [[ -d "/pg/apps/" ]]; then
+        rm -rf /pg/apps/*
+        rm -rf /pg/apps/.* 2>/dev/null || true
+        echo "Cleared /pg/apps/ directory."
+    fi
+
     echo "Moving apps from /pg/stage/mods/apps to /pg/apps/..."
 
     # Check if the source directory exists
     if [[ -d "/pg/stage/mods/apps" ]]; then
-        rm -rf /pg/apps/*
         mv /pg/stage/mods/apps/* /pg/apps/
         
         # Verify move success
