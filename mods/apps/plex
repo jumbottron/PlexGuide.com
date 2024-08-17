@@ -1,7 +1,5 @@
 #!/bin/bash
 
-#!/bin/bash
-
 # Specify the config file path
 config_path="/pg/config/$1.cfg"
 
