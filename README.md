@@ -14,7 +14,10 @@ Quick Notes:
 1. Once installed, type pg or plexguide <<<
 
 <p align="center">
-  <img src="https://i.imgur.com/ePfpheb.jpeg" alt="MD5 Process" width="45%">
+  <img src="https://i.imgur.com/ePfpheb.jpeg" alt="Menu Example" width="45%">
+</p>
+<p align="center">
+  <img src="https://i.imgur.com/ePfpheb.jpeg" alt="Plex Example" width="45%">
 </p>
 
 Stuff below is old and dataed and not relevant. Update will be done when completed.
