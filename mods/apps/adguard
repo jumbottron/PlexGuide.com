@@ -45,13 +45,45 @@ else
     DNS_PORT_UDP=53
 fi
 
+# Check if port 68 is already in use
+if lsof -Pi :68 -sUDP:LISTEN -t >/dev/null ; then
+    echo "Port 68 is already in use. Please choose an option:"
+    echo "1) Stop the service using port 68 and proceed with AdGuard Home deployment."
+    echo "2) Use different ports for DHCP (e.g., 1068)."
+    echo "3) Abort deployment."
+    read -p "Choose [1-3]: " choice
+
+    case $choice in
+        1)
+            echo "Stopping service using port 68..."
+            sudo systemctl stop dhcpd || sudo systemctl stop dnsmasq
+            ;;
+        2)
+            echo "Using different ports for DHCP..."
+            DHCP_PORT_UDP_67=1067
+            DHCP_PORT_UDP_68=1068
+            ;;
+        3)
+            echo "Aborting deployment."
+            exit 1
+            ;;
+        *)
+            echo "Invalid choice. Aborting deployment."
+            exit 1
+            ;;
+    esac
+else
+    DHCP_PORT_UDP_67=67
+    DHCP_PORT_UDP_68=68
+fi
+
 # Run the AdGuard Home Docker container with the specified settings
 docker run --name "$app_name" \
     --restart unless-stopped \
     -v "${appdata_path}"/workdir:/opt/adguardhome/work \
     -v "${appdata_path}"/confdir:/opt/adguardhome/conf \
     -p ${DNS_PORT_TCP}:53/tcp -p ${DNS_PORT_UDP}:53/udp \
-    -p 67:67/udp -p 68:68/udp \
+    -p ${DHCP_PORT_UDP_67}:67/udp -p ${DHCP_PORT_UDP_68}:68/udp \
     -p 80:80/tcp -p 443:443/tcp -p 443:443/udp -p "${port_number}":3000/tcp \
     -p 853:853/tcp \
     -p 853:853/udp \
