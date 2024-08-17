@@ -23,6 +23,11 @@ apps_interface() {
         touch "$config_path"
     fi
 
+    # Store the app_name in the config file
+    if ! grep -q '^app_name=' "$config_path"; then
+        echo "app_name=${app_name}" >> "$config_path"
+    fi
+
     # Set default appdata path if not set in config
     if ! grep -q '^appdata_path=' "$config_path"; then
         echo "appdata_path=${default_appdata_path}" >> "$config_path"
