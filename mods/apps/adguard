@@ -13,9 +13,6 @@ else
     exit 1
 fi
 
-# Pull the latest AdGuard Home Docker image
-docker pull $DOCKER_IMAGE
-
 # Run the AdGuard Home Docker container with the specified settings
 docker run --name adguardhome \
     --restart unless-stopped \
