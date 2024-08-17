@@ -1,5 +1,18 @@
 #!/bin/bash
 
+#!/bin/bash
+
+# Specify the config file path
+config_path="/pg/config/$1.cfg"
+
+# Source the configuration file to get the appdata_path and app_name
+if [[ -f "$config_path" ]]; then
+    source "$config_path"
+else
+    echo "Error: Configuration file not found at $config_path."
+    exit 1
+fi
+
 # Prompt the user for the Plex claim key
 read -p "Enter your Plex claim key: " CLAIM_KEY
 
@@ -17,11 +30,11 @@ docker pull plexinc/pms-docker:$DOCKER_VERSION
 
 # Run the Plex Docker container with the specified settings
 docker run -d \
-  --name=plex \
+  --name=$app_name \
   --network=host \
   -e PLEX_CLAIM=$CLAIM_KEY \
   -e TZ=$TIMEZONE \
-  -v $APPDATA_LOCATION:/config \
+  -v "${appdata_path}":/config \
   -v $MEDIA_PATH:/media \
   -v /etc/localtime:/etc/localtime:ro \
   --restart unless-stopped \
