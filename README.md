@@ -2,6 +2,9 @@
 
 Working on PG11
 
+* Simple, debloated, no fancy menus!
+* Executes for exactly what you need!
+
 <p align="center">
   <img src="https://i.imgur.com/ePfpheb.jpeg" alt="MD5 Process" width="45%">
 </p>
