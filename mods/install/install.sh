@@ -71,6 +71,7 @@ move_scripts() {
         fi
     else
         echo "Source directory /pg/stage/mods/scripts does not exist. No files to move."
+        bash /pg/scripts/basics.sh
         exit 1
     fi
 }
