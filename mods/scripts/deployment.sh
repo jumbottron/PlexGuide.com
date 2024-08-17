@@ -60,6 +60,9 @@ destroy_app() {
         docker stop "$app_container"
         docker rm "$app_container"
 
+        # Sleep for a moment to ensure the output is visible before the prompt
+        sleep 0.5
+
         # Notify the user that the app has been destroyed and display the app name in red
         echo ""
         echo -e "${RED}${app_name}${NC} has been destroyed."
