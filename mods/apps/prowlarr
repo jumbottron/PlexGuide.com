@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Specify the config file path
+config_path="/pg/config/$1.cfg"
+
+# Source the configuration file to get the appdata_path and app_name
+if [[ -f "$config_path" ]]; then
+    source "$config_path"
+else
+    echo "Error: Configuration file not found at $config_path."
+    exit 1
+fi
+
+# Run the Prowlarr Docker container with the specified settings
+docker run -d \
+  --name="$app_name" \
+  -e PUID=1000 \
+  -e PGID=1000 \
+  -e TZ=America/New_York \
+  -p 9696:9696 \
+  -v "${appdata_path}":/config \
+  --restart unless-stopped \
+  lscr.io/linuxserver/prowlarr:latest
+
+# Verify the Docker container is running
+docker ps | grep "$app_name"
