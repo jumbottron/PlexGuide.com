@@ -41,10 +41,31 @@ deploy_app() {
         bash "$app_path"
 
         # Notify the user that the app has been deployed and display the app name in blue
-        echo -e "${BLUE}$app_name has been deployed.${NC}"
+        echo ""
+        echo -e "${BLUE}${app_name}${NC} has been deployed."
         read -p "Press Enter to continue..."
     else
         echo "Error: The app script for $app_name does not exist or is not executable."
+        read -p "Press Enter to continue..."
+    fi
+}
+
+# Function to destroy the selected app
+destroy_app() {
+    local app_name=$1
+    local app_container=$(docker ps --filter "name=$app_name" --format "{{.ID}}")
+
+    if [[ -n "$app_container" ]]; then
+        echo "Destroying $app_name ..."
+        docker stop "$app_container"
+        docker rm "$app_container"
+
+        # Notify the user that the app has been destroyed and display the app name in red
+        echo ""
+        echo -e "${RED}${app_name}${NC} has been destroyed."
+        read -p "Press Enter to continue..."
+    else
+        echo "Error: The app $app_name is not running or does not exist."
         read -p "Press Enter to continue..."
     fi
 }
@@ -63,20 +84,23 @@ main_menu() {
         echo -e "${GREEN}Available Apps:${NC} ${APP_LIST[*]}"
         echo ""  # Blank line for separation
 
-        read -p "$(echo -e "Type [${GREEN}App${NC}] to Deploy or [${RED}Exit${NC}]: ")" app_choice
+        read -p "$(echo -e "Type [${GREEN}App${NC}] to Deploy, [${RED}Destroy${NC}] to Remove, or [${RED}Exit${NC}]: ")" app_choice
 
         app_choice=$(echo "$app_choice" | tr '[:upper:]' '[:lower:]')
 
         if [[ "$app_choice" == "exit" ]]; then
             exit 0
-        fi
-
-        # Check if the app_choice matches any of the available apps exactly
-        if [[ " ${APP_LIST[@]} " =~ " ${app_choice} " ]]; then
-            deploy_app "$app_choice"
+        elif [[ "$app_choice" == "destroy" ]]; then
+            read -p "Enter the name of the app to destroy: " destroy_choice
+            destroy_app "$destroy_choice"
         else
-            echo "Invalid choice. Please try again."
-            read -p "Press Enter to continue..."
+            # Check if the app_choice matches any of the available apps exactly
+            if [[ " ${APP_LIST[@]} " =~ " ${app_choice} " ]]; then
+                deploy_app "$app_choice"
+            else
+                echo "Invalid choice. Please try again."
+                read -p "Press Enter to continue..."
+            fi
         fi
     done
 }
