@@ -15,7 +15,7 @@ fi
 
 # Deploy Netdata with the updated paths
 docker run -d --name="$app_name" \
-  -p 19999:19999 \
+  -p "${port_number}":19999 \
   -v "${appdata_path}"/netdataconfig:/etc/netdata \
   -v "${appdata_path}"/netdatalib:/var/lib/netdata \
   -v "${appdata_path}"/netdatacache:/var/cache/netdata \
