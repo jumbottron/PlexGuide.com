@@ -6,6 +6,9 @@ RED="\033[0;31m"
 BLUE="\033[0;34m"
 NC="\033[0m" # No color
 
+# Source the apps_interface function from the external script
+source /pg/scripts/apps_interface
+
 # Clear the screen at the start
 clear
 
@@ -39,6 +42,9 @@ deploy_app() {
     if [[ -f "$app_path" ]]; then
         echo "Deploying $app_name ..."
         bash "$app_path"
+
+        # Call the apps_interface function
+        apps_interface "$app_name"
 
         # Notify the user that the app has been deployed and display the app name in blue
         echo ""
