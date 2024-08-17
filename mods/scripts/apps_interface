@@ -7,19 +7,16 @@ apps_interface() {
     local default_appdata_path="/pg/appdata/${app_name}"
     local app_path="/pg/apps/${app_name}"
 
-    # Check if the Docker container for the app is deployed
-    local container_status=$(docker ps --filter "name=$app_name" --format "{{.Names}}")
+    # Function to check the Docker container status
+    check_deployment_status() {
+        local container_status=$(docker ps --filter "name=$app_name" --format "{{.Names}}")
 
-    # Determine deployment status
-    if [[ -n "$container_status" ]]; then
-        local deployment_status="\033[0;32m[Deployed]\033[0m"  # Green
-    else
-        local deployment_status="\033[0;31m[Not Deployed]\033[0m"  # Red
-    fi
-
-    # Display the deployment header with the status first, then the app name
-    echo -e "$deployment_status $app_name"
-    echo ""
+        if [[ -n "$container_status" ]]; then
+            echo -e "\033[0;32m[Deployed]\033[0m $app_name"  # Green
+        else
+            echo -e "\033[0;31m[Not Deployed]\033[0m $app_name"  # Red
+        fi
+    }
 
     # Create config file if it doesn't exist
     if [[ ! -f "$config_path" ]]; then
@@ -43,7 +40,7 @@ apps_interface() {
     # Menu
     while true; do
         clear
-        echo -e "$deployment_status $app_name"
+        check_deployment_status  # Display the initial status
         echo ""
         echo "1) Appdata Path: $appdata_path"
         echo "D) Deploy $app_name"
@@ -70,6 +67,10 @@ apps_interface() {
                     echo "Error: The app script for $app_name does not exist or is not executable."
                     read -p "Press Enter to continue..."
                 fi
+
+                # Refresh the deployment status after deployment
+                clear
+                check_deployment_status
                 ;;
             Z|z)
                 break
