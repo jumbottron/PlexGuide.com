@@ -128,12 +128,10 @@ deploy_container() {
         docker stop cf_tunnel
         docker rm cf_tunnel
     else
-        echo "Deploying container for the first time..."
+        echo "Deploying CF Tunnel"
     fi
 
-    docker run -d --name cf_tunnel --restart unless-stopped \
-        -e TUNNEL_TOKEN="$CLOUDFLARE_TOKEN" \
-        cloudflare/cloudflared:latest
+    docker run -d --name cf_tunnel cloudflare/cloudflared:latest tunnel --no-autoupdate run --token $CLOUDFLARE_TOKEN
     echo "Cloudflare Tunnel Docker container deployed."
     sleep 2
     show_menu
