@@ -38,14 +38,11 @@ main_menu() {
     echo "1) CloudFlare Tunnel (Domains)"
     echo "2) Apps Management"
     echo "3) Test B1"
-    echo "4) Test B2"
-    echo "5) Test C1"
-    echo "6) Test C2"
-    echo "7) Exit"
+    echo "4) Exit"
     echo ""  # Space between options and input prompt
 
     # Prompt the user for input
-    read -p "Enter your choice [1-7]: " choice
+    read -p "Enter your choice [1-4]: " choice
 
     case $choice in
       1)
@@ -60,21 +57,6 @@ main_menu() {
         read -p "Press Enter to continue..."
         ;;
       4)
-        clear
-        echo "Executed Test B2"
-        read -p "Press Enter to continue..."
-        ;;
-      5)
-        clear
-        echo "Executed Test C1"
-        read -p "Press Enter to continue..."
-        ;;
-      6)
-        clear
-        echo "Executed Test C2"
-        read -p "Press Enter to continue..."
-        ;;
-      7)
         exit 0
         ;;
       *)
