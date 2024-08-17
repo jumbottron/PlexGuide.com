@@ -7,8 +7,18 @@ apps_interface() {
     local default_appdata_path="/pg/appdata/${app_name}"
     local app_path="/pg/apps/${app_name}"
 
-    # Display the deployment header
-    echo "App Deployment: $app_name"
+    # Check if the Docker container for the app is deployed
+    local container_status=$(docker ps --filter "name=$app_name" --format "{{.Names}}")
+
+    # Determine deployment status
+    if [[ -n "$container_status" ]]; then
+        local deployment_status="\033[0;32m[Deployed]\033[0m"  # Green
+    else
+        local deployment_status="\033[0;31m[Not Deployed]\033[0m"  # Red
+    fi
+
+    # Display the deployment header with the status
+    echo -e "App Deployment: $app_name $deployment_status"
     echo ""
 
     # Create config file if it doesn't exist
@@ -33,7 +43,7 @@ apps_interface() {
     # Menu
     while true; do
         clear
-        echo "App Deployment: $app_name"
+        echo -e "App Deployment: $app_name $deployment_status"
         echo ""
         echo "1) Appdata Path: $appdata_path"
         echo "D) Deploy $app_name"
