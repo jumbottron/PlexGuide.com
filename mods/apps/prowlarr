@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Default Port:9696
+# Default Port: 9696
 
 # Specify the config file path
 config_path="/pg/config/$1.cfg"
