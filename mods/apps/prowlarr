@@ -19,7 +19,7 @@ docker run -d \
   -e PUID=1000 \
   -e PGID=1000 \
   -e TZ=America/New_York \
-  -p 9696:9696 \
+  -p "${appdata_path}":9696 \
   -v "${appdata_path}":/config \
   --restart unless-stopped \
   lscr.io/linuxserver/prowlarr:latest
