@@ -76,6 +76,28 @@ move_scripts() {
     fi
 }
 
+# Function to move apps from /pg/stage/mods/apps to /pg/apps/
+move_apps() {
+    echo "Moving apps from /pg/stage/mods/apps to /pg/apps/..."
+
+    # Check if the source directory exists
+    if [[ -d "/pg/stage/mods/apps" ]]; then
+        mv /pg/stage/mods/apps/* /pg/apps/
+        
+        # Verify move success
+        if [[ $? -eq 0 ]]; then
+            echo "Apps successfully moved to /pg/apps/."
+        else
+            echo "Failed to move apps. Please check the file paths and permissions."
+            exit 1
+        fi
+    else
+        echo "Source directory /pg/stage/mods/apps does not exist. No files to move."
+        bash /pg/scripts/basics.sh
+        exit 1
+    fi
+}
+
 # Check if the configuration file exists
 if [[ -f "$CONFIG_FILE" ]]; then
     # Prompt the user for reinstallation
@@ -89,6 +111,7 @@ if [[ -f "$CONFIG_FILE" ]]; then
             create_directories
             download_repository
             move_scripts
+            move_apps
             ;;
         N|n)
             echo "Installation aborted."
@@ -105,6 +128,7 @@ else
     create_directories
     download_repository
     move_scripts
+    move_apps
 fi
 
 # Continue with the installation process
