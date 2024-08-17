@@ -11,8 +11,7 @@ curl -o /tmp/install.sh https://raw.githubusercontent.com/plexguide/PlexGuide.co
 ```
 
 Quick Notes:
-1. You will need to install docker yourself (this will be added soon)
-2. Once installed, type pg or plexguide
+1. Once installed, type pg or plexguide <<<
 
 <p align="center">
   <img src="https://i.imgur.com/ePfpheb.jpeg" alt="MD5 Process" width="45%">
