@@ -7,7 +7,7 @@ Working on PG11
 * To Test (Use Ubuntu or Debian) CMD Line: 
 
 ```bash
-curl -o /tmp/install.sh https://raw.githubusercontent.com/plexguide/PlexGuide.com/v11/mods/install/install.sh && chmod +x /tmp/install.sh && /tmp/install.sh && && chomd +x /pg/scripts/menu.sh && /pg/scripts/menu.sh 
+curl -o /tmp/install.sh https://raw.githubusercontent.com/plexguide/PlexGuide.com/v11/mods/install/install.sh && chmod +x /tmp/install.sh && /tmp/install.sh && chomd +x /pg/scripts/menu.sh && /pg/scripts/menu.sh 
 ```
 
 Quick Notes:
