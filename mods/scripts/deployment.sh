@@ -58,16 +58,17 @@ destroy_app() {
     if [[ -n "$app_container" ]]; then
         echo "Destroying $app_name ..."
         docker stop "$app_container"
-        docker wait "$app_container"  # Wait for the container to fully stop
         docker rm "$app_container"
 
         # Notify the user that the app has been destroyed and display the app name in red
         echo ""
         echo -e "${RED}${app_name}${NC} has been destroyed."
-        read -p "Press Enter to continue..."
+        echo "Press any key to continue..."
+        read -n 1 -s
     else
         echo "Error: The app $app_name is not running or does not exist."
-        read -p "Press Enter to continue..."
+        echo "Press any key to continue..."
+        read -n 1 -s
     fi
 }
 
