@@ -67,6 +67,7 @@ main_menu() {
         rm -f /tmp/install.sh
 
         # Exit and reload using the plexguide command
+        bash /pg/scripts/basics.sh
         echo "Reloading PlexGuide..."
         sleep 2
         exec plexguide
