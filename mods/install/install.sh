@@ -126,11 +126,11 @@ if [[ -f "$CONFIG_FILE" ]]; then
         Y|y)
             echo "Reinstalling PlexGuide..."
             # Reinstallation process
-            check_and_install_docker
             create_directories
             download_repository
             move_scripts
             move_apps
+            check_and_install_docker
             ;;
         N|n)
             echo "Installation aborted."
@@ -144,11 +144,11 @@ if [[ -f "$CONFIG_FILE" ]]; then
 else
     echo "No existing installation detected. Proceeding with a new installation..."
     # New installation process
-    check_and_install_docker
     create_directories
     download_repository
     move_scripts
     move_apps
+    check_and_install_docker
 fi
 
 # Continue with the installation process
