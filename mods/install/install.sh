@@ -86,6 +86,8 @@ if [[ -f "$CONFIG_FILE" ]]; then
             echo "Reinstalling PlexGuide..."
             # Reinstallation process
             create_directories
+            download_repository
+            move_scripts
             ;;
         N|n)
             echo "Installation aborted."
