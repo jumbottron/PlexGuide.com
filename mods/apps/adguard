@@ -46,7 +46,7 @@ else
 fi
 
 # Run the AdGuard Home Docker container with the specified settings
-docker run --name adguardhome \
+docker run --name "$app_name" \
     --restart unless-stopped \
     -v "${appdata_path}"/workdir:/opt/adguardhome/work \
     -v "${appdata_path}"/confdir:/opt/adguardhome/conf \
