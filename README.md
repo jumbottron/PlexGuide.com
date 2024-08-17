@@ -3,6 +3,7 @@
 Working on PG11
 
 * Simple, debloated, no fancy menus and executes for exactly what you need!
+* Very early beta and this will take awhile.
 * To Test (Use Ubuntu or Debian) CMD Line: 
 
 ```bash
