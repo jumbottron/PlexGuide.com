@@ -39,8 +39,13 @@ deploy_app() {
     if [[ -f "$app_path" ]]; then
         echo "Deploying $app_name ..."
         bash "$app_path"
+
+        # Notify the user that the app has been deployed and display the app name in blue
+        echo -e "${BLUE}$app_name has been deployed.${NC}"
+        read -p "Press Enter to continue..."
     else
         echo "Error: The app script for $app_name does not exist or is not executable."
+        read -p "Press Enter to continue..."
     fi
 }
 
