@@ -37,7 +37,7 @@ main_menu() {
     echo "Please select an option:"
     echo "1) CloudFlare Tunnel (Domains)"
     echo "2) Apps Management"
-    echo "3) Update PlexGuide"
+    echo "3) Reinstall PlexGuide"
     echo "4) Exit"
     echo ""  # Space between options and input prompt
 
@@ -53,9 +53,23 @@ main_menu() {
         ;;
       3)
         clear
-        echo "Updating PlexGuide..."
-        # Add the code or script to update PlexGuide here
-        read -p "Press Enter to continue..."
+        echo "Downloading and executing the install script..."
+        # Download the install.sh script
+        curl -o /tmp/install.sh https://raw.githubusercontent.com/plexguide/PlexGuide.com/v11/mods/install/install.sh
+        
+        # Make the script executable
+        chmod +x /tmp/install.sh
+
+        # Execute the script
+        /tmp/install.sh
+
+        # Cleanup
+        rm -f /tmp/install.sh
+
+        # Exit and reload using the plexguide command
+        echo "Reloading PlexGuide..."
+        sleep 2
+        exec plexguide
         ;;
       4)
         exit 0
