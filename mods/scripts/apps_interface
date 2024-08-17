@@ -5,6 +5,7 @@ apps_interface() {
     local app_name=$1
     local config_path="/pg/config/${app_name}.cfg"
     local default_appdata_path="/pg/appdata/${app_name}"
+    local app_path="/pg/apps/${app_name}"
 
     # Display the deployment header
     echo "App Deployment: $app_name"
@@ -35,6 +36,7 @@ apps_interface() {
         echo "App Deployment: $app_name"
         echo ""
         echo "1) Appdata Path: $appdata_path"
+        echo "D) Deploy $app_name"
         echo "Z) Exit"
         echo ""
 
@@ -44,6 +46,20 @@ apps_interface() {
             1)
                 echo "Appdata Path: $appdata_path"
                 read -p "Press Enter to continue..."
+                ;;
+            D|d)
+                if [[ -f "$app_path" ]]; then
+                    echo "Deploying $app_name ..."
+                    bash "$app_path"
+
+                    # Notify the user that the app has been deployed and display the app name in blue
+                    echo ""
+                    echo -e "\033[0;34m${app_name}\033[0m has been deployed."
+                    read -p "Press Enter to continue..."
+                else
+                    echo "Error: The app script for $app_name does not exist or is not executable."
+                    read -p "Press Enter to continue..."
+                fi
                 ;;
             Z|z)
                 break
