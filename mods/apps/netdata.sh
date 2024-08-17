@@ -11,3 +11,5 @@ docker run -d --name=netdata \
   --cap-add SYS_PTRACE \
   --security-opt apparmor=unconfined \
   netdata/netdata
+
+sleep 5
