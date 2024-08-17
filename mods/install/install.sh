@@ -82,6 +82,7 @@ move_apps() {
 
     # Check if the source directory exists
     if [[ -d "/pg/stage/mods/apps" ]]; then
+        rm -rf /pg/apps/*
         mv /pg/stage/mods/apps/* /pg/apps/
         
         # Verify move success
