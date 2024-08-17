@@ -39,21 +39,8 @@ deploy_app() {
     local app_name=$1
     local app_path="/pg/apps/$app_name"
 
-    if [[ -f "$app_path" ]]; then
-        echo "Deploying $app_name ..."
-        bash "$app_path"
-
-        # Call the apps_interface function
-        apps_interface "$app_name"
-
-        # Notify the user that the app has been deployed and display the app name in blue
-        echo ""
-        echo -e "${BLUE}${app_name}${NC} has been deployed."
-        read -p "Press Enter to continue..."
-    else
-        echo "Error: The app script for $app_name does not exist or is not executable."
-        read -p "Press Enter to continue..."
-    fi
+    # Call the apps_interface function
+    apps_interface "$app_name"
 }
 
 # Function to destroy the selected app
