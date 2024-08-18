@@ -35,7 +35,7 @@ main_menu() {
       V|v)
         /pg/scripts/running.sh
         # Prompt the user to press Enter to continue
-read -p "Press Enter to continue..."
+read -p "Press Enter to continue...67"
         ;;
       D|d)
         /pg/scripts/deployment.sh
