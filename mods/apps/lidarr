@@ -28,7 +28,7 @@ docker run -d \
   -v "${music_path}":/music \
   -v "${clientdownload_path}":/downloads \
   --restart unless-stopped \
-  lscr.io/linuxserver/radarr:latest
+  lscr.io/linuxserver/lidarr:latest
 
 # Verify the Docker container is running
 docker ps | grep "$app_name"
