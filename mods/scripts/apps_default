@@ -12,7 +12,7 @@ parse_and_store_defaults() {
     # Read through the app script for lines starting with "#####"
     while IFS= read -r line; do
         if [[ "$line" =~ ^##### ]]; then
-            # Remove leading "#####" and extract the key and value
+            # Remove leading "##### ", then extract the key and value
             local trimmed_line="${line###### }"
             local key=$(echo "$trimmed_line" | cut -d':' -f1 | tr '[:upper:]' '[:lower:]' | tr ' ' '_')
             local value=$(echo "$trimmed_line" | cut -d':' -f2 | xargs)
