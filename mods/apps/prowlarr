@@ -10,7 +10,7 @@ docker run -d \
   --name="${app_name}" \
   -e PUID=1000 \
   -e PGID=1000 \
-  -e TZ=${time_zone}" \
+  -e TZ="${time_zone}" \
   -p "${port_number}":9696 \
   -v "${appdata_path}":/config \
   --restart unless-stopped \
