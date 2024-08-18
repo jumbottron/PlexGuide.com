@@ -1,10 +1,9 @@
 #!/bin/bash
 
 # ANSI color codes
-GREEN="\033[0;32m"
 RED="\033[0;31m"
+GREEN="\033[0;32m"
 BLUE="\033[0;34m"
-ORANGE="\033[0;33m"
 NC="\033[0m" # No color
 
 # Function: parse_and_store_defaults
@@ -47,9 +46,9 @@ apps_interface() {
         local container_status=$(docker ps --filter "name=^/${app_name}$" --format "{{.Names}}")
 
         if [[ "$container_status" == "$app_name" ]]; then
-            echo -e "\033[0;32m[Deployed]\033[0m $app_name"  # Green
+            echo -e "\033[0;32m[Deployed]\033[0m $app_name"
         else
-            echo -e "\033[0;31m[Not Deployed]\033[0m $app_name"  # Red
+            echo -e "\033[0;31m[Not Deployed]\033[0m $app_name"
         fi
     }
 
@@ -69,29 +68,32 @@ apps_interface() {
     # Function to change the port number
     change_port_number() {
         clear
+        local port_code=$(printf "%04d" $((RANDOM % 10000)))
         echo "Current Port: $port_number"
-        local port_change_code=$(printf "%04d" $((RANDOM % 10000)))
+        echo ""
         while true; do
-            read -p "$(echo -e "Do you want to change the port number? Type [${RED}${port_change_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: ")" port_choice
-            if [[ "$port_choice" == "$port_change_code" ]]; then
-                read -p "Enter the new Port for $app_name (1-65000) or type [exit] to cancel: " new_port_number
-                if [[ "$new_port_number" =~ ^[0-9]+$ ]] && ((new_port_number >= 1 && new_port_number <= 65000)); then
-                    sed -i "s/^port_number=.*/port_number=${new_port_number}/" "$config_path"
-                    break
-                elif [[ "$new_port_number" == "exit" ]]; then
-                    echo "No changes made."
-                    break
-                else
-                    echo "Invalid input. Please enter a number between 1 and 65000."
-                    read -p "Press Enter to continue..."
-                fi
+            read -p "$(echo -e "Do you want to change the port number? Type [${RED}${port_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: ")" port_choice
+            if [[ "$port_choice" == "$port_code" ]]; then
+                break
             elif [[ "${port_choice,,}" == "no" ]]; then
                 echo "Operation cancelled."
-                break
+                return
             else
-                echo -e "${RED}Invalid response.${NC} Please type [${RED}${port_change_code}${NC}] or [${GREEN}no${NC}]."
+                echo -e "${RED}Invalid response.${NC} Please type [${RED}${port_code}${NC}] or [${GREEN}no${NC}]."
             fi
         done
+        read -p "Enter the new Port for $app_name (1-65000) or type [exit] to cancel: " new_port_number
+
+        if [[ "$new_port_number" =~ ^[0-9]+$ ]] && ((new_port_number >= 1 && new_port_number <= 65000)); then
+            sed -i "s/^port_number=.*/port_number=${new_port_number}/" "$config_path"
+            redeploy_app "with the new port number"
+        elif [[ "$new_port_number" == "exit" ]]; then
+            echo "No changes made."
+        else
+            echo "Invalid input. Please enter a number between 1 and 65000."
+            read -p "Press Enter to continue..."
+            change_port_number  # Recursive call to retry port change
+        fi
     }
 
     # Function to validate the appdata path
@@ -104,26 +106,32 @@ apps_interface() {
     change_appdata_path() {
         clear
         echo "Current Appdata Path: $appdata_path"
-        local path_change_code=$(printf "%04d" $((RANDOM % 10000)))
+        echo ""
+        local path_code=$(printf "%04d" $((RANDOM % 10000)))
         while true; do
-            read -p "$(echo -e "Do you want to change the appdata path? Type [${RED}${path_change_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: ")" path_choice
-            if [[ "$path_choice" == "$path_change_code" ]]; then
-                read -p "Enter the new Appdata Path for $app_name or type [exit] to cancel: " new_appdata_path
-                if [[ "$new_appdata_path" == "exit" ]]; then
-                    echo "No changes made."
-                    return
-                elif validate_or_create_path "$new_appdata_path"; then
-                    move_or_delete_appdata "$new_appdata_path"
-                    break
-                else
-                    echo "Invalid path. Please provide a valid path."
-                    read -p "Press Enter to continue..."
-                fi
-            elif [[ "${path_choice,,}" == "no" ]]; then
+            read -p "$(echo -e "Do you want to change the appdata path? Type [${RED}${path_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: ")" change_choice
+            if [[ "$change_choice" == "$path_code" ]]; then
+                break
+            elif [[ "${change_choice,,}" == "no" ]]; then
                 echo "Operation cancelled."
                 return
             else
-                echo -e "${RED}Invalid response.${NC} Please type [${RED}${path_change_code}${NC}] or [${GREEN}no${NC}]."
+                echo -e "${RED}Invalid response.${NC} Please type [${RED}${path_code}${NC}] or [${GREEN}no${NC}]."
+            fi
+        done
+        while true; do
+            read -p "Enter the new Appdata Path for $app_name or type [exit] to cancel: " new_appdata_path
+
+            if [[ "$new_appdata_path" == "exit" ]]; then
+                echo "No changes made."
+                return
+            elif validate_or_create_path "$new_appdata_path"; then
+                move_or_delete_appdata "$new_appdata_path"
+                redeploy_app "with the new appdata path"
+                break
+            else
+                echo "Invalid path. Please provide a valid path."
+                read -p "Press Enter to continue..."
             fi
         done
     }
@@ -133,13 +141,13 @@ apps_interface() {
         if [[ -z "$(ls -A "$appdata_path")" ]]; then
             echo "The current appdata directory is empty. No data will be moved."
         else
-            read -p "Do you want to move the prior appdata to the new location? Type [yes] or [no]: " move_choice
+            read -p "Do you want to move the prior appdata to the new location? Type: yes / no / exit: " move_choice
             case ${move_choice,,} in  # Convert input to lowercase
                 yes)
                     mv "$appdata_path/"* "$1/" && echo "Data moved to the new location: $1"
                     ;;
                 no)
-                    read -p "Do you want to delete the old appdata? Type [yes] or [no]: " delete_choice
+                    read -p "Do you want to delete the old appdata? Type: yes / no: " delete_choice
                     [[ ${delete_choice,,} == "yes" ]] && rm -rf "$appdata_path" && echo "Old appdata deleted."
                     ;;
                 exit)
@@ -163,28 +171,22 @@ apps_interface() {
             echo "Stopping and removing the existing container for $app_name ..."
             docker stop "$app_name" && docker rm "$app_name"
         fi
-        echo "Deploying $app_name..."
+        echo "Redeploying $app_name $1..."
         bash "$app_path" "$app_name"
-        echo -e "\033[0;34m${app_name}\033[0m has been deployed."
+        echo -e "${BLUE}${app_name}${NC} has been deployed."
         read -p "Press Enter to continue..."
     }
 
     # Function to kill the Docker container
     kill_docker_container() {
         clear
-        docker ps --filter "name=^/${app_name}$" --format "{{.Names}}" &> /dev/null
-        if [[ $? -ne 0 ]]; then
-            echo -e "${RED}Warning: Docker Container Not Running. Cannot Proceed Forward.${NC}"
-            read -p "Press [Enter] to continue..."
-            return
-        fi
-
         local kill_code=$(printf "%04d" $((RANDOM % 10000)))
         while true; do
             read -p "$(echo -e "Are you sure you want to kill the Docker container?\nType [${RED}${kill_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: ")" kill_choice
             if [[ "$kill_choice" == "$kill_code" ]]; then
-                docker stop "$app_name" && docker rm "$app_name"
-                echo "Docker container $app_name has been stopped and removed."
+                docker stop "$app_name"
+                docker rm "$app_name"
+                echo "Docker container $app_name has been killed."
                 break
             elif [[ "${kill_choice,,}" == "no" ]]; then
                 echo "Operation cancelled."
@@ -193,35 +195,43 @@ apps_interface() {
                 echo -e "${RED}Invalid response.${NC} Please type [${RED}${kill_code}${NC}] or [${GREEN}no${NC}]."
             fi
         done
-        read -p "Press Enter to continue..."
     }
 
-    # Function to default the config file
-    default_config_file() {
+    # Function to reset the config file to default
+    reset_config_file() {
         clear
-        local default_code=$(printf "%04d" $((RANDOM % 10000)))
+        local reset_code=$(printf "%04d" $((RANDOM % 10000)))
+        echo -e "${RED}Warning: This is an advanced option.${NC}"
+        echo "Visit https://plexguide.com/wiki/link-not-set for more information."
+        echo ""
+        echo "This will erase the current config file and restore a default config file."
+        echo "The Docker container will be stopped and removed if running."
+        echo "This will not erase any data; your data will remain in its original location."
+        echo ""
         while true; do
-            read -p "$(echo -e "${RED}Warning: This is an advanced option.${NC}\nVisit https://plexguide.com/wiki/link-not-set for more information.\n\nThis will erase the current config file and restore a default config file.\nThe Docker container will be killed/stopped if running. This will not erase any data, and data will remain in their previous paths.\n\nType [${RED}${default_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: ")" default_choice
-            if [[ "$default_choice" == "$default_code" ]]; then
-                docker stop "$app_name" &> /dev/null
-                docker rm "$app_name" &> /dev/null
+            read -p "$(echo -e "Do you want to proceed? Type [${RED}${reset_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: ")" reset_choice
+            if [[ "$reset_choice" == "$reset_code" ]]; then
                 rm -f "$config_path"
-                echo "The config file has been reset to defaults. Press Enter to regenerate it."
+                echo "Config file has been reset to default."
+                touch "$config_path"
+                parse_and_store_defaults "$app_name"
+                echo "The config file has been regenerated."
                 read -p "Press Enter to continue..."
-                break
-            elif [[ "${default_choice,,}" == "no" ]]; then
+                return
+            elif [[ "${reset_choice,,}" == "no" ]]; then
                 echo "Operation cancelled."
-                break
+                return
             else
-                echo -e "${RED}Invalid response.${NC} Please type [${RED}${default_code}${NC}] or [${GREEN}no${NC}]."
+                echo -e "${RED}Invalid response.${NC} Please type [${RED}${reset_code}${NC}] or [${GREEN}no${NC}]."
             fi
         done
-        apps_interface "$app_name"
     }
 
     # Initial setup: Create config file, store app_name, set default appdata path
     [[ ! -f "$config_path" ]] && touch "$config_path"
     grep -q '^app_name=' "$config_path" || echo "app_name=${app_name}" >> "$config_path"
+    
+    # Get the port number and ensure appdata directory exists
     get_or_set_port_number
     validate_or_create_path "$appdata_path"
 
@@ -229,8 +239,7 @@ apps_interface() {
     while true; do
         clear
         check_deployment_status  # Display the initial status
-        source "$config_path" # Refresh values
-        echo ""
+        echo "[Not Deployed] $app_name"
         echo "D) Deploy $app_name"
         echo "A) Appdata Path: $appdata_path"
         echo "P) Port: $port_number"
@@ -242,25 +251,43 @@ apps_interface() {
 
         read -p "Choose an option: " choice
 
-        case $choice in
-            D|d)
-                redeploy_app
+        case ${choice,,} in  # Convert input to lowercase
+            d)
+                clear
+                local deploy_code=$(printf "%04d" $((RANDOM % 10000)))
+                while true; do
+                    read -p "$(echo -e "Deploy/Redeploy $app_name?\nType [${RED}${deploy_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: ")" deploy_choice
+                    if [[ "$deploy_choice" == "$deploy_code" ]]; then
+                        redeploy_app
+                        break
+                    elif [[ "${deploy_choice,,}" == "no" ]]; then
+                        echo "Operation cancelled."
+                        break
+                    else
+                        echo -e "${RED}Invalid response.${NC} Please type [${RED}${deploy_code}${NC}] or [${GREEN}no${NC}]."
+                    fi
+                done
                 ;;
-            A|a)
+            a)
                 change_appdata_path
                 ;;
-            P|p)
+            p)
                 change_port_number
                 ;;
-            E|e)
+            e)
                 clear
                 local edit_code=$(printf "%04d" $((RANDOM % 10000)))
+                echo -e "${RED}Warning: This is an advanced option.${NC}"
+                echo "Visit https://plexguide.com/wiki/not-generated-yet for more information."
+                echo ""
+                echo "The container will automatically redeploy if you proceed forward."
+                echo "Once changes are made, press CTRL+X to save and exit."
+                echo ""
                 while true; do
-                    read -p "$(echo -e "${RED}Warning: This is an advanced option.${NC}\nVisit https://plexguide.com/wiki/not-generated-yet for more information.\n\nThe container will automatically redeploy if you proceed forward.\nOnce changes are made, press CTRL+X to save and exit.\n\nType [${RED}${edit_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: ")" edit_choice
+                    read -p "$(echo -e "Do you want to proceed? Type [${RED}${edit_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: ")" edit_choice
                     if [[ "$edit_choice" == "$edit_code" ]]; then
                         nano "$config_path"
-                        docker stop "$app_name" &> /dev/null
-                        docker rm "$app_name" &> /dev/null
+                        redeploy_app
                         break
                     elif [[ "${edit_choice,,}" == "no" ]]; then
                         echo "Operation cancelled."
@@ -270,13 +297,13 @@ apps_interface() {
                     fi
                 done
                 ;;
-            K|k)
+            k)
                 kill_docker_container
                 ;;
-            Y|y)
-                default_config_file
+            y)
+                reset_config_file
                 ;;
-            Z|z)
+            z)
                 break
                 ;;
             *)
@@ -286,6 +313,3 @@ apps_interface() {
         esac
     done
 }
-
-# Example usage: call apps_interface with a dynamic app name
-apps_interface "$1"
