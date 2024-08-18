@@ -29,7 +29,7 @@ load_config
 
 # Check if the Docker container is running or exists
 container_running() {
-    docker ps --filter "name=cf_tunnel" --format "{{.Names}}" | grep -q "cf_tunnel"
+    docker ps --filter "name=^cf_tunnel$" --format "{{.Names}}" | grep -q "^cf_tunnel$"
 }
 
 container_exists() {
