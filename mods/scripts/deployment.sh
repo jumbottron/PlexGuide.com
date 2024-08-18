@@ -75,9 +75,6 @@ main_menu() {
 
         if [[ "$app_choice" == "exit" ]]; then
             exit 0
-        elif [[ "$app_choice" == "destroy" ]]; then
-            read -p "Enter the name of the app to destroy: " destroy_choice
-            destroy_app "$destroy_choice"
         else
             # Check if the app_choice matches any of the available apps exactly
             if [[ " ${APP_LIST[@]} " =~ " ${app_choice} " ]]; then
