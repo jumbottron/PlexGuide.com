@@ -34,6 +34,8 @@ main_menu() {
     case $choice in
       V|v)
         /pg/scripts/running.sh
+        # Prompt the user to press Enter to continue
+read -p "Press Enter to continue..."
         ;;
       D|d)
         /pg/scripts/deployment.sh
