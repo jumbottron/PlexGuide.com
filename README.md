@@ -22,6 +22,9 @@ Quick Notes:
 <p align="center">
   <img src="https://i.imgur.com/goozBTI.jpeg" alt="Plex Example" width="65%">
 </p>
+<p align="center">
+  <img src="https://i.imgur.com/WkEyL9D.jpeg" alt="Plex Example" width="65%">
+</p>
 
 Stuff below is old and dataed and not relevant. Update will be done when completed.
 
