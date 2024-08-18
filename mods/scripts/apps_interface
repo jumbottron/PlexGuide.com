@@ -72,6 +72,20 @@ apps_interface() {
     change_port_number() {
         clear
         echo "Current Port: $port_number"
+        local port_code=$(printf "%04d" $((RANDOM % 10000)))
+        echo ""
+        while true; do
+            read -p "$(echo -e "Do you want to change the port number? Type [${RED}${port_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: ")" port_choice
+            if [[ "$port_choice" == "$port_code" ]]; then
+                break
+            elif [[ "${port_choice,,}" == "no" ]]; then
+                echo "No changes made."
+                return
+            else
+                echo -e "${RED}Invalid response.${NC} Please type [${RED}${port_code}${NC}] or [${GREEN}no${NC}]."
+            fi
+        done
+
         read -p "Enter the new Port for $app_name (1-65000) or type [exit] to cancel: " new_port_number
 
         if [[ "$new_port_number" =~ ^[0-9]+$ ]] && ((new_port_number >= 1 && new_port_number <= 65000)); then
@@ -105,7 +119,7 @@ apps_interface() {
             if [[ "$path_choice" == "$appdata_code" ]]; then
                 break
             elif [[ "${path_choice,,}" == "no" ]]; then
-                echo "Returning to the main menu."
+                echo "No changes made."
                 return
             else
                 echo -e "${RED}Invalid response.${NC} Please type [${RED}${appdata_code}${NC}] or [${GREEN}no${NC}]."
@@ -201,9 +215,8 @@ yes / no: " delete_choice
         echo "Visit https://plexguide.com/wiki/link-not-set for more information."
         echo ""
         echo "This will erase the current config file and restore a default config file."
-        echo "The Docker container will be killed/stopped if running."
-        echo "This will not erase any data and will leave data exactly where it was located."
-        echo "The defaulted paths may not work if the prior data was in non-default paths."
+        echo "The Docker container will be stopped if running."
+        echo "Note: This will not erase any data; the data will remain in their paths."
         echo ""
         while true; do
             read -p "$(echo -e "Do you want to proceed? Type [${RED}${reset_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: ")" reset_choice
@@ -282,7 +295,18 @@ yes / no: " delete_choice
                 done
                 ;;
             D|d)
-                redeploy_app
+                clear
+                local deploy_code=$(printf "%04d" $((RANDOM % 10000)))
+                echo ""
+                read -p "$(echo -e "Do you want to change the port number before deploying? Type [${RED}${deploy_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: ")" deploy_choice
+                if [[ "$deploy_choice" == "$deploy_code" ]]; then
+                    change_port_number
+                elif [[ "${deploy_choice,,}" == "no" ]]; then
+                    redeploy_app
+                else
+                    echo -e "${RED}Invalid response.${NC} Returning to the main menu."
+                    read -p "Press Enter to continue..."
+                fi
                 ;;
             K|k)
                 kill_docker_container
