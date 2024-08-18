@@ -156,7 +156,6 @@ yes / no: " delete_choice
 
     # Initial setup: Create config file, store app_name, set default appdata path
     [[ ! -f "$config_path" ]] && touch "$config_path"
-    grep -q '^app_name=' "$config_path" || echo "app_name=${app_name}" >> "$config_path"
     
     # Get the port number and ensure appdata directory exists
     get_or_set_port_number
