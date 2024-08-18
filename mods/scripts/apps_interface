@@ -211,6 +211,8 @@ apps_interface() {
         while true; do
             read -p "$(echo -e "Do you want to proceed? Type [${RED}${reset_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: ")" reset_choice
             if [[ "$reset_choice" == "$reset_code" ]]; then
+                docker stop "$app_name" &> /dev/null
+                docker rm "$app_name" &> /dev/null
                 rm -f "$config_path"
                 echo "Config file has been reset to default."
                 touch "$config_path"
@@ -239,7 +241,7 @@ apps_interface() {
     while true; do
         clear
         check_deployment_status  # Display the initial status
-        echo "[Not Deployed] $app_name"
+        echo ""
         echo "D) Deploy $app_name"
         echo "A) Appdata Path: $appdata_path"
         echo "P) Port: $port_number"
