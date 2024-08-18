@@ -30,7 +30,7 @@ docker pull plexinc/pms-docker:$DOCKER_VERSION
 
 # Run the Plex Docker container with the specified settings
 docker run -d \
-  --name="$app_name" \
+  --name="${app_name}" \
   --network=host \
   -e PLEX_CLAIM=$CLAIM_KEY \
   -e TZ="${time_zone}" \
