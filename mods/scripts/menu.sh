@@ -3,7 +3,7 @@
 # Configuration file path
 CONFIG_FILE="/pg/config/config.cfg"
 
-# ANSI color codes for blue
+# ANSI color codes for blue and no color
 BLUE="\033[0;34m"
 NC="\033[0m" # No color
 
@@ -73,6 +73,9 @@ main_menu() {
         exec plexguide
         ;;
       4)
+        clear
+        echo -e "To Start Again - Type: [${BLUE}pg${NC}] or [${BLUE}plexguide${NC}], then space"
+        echo "Visit https://plexguide.com"
         exit 0
         ;;
       *)
