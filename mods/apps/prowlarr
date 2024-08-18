@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# Default Port: 9696
+##### Port Number: 9696
+##### Time Zone: America/New_York
 
 # Specify the config file path
 config_path="/pg/config/$1.cfg"
