@@ -3,6 +3,7 @@
 ##### AppData Path: /pg/appdata/prowlarr
 ##### Port Number: 9696
 ##### Time Zone: America/New_York
+##### AppData Path: /pg/appdata/prowlarr
 
 # Specify the app name and config file path
 app_name=$1
