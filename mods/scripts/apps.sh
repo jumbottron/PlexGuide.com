@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Source the apps_interface function from the external script
+source /pg/scripts/apps_interface
+source /pg/scripts/running
+source /pg/scripts/deployment
+
 # ANSI color codes for green, red, blue, and orange
 GREEN="\033[0;32m"
 RED="\033[0;31m"
