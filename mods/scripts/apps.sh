@@ -1,9 +1,10 @@
 #!/bin/bash
 
-# ANSI color codes for green, red, and blue
+# ANSI color codes for green, red, blue, and orange
 GREEN="\033[0;32m"
 RED="\033[0;31m"
 BLUE="\033[0;34m"
+ORANGE="\033[0;33m"
 NC="\033[0m" # No color
 
 # Function to count running Docker containers, excluding cf_tunnel
@@ -22,7 +23,7 @@ main_menu() {
     echo -e "${BLUE}PG: Docker Apps${NC}"
     echo ""  # Blank line for separation
     # Display the main menu options
-    echo -e "V) Apps [${BLUE}View${NC}] [ $APP_COUNT ]"
+    echo -e "V) Apps [${ORANGE}View${NC}] [ $APP_COUNT ]"
     echo -e "D) Apps [${GREEN}Deploy${NC}]"
     echo "Z) Exit"
     echo ""  # Space between options and input prompt
