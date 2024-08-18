@@ -9,7 +9,7 @@ NC="\033[0m" # No color
 
 # Source the apps_interface function from the external script
 source /pg/scripts/apps_interface
-soruce /pg/scripts/apps_default
+source /pg/scripts/apps_default
 
 # Clear the screen at the start
 clear
