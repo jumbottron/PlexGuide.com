@@ -17,7 +17,7 @@ Quick Notes:
   <img src="https://i.imgur.com/ePfpheb.jpeg" alt="Menu Example" width="45%">
 </p>
 <p align="center">
-  <img src="https://i.imgur.com/Sd88Ioi.jpeg" alt="Plex Example" width="45%">
+  <img src="https://i.imgur.com/Sd88Ioi.jpeg" alt="Plex Example" width="60%">
 </p>
 
 Stuff below is old and dataed and not relevant. Update will be done when completed.
