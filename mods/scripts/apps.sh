@@ -2,8 +2,10 @@
 
 # Source the apps_interface function from the external script
 source /pg/scripts/apps_interface
-source /pg/scripts/running
-source /pg/scripts/deployment
+
+# Source the running and deployment functions directly instead of as separate scripts
+source /pg/scripts/running.sh
+source /pg/scripts/deployment.sh
 
 # ANSI color codes for green, red, blue, and orange
 GREEN="\033[0;32m"
@@ -38,12 +40,10 @@ main_menu() {
 
     case $choice in
       V|v)
-        /pg/scripts/running.sh
-        # Prompt the user to press Enter to continue
-read -p "Press Enter to continue...67"
+        running_function
         ;;
       D|d)
-        /pg/scripts/deployment.sh
+        deployment_function
         ;;
       Z|z)
         exit 0
