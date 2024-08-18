@@ -1,0 +1,35 @@
+#!/bin/bash
+
+##### Port Number: 9117
+##### Time Zone: America/New_York
+##### AppData Path: /pg/appdata/jackett
+##### PathTo Blackhole: /pg/downloads/
+##### Auto Update: true 
+
+# Specify the app name and config file path
+app_name=$1
+config_path="/pg/config/${app_name}.cfg"
+
+# Source the configuration file to get the appdata_path and app_name
+if [[ -f "$config_path" ]]; then
+    source "$config_path"
+else
+    echo "Error: Configuration file not found at $config_path."
+    exit 1
+fi
+
+docker run -d \
+  --name="${app_name}" \
+  -e PUID=1000 \
+  -e PGID=1000 \
+  -e TZ="${time_zone}" \
+  -e AUTO_UPDATE="${auto_update}" \
+  -e RUN_OPTS= `#optional` \
+  -p "${port_number}":9117 \
+  -v "${appdata_path}":/config \
+  -v "${pathto_blackhole}":/downloads \
+  --restart unless-stopped \
+  lscr.io/linuxserver/jackett:latest
+
+# Verify the Docker container is running
+docker ps | grep "$app_name"
