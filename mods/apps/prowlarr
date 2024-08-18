@@ -18,3 +18,4 @@ docker run -d \
 
 # Verify the Docker container is running
 docker ps | grep "$app_name"
+sleep 1
