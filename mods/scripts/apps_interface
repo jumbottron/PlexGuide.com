@@ -257,6 +257,7 @@ apps_interface() {
         echo "P) Port: $port_number"
         echo "E) Edit Config File"
         echo "K) Kill Docker Container"
+        echo "X) Expose Port"
         echo "Y) Default the Config File"
         echo "Z) Exit"
         echo ""
@@ -313,6 +314,9 @@ apps_interface() {
                 ;;
             k)
                 kill_docker_container
+                ;;
+            x)
+                bash /pg/scripts/expose.sh "$app_name"
                 ;;
             y)
                 reset_config_file
