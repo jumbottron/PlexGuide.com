@@ -134,6 +134,7 @@ yes / no: " delete_choice
         echo ""
         echo "1) Appdata Path: $appdata_path"
         echo "3) Port: $port_number"
+        echo "4) Edit Config File"
         echo "D) Deploy $app_name"
         echo "Z) Exit"
         echo ""
@@ -146,6 +147,9 @@ yes / no: " delete_choice
                 ;;
             3)
                 change_port_number
+                ;;
+            4)
+                nano "$config_path"
                 ;;
             D|d)
                 redeploy_app
