@@ -160,8 +160,23 @@ deploy_container() {
     fi
 
     docker run -d --name cf_tunnel cloudflare/cloudflared:latest tunnel --no-autoupdate run --token $CLOUDFLARE_TOKEN
-    echo "Cloudflare Tunnel Docker container deployed."
-    sleep 2
+
+    # Wait for the container to start and check its status
+    echo "Waiting 3 seconds..."
+    sleep 3
+
+    if container_running; then
+        echo "Cloudflare Tunnel Docker container deployed successfully."
+    else
+        echo -e "${RED}Token is invalid. The container failed to start.${NC}"
+        docker stop cf_tunnel &>/dev/null
+        docker rm cf_tunnel &>/dev/null
+        echo "Invalid container stopped and removed."
+    fi
+
+    echo
+    echo -e "${BLUE}[Press Enter]${NC} to continue"
+    read
     show_menu
     prompt_choice
 }
