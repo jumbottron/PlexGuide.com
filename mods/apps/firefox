@@ -1,11 +1,15 @@
 #!/bin/bash
 
-##### Port Number: 8089
-##### Custom Resolution Height: 768
-##### Custom Resolution Width: 1280
-##### Langague: en-US
+##### Port Number1: 4000
+##### Port Number2: 4001
+##### Time Zone: Etc/UTC
 ##### Version: latest
 ##### AppData Path: /pg/appdata/firefox
+##### shm size: 1gb
+
+# Port 1 is for http - for cloudflare tunnel, use this
+# Port 2 is for https
+# shm size needs to be bigger for sites like youtube.com and etc
 
 # Specify the app name and config file path
 app_name=$1
@@ -19,14 +23,19 @@ else
     exit 1
 fi
 
-docker run -d --name="${app_name}" \
-	-p "${port_number}":8080 \
-	--env 'FIREFOX_V="${version}"' \
-	--env 'FIREFOX_LANG="${latest}"' \
-	--env 'CUSTOM_RES_W="${custom_resolution_width}"' \
-	--env 'CUSTOM_RES_H="${custom_resolution_height}"' \
-	--volume "${appdata_path}":/firefox \
-	ich777/firefox
+docker run -d \
+  --name=--name="${app_name}"\
+  --security-opt seccomp=unconfined `#optional` \
+  -e PUID=1000 \
+  -e PGID=1000 \
+  -e TZ="${time_zone}"\
+  -e FIREFOX_CLI=https://www.linuxserver.io/ `#optional` \
+  -p "${port_number1}":3000 \
+  -p "${port_number2}":3001 \
+  -v "${appdata_path}":/config \
+  --shm-size="${shm_size}" \
+  --restart unless-stopped \
+  lscr.io/linuxserver/firefox:"${latest}"
 
 # Verify the Docker container is running
 docker ps | grep "$app_name"
