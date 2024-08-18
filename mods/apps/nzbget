@@ -20,7 +20,7 @@ else
 fi
 
 docker run -d \
-  --name=nzbget \
+  --name="${app_name}" \
   -e PUID=1000 \
   -e PGID=1000 \
   -e TZ="${time_zone}" \
