@@ -74,6 +74,7 @@ apps_interface() {
 
         if [[ "$new_port_number" =~ ^[0-9]+$ ]] && ((new_port_number >= 1 && new_port_number <= 65000)); then
             sed -i "s/^port_number=.*/port_number=${new_port_number}/" "$config_path"
+            source "$config_path"  # Re-read the config file to refresh the variables
             redeploy_app "with the new port number"
         elif [[ "$new_port_number" == "exit" ]]; then
             echo "No changes made."
@@ -167,8 +168,8 @@ yes / no: " delete_choice
         check_deployment_status  # Display the initial status
         echo ""
         echo "1) Appdata Path: $appdata_path"
-        echo "3) Port: $port_number"
-        echo "4) Edit Config File"
+        echo "2) Port: $port_number"
+        echo "E) Edit Config File"
         echo "D) Deploy $app_name"
         echo "Z) Exit"
         echo ""
@@ -179,11 +180,19 @@ yes / no: " delete_choice
             1)
                 change_appdata_path
                 ;;
-            3)
+            2)
                 change_port_number
                 ;;
-            4)
+            E|e)
+                clear
+                echo -e "${RED}Warning: This is an advanced option.${NC} Visit https://plexguide.com/wiki/not-generated-yet for more information."
+                echo ""
+                echo "Any changes made will result in the container being automatically redeployed."
+                echo "Once changes are made, press CTRL+X to save and exit."
+                echo ""
+                read -p "Press Enter to continue..."
                 nano "$config_path"
+                redeploy_app "with the updated configuration"
                 ;;
             D|d)
                 redeploy_app
