@@ -155,6 +155,26 @@ yes / no: " delete_choice
         read -p "Press Enter to continue..."
     }
 
+    # Function to kill the Docker container
+    kill_docker_container() {
+        local kill_code=$(printf "%04d" $((RANDOM % 10000)))
+        clear
+        echo "Are you sure you want to kill/stop the Docker container?"
+        echo "All appdata will still be preserved."
+        echo ""
+        read -p "$(echo -e "Type [${RED}${kill_code}${NC}] to kill or [${GREEN}no${NC}] to cancel: ")" kill_choice
+        if [[ "$kill_choice" == "$kill_code" ]]; then
+            echo "Stopping and removing the Docker container for $app_name ..."
+            docker stop "$app_name" && docker rm "$app_name"
+            echo "Docker container has been killed."
+        elif [[ "${kill_choice,,}" == "no" ]]; then
+            echo "Operation cancelled."
+        else
+            echo -e "${RED}Invalid response.${NC} Returning to the main menu."
+        fi
+        read -p "Press Enter to continue..."
+    }
+
     # Initial setup: Create config file, store app_name, set default appdata path
     [[ ! -f "$config_path" ]] && touch "$config_path"
     
@@ -171,6 +191,7 @@ yes / no: " delete_choice
         echo "1) Appdata Path: $appdata_path"
         echo "2) Port: $port_number"
         echo "E) Edit Config File"
+        echo "K) Kill Docker Container"
         echo "D) Deploy $app_name"
         echo "Z) Exit"
         echo ""
@@ -185,6 +206,7 @@ yes / no: " delete_choice
                 change_port_number
                 ;;
             E|e)
+                local edit_code=$(printf "%04d" $((RANDOM % 10000)))
                 clear
                 echo -e "${RED}Warning: This is an advanced option.${NC}"
                 echo "Visit https://plexguide.com/wiki/not-generated-yet for more information."
@@ -193,22 +215,21 @@ yes / no: " delete_choice
                 echo "Once changes are made, press CTRL+X to save and exit."
                 echo ""
                 while true; do
-                    read -p "$(echo -e "Do you want to proceed? Type [${RED}yes${NC}] or [${GREEN}no${NC}]: ")" proceed_choice
-                    case ${proceed_choice,,} in  # Convert input to lowercase
-                        yes)
-                            nano "$config_path"
-                            redeploy_app "with the updated configuration"
-                            break
-                            ;;
-                        no)
-                            echo "Returning to the main menu."
-                            break
-                            ;;
-                        *)
-                            echo -e "${RED}Invalid response.${NC} Please type [${RED}yes${NC}] or [${GREEN}no${NC}]."
-                            ;;
-                    esac
+                    read -p "$(echo -e "Do you want to proceed? Type [${GREEN}${edit_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: ")" proceed_choice
+                    if [[ "$proceed_choice" == "$edit_code" ]]; then
+                        nano "$config_path"
+                        redeploy_app "with the updated configuration"
+                        break
+                    elif [[ "${proceed_choice,,}" == "no" ]]; then
+                        echo "Returning to the main menu."
+                        break
+                    else
+                        echo -e "${RED}Invalid response.${NC} Please type [${GREEN}${edit_code}${NC}] or [${GREEN}no${NC}]."
+                    fi
                 done
+                ;;
+            K|k)
+                kill_docker_container
                 ;;
             D|d)
                 redeploy_app
