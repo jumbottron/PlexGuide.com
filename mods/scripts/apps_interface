@@ -1,10 +1,9 @@
 #!/bin/bash
 
 # ANSI color codes
-GREEN="\033[0;32m"
 RED="\033[0;31m"
+GREEN="\033[0;32m"
 BLUE="\033[0;34m"
-ORANGE="\033[0;33m"
 NC="\033[0m" # No color
 
 # Function: parse_and_store_defaults
@@ -47,9 +46,9 @@ apps_interface() {
         local container_status=$(docker ps --filter "name=^/${app_name}$" --format "{{.Names}}")
 
         if [[ "$container_status" == "$app_name" ]]; then
-            echo -e "\033[0;32m[Deployed]\033[0m $app_name"  # Green
+            echo -e "\033[0;32m[Deployed]\033[0m $app_name"
         else
-            echo -e "\033[0;31m[Not Deployed]\033[0m $app_name"  # Red
+            echo -e "\033[0;31m[Not Deployed]\033[0m $app_name"
         fi
     }
 
@@ -174,7 +173,7 @@ apps_interface() {
         fi
         echo "Redeploying $app_name $1..."
         bash "$app_path" "$app_name"
-        echo -e "\033[0;34m${app_name}\033[0m has been deployed."
+        echo -e "${BLUE}${app_name}${NC} has been deployed."
         read -p "Press Enter to continue..."
     }
 
@@ -182,7 +181,6 @@ apps_interface() {
     kill_docker_container() {
         clear
         local kill_code=$(printf "%04d" $((RANDOM % 10000)))
-        echo ""
         while true; do
             read -p "$(echo -e "Are you sure you want to kill the Docker container?\nType [${RED}${kill_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: ")" kill_choice
             if [[ "$kill_choice" == "$kill_code" ]]; then
@@ -215,6 +213,9 @@ apps_interface() {
             if [[ "$reset_choice" == "$reset_code" ]]; then
                 rm -f "$config_path"
                 echo "Config file has been reset to default."
+                touch "$config_path"
+                parse_and_store_defaults "$app_name"
+                echo "The config file has been regenerated."
                 read -p "Press Enter to continue..."
                 return
             elif [[ "${reset_choice,,}" == "no" ]]; then
@@ -238,7 +239,8 @@ apps_interface() {
     while true; do
         clear
         check_deployment_status  # Display the initial status
-        echo "D) ${GREEN}Deploy${NC} $app_name"
+        echo "[Not Deployed] $app_name"
+        echo "D) Deploy $app_name"
         echo "A) Appdata Path: $appdata_path"
         echo "P) Port: $port_number"
         echo "E) Edit Config File"
