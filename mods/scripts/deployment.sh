@@ -39,17 +39,6 @@ list_available_apps() {
     fi
 }
 
-# Function to list all active Docker containers
-list_active_containers() {
-    local running_apps=$(docker ps --format '{{.Names}}' | sort)
-
-    if [[ -z "$running_apps" ]]; then
-        echo -e "${ORANGE}No Apps are Running${NC}"
-    else
-        echo "$running_apps"
-    fi
-}
-
 # Function to deploy the selected app
 deploy_app() {
     local app_name=$1
@@ -81,43 +70,6 @@ destroy_app() {
     fi
 }
 
-# Function to view and manage running apps
-manage_running_app() {
-    clear
-
-    RUNNING_LIST=$(list_active_containers)
-
-    echo -e "${BLUE}PG: Active Docker Containers${NC}"
-    echo ""  # Blank line for separation
-
-    # Check if RUNNING_LIST is empty or contains the "No Apps are Running" message
-    if [[ "$RUNNING_LIST" == "${ORANGE}No Apps are Running${NC}" ]]; then
-        echo -e "$RUNNING_LIST"
-    else
-        echo -e "${GREEN}Running Apps:${NC} ${RUNNING_LIST[*]}"
-    fi
-
-    echo ""  # Blank line for separation
-
-    if [[ "$RUNNING_LIST" != "${ORANGE}No Apps are Running${NC}" ]]; then
-        read -p "$(echo -e "Type [${GREEN}App${NC}] to Manage, or [${RED}Exit${NC}]: ")" app_choice
-
-        app_choice=$(echo "$app_choice" | tr '[:upper:]' '[:lower:]')
-
-        if [[ "$app_choice" != "exit" ]]; then
-            # Check if the app_choice matches any of the running apps exactly
-            if [[ " ${RUNNING_LIST[@]} " =~ " ${app_choice} " ]]; then
-                apps_interface "$app_choice"
-            else
-                echo "Invalid choice. Please try again."
-                read -p "Press Enter to continue..."
-            fi
-        fi
-    else
-        read -p "Press Enter to return to the main menu..."
-    fi
-}
-
 # Main menu function
 main_menu() {
     while true; do
@@ -125,59 +77,38 @@ main_menu() {
 
         create_apps_directory
 
-        # List the running apps for option 1
-        RUNNING_COUNT=$(docker ps --format '{{.Names}}' | wc -l)
+        APP_LIST=$(list_available_apps)
 
-        echo -e "${BLUE}PG: Docker Apps${NC}"
+        echo -e "${BLUE}PG: App Deployment - Available Apps${NC}"
         echo ""  # Blank line for separation
-        echo "1) View Deployed Apps [${RUNNING_COUNT}]"
-        echo "2) Deploy New App"
-        echo "3) Destroy App"
-        echo "4) Exit"
-        echo ""  # Space between options and input prompt
 
-        read -p "Enter your choice [1-4]: " choice
+        # Check if APP_LIST is empty or contains the "No More Apps To Deploy" message
+        if [[ "$APP_LIST" == "${ORANGE}No More Apps To Deploy${NC}" ]]; then
+            echo -e "$APP_LIST"
+        else
+            echo -e "${GREEN}Available Apps:${NC} ${APP_LIST[*]}"
+        fi
+        
+        echo ""  # Blank line for separation
 
-        case $choice in
-            1)
-                manage_running_app
-                ;;
-            2)
-                APP_LIST=$(list_available_apps)
+        read -p "$(echo -e "Type [${GREEN}App${NC}] to Deploy, [${RED}Destroy${NC}] to Remove, or [${RED}Exit${NC}]: ")" app_choice
 
-                echo -e "${GREEN}Available Apps:${NC} ${APP_LIST[*]}"
-                echo ""  # Blank line for separation
+        app_choice=$(echo "$app_choice" | tr '[:upper:]' '[:lower:]')
 
-                if [[ "$APP_LIST" != "${ORANGE}No More Apps To Deploy${NC}" ]]; then
-                    read -p "$(echo -e "Type [${GREEN}App${NC}] to Deploy, or [${RED}Exit${NC}]: ")" app_choice
-
-                    app_choice=$(echo "$app_choice" | tr '[:upper:]' '[:lower:]')
-
-                    if [[ "$app_choice" != "exit" ]]; then
-                        # Check if the app_choice matches any of the available apps exactly
-                        if [[ " ${APP_LIST[@]} " =~ " ${app_choice} " ]]; then
-                            deploy_app "$app_choice"
-                        else
-                            echo "Invalid choice. Please try again."
-                            read -p "Press Enter to continue..."
-                        fi
-                    fi
-                else
-                    read -p "Press Enter to return to the main menu..."
-                fi
-                ;;
-            3)
-                read -p "Enter the name of the app to destroy: " destroy_choice
-                destroy_app "$destroy_choice"
-                ;;
-            4)
-                exit 0
-                ;;
-            *)
-                echo "Invalid option, please try again."
+        if [[ "$app_choice" == "exit" ]]; then
+            exit 0
+        elif [[ "$app_choice" == "destroy" ]]; then
+            read -p "Enter the name of the app to destroy: " destroy_choice
+            destroy_app "$destroy_choice"
+        else
+            # Check if the app_choice matches any of the available apps exactly
+            if [[ " ${APP_LIST[@]} " =~ " ${app_choice} " ]]; then
+                deploy_app "$app_choice"
+            else
+                echo "Invalid choice. Please try again."
                 read -p "Press Enter to continue..."
-                ;;
-        esac
+            fi
+        fi
     done
 }
 
