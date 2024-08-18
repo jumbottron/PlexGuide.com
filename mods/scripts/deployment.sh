@@ -112,13 +112,13 @@ main_menu() {
         
         echo ""  # Blank line for separation
 
-        read -p "$(echo -e "Type [${GREEN}App${NC}] to Deploy, [${RED}View${NC}] to View, [${RED}Destroy${NC}] to Remove, or [${RED}Exit${NC}]: ")" app_choice
+        read -p "$(echo -e "Type [${GREEN}1${NC}] to View, [${GREEN}App${NC}] to Deploy, [${RED}Destroy${NC}] to Remove, or [${RED}Exit${NC}]: ")" app_choice
 
         app_choice=$(echo "$app_choice" | tr '[:upper:]' '[:lower:]')
 
         if [[ "$app_choice" == "exit" ]]; then
             exit 0
-        elif [[ "$app_choice" == "view" ]]; then
+        elif [[ "$app_choice" == "1" ]]; then
             read -p "Enter the name of the app to view: " view_choice
             view_app "$view_choice"
         elif [[ "$app_choice" == "destroy" ]]; then
