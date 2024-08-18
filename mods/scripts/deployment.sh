@@ -30,11 +30,7 @@ list_available_apps() {
         fi
     done
 
-    if [[ ${#available_apps[@]} -eq 0 ]]; then
-        echo -e "${ORANGE}No More Apps To Deploy${NC}"
-    else
-        echo "${available_apps[@]}"
-    fi
+    echo "${available_apps[@]}"
 }
 
 # Function to deploy the selected app
@@ -42,8 +38,14 @@ deploy_app() {
     local app_name=$1
     local app_path="/pg/apps/$app_name"
 
-    # Call the apps_interface function
-    apps_interface "$app_name"
+    # Ensure the app exists before deploying
+    if [[ -f "$app_path" ]]; then
+        # Call the apps_interface function
+        apps_interface "$app_name"
+    else
+        echo "Error: App script for $app_name not found!"
+        read -p "Press Enter to continue..."
+    fi
 }
 
 # Main menu function
@@ -73,14 +75,11 @@ main_menu() {
 
         if [[ "$app_choice" == "exit" ]]; then
             exit 0
+        elif [[ " ${APP_LIST[@]} " =~ " $app_choice " ]]; then
+            deploy_app "$app_choice"
         else
-            # Check if the selected app is in the list of available apps
-            if [[ " ${APP_LIST[@]} " =~ " $app_choice " ]]; then
-                deploy_app "$app_choice"
-            else
-                echo "Invalid choice. Please try again."
-                read -p "Press Enter to continue..."
-            fi
+            echo "Invalid choice. Please try again."
+            read -p "Press Enter to continue..."
         fi
     done
 }
