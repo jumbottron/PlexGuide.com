@@ -2,6 +2,9 @@
 
 # Default Port: 19999
 
+##### Port Number: 19999
+##### Time Zone: America/New_York
+
 # Specify the config file path
 config_path="/pg/config/$1.cfg"
 
