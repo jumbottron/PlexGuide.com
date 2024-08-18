@@ -51,6 +51,7 @@ apps_interface() {
         else
             echo -e "\033[0;31m[Not Deployed]\033[0m $app_name"  # Red
         fi
+        echo "$container_status"
     }
 
     # Function to get or set the port number
@@ -175,8 +176,41 @@ yes / no: " delete_choice
         read -p "Press Enter to continue..."
     }
 
+    # Function to reset the config file to defaults
+    reset_config_file() {
+        local reset_code=$(printf "%04d" $((RANDOM % 10000)))
+        clear
+        echo -e "${RED}Warning: This is an advanced option.${NC}"
+        echo "Visit https://plexguide.com/wiki/link-not-set for more information."
+        echo ""
+        echo "This will erase the current config file and restore a default config file."
+        echo "The Docker container will be killed/stopped if running."
+        echo "This will not erase any data and will leave data exactly where it was located."
+        echo "The defaulted paths may not work if the prior data was in non-default paths."
+        echo ""
+        while true; do
+            read -p "$(echo -e "Do you want to proceed? Type [${RED}${reset_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: ")" reset_choice
+            if [[ "$reset_choice" == "$reset_code" ]]; then
+                echo "Stopping and removing the Docker container for $app_name ..."
+                docker stop "$app_name" && docker rm "$app_name" 2>/dev/null
+                rm -f "$config_path"
+                echo "Config file has been defaulted."
+                read -p "Press Enter to regenerate the config file..."
+                apps_interface "$app_name"  # Restart the menu to regenerate the config file
+                break
+            elif [[ "${reset_choice,,}" == "no" ]]; then
+                echo "Operation cancelled."
+                break
+            else
+                echo -e "${RED}Invalid response.${NC} Please type [${RED}${reset_code}${NC}] or [${GREEN}no${NC}]."
+            fi
+        done
+    }
+
     # Initial setup: Create config file, store app_name, set default appdata path
     [[ ! -f "$config_path" ]] && touch "$config_path"
+    grep -q '^app_name=' "$config_path" || echo "app_name=${app_name}" >> "$config_path"
+    grep -q '^appdata_path=' "$config_path" || echo "appdata_path=${default_appdata_path}" >> "$config_path"
     
     # Get the port number and ensure appdata directory exists
     get_or_set_port_number
@@ -185,14 +219,19 @@ yes / no: " delete_choice
     # Menu
     while true; do
         clear
-        check_deployment_status  # Display the initial status
-        source "$config_path"  # Refresh variables to reflect any changes
+        local container_status=$(check_deployment_status)  # Check container status
+
         echo ""
         echo "1) Appdata Path: $appdata_path"
         echo "2) Port: $port_number"
         echo "E) Edit Config File"
-        echo "K) Kill Docker Container"
-        echo "D) Deploy $app_name"
+        if [[ "$container_status" == "$app_name" ]]; then
+            echo "R) Redeploy $app_name"
+            echo "K) Kill Docker Container"
+        else
+            echo "D) Deploy $app_name"
+        fi
+        echo "Y) Default the Config File"
         echo "Z) Exit"
         echo ""
 
@@ -219,6 +258,7 @@ yes / no: " delete_choice
                     if [[ "$proceed_choice" == "$edit_code" ]]; then
                         nano "$config_path"
                         redeploy_app "with the updated configuration"
+                        source "$config_path"  # Refresh the config values
                         break
                     elif [[ "${proceed_choice,,}" == "no" ]]; then
                         echo "Returning to the main menu."
@@ -228,11 +268,14 @@ yes / no: " delete_choice
                     fi
                 done
                 ;;
+            R|r)
+                redeploy_app
+                ;;
             K|k)
                 kill_docker_container
                 ;;
-            D|d)
-                redeploy_app
+            Y|y)
+                reset_config_file
                 ;;
             Z|z)
                 break
