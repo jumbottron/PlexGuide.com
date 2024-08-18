@@ -7,7 +7,7 @@
 config_path="/pg/config/$1.cfg"
 
 # Source the script that handles default values
-source /pg/scripts/app_defaults.sh
+source /pg/scripts/app_defaults
 
 # Parse and store default values
 parse_and_store_defaults "$1"
