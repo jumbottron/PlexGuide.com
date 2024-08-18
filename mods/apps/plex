@@ -1,5 +1,7 @@
 #!/bin/bash
 
+##### AppData Path: /pg/appdata/plex
+##### Media Path: /pg/media
 ##### Port Number: 32400
 ##### Time Zone: America/New_York
 
@@ -21,10 +23,6 @@ read -p "Enter your Plex claim key: " CLAIM_KEY
 # Set the default Docker image version, appdata location, and timezone
 DOCKER_VERSION=${2:-"latest"}
 
-# Ensure the media directory exists
-MEDIA_PATH="/pg/media"
-mkdir -p $MEDIA_PATH
-
 # Pull the specified version of the Plex Docker image
 docker pull plexinc/pms-docker:$DOCKER_VERSION
 
@@ -35,7 +33,7 @@ docker run -d \
   -e PLEX_CLAIM=$CLAIM_KEY \
   -e TZ="${time_zone}" \
   -v "${appdata_path}":/config \
-  -v $MEDIA_PATH:/media \
+  -v "${media_path}":/media \
   -v /etc/localtime:/etc/localtime:ro \
   --restart unless-stopped \
   plexinc/pms-docker:$DOCKER_VERSION
