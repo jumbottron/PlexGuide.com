@@ -1,9 +1,10 @@
 #!/bin/bash
 
-# ANSI color codes for green, red, and blue
+# ANSI color codes for green, red, blue, and orange
 GREEN="\033[0;32m"
 RED="\033[0;31m"
 BLUE="\033[0;34m"
+ORANGE="\033[0;33m"
 NC="\033[0m" # No color
 
 # Source the apps_interface function from the external script
@@ -31,7 +32,11 @@ list_available_apps() {
         fi
     done
 
-    echo "${available_apps[@]}"
+    if [[ ${#available_apps[@]} -eq 0 ]]; then
+        echo -e "${ORANGE}No More Apps To Deploy${NC}"
+    else
+        echo "${available_apps[@]}"
+    fi
 }
 
 # Function to deploy the selected app
@@ -76,7 +81,14 @@ main_menu() {
 
         echo -e "${BLUE}PG: App Deployment - Available Apps${NC}"
         echo ""  # Blank line for separation
-        echo -e "${GREEN}Available Apps:${NC} ${APP_LIST[*]}"
+
+        # Check if APP_LIST is empty or contains the "No More Apps To Deploy" message
+        if [[ "$APP_LIST" == "${ORANGE}No More Apps To Deploy${NC}" ]]; then
+            echo -e "$APP_LIST"
+        else
+            echo -e "${GREEN}Available Apps:${NC} ${APP_LIST[*]}"
+        fi
+        
         echo ""  # Blank line for separation
 
         read -p "$(echo -e "Type [${GREEN}App${NC}] to Deploy, [${RED}Destroy${NC}] to Remove, or [${RED}Exit${NC}]: ")" app_choice
