@@ -1,10 +1,7 @@
 #!/bin/bash
 
-##### Port Number: 9117
-##### Time Zone: America/New_York
-##### AppData Path: /pg/appdata/jackett
-##### PathTo Blackhole: /pg/downloads/
-##### Auto Update: true 
+##### Port Number: 3001
+##### AppData Path: /pg/appdata/uptimekuma
 
 # Specify the app name and config file path
 app_name=$1
