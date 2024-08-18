@@ -6,9 +6,6 @@
 # Specify the config file path
 config_path="/pg/config/$1.cfg"
 
-# Parse and store default values
-parse_and_store_defaults "$1"
-
 # Source the configuration file to get the appdata_path and app_name
 if [[ -f "$config_path" ]]; then
     source "$config_path"
