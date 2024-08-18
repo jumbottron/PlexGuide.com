@@ -49,28 +49,6 @@ deploy_app() {
     apps_interface "$app_name"
 }
 
-# Function to destroy the selected app
-destroy_app() {
-    local app_name=$1
-    local app_container=$(docker ps --filter "name=$app_name" --format "{{.ID}}")
-
-    if [[ -n "$app_container" ]]; then
-        echo "Destroying $app_name ..."
-        docker stop "$app_container"
-        docker rm "$app_container"
-
-        # Notify the user that the app has been destroyed and display the app name in red
-        echo ""
-        echo -e "${RED}${app_name}${NC} has been destroyed."
-        echo "Press any key to continue..."
-        read -n 1 -s
-    else
-        echo "Error: The app $app_name is not running or does not exist."
-        echo "Press any key to continue..."
-        read -n 1 -s
-    fi
-}
-
 # Main menu function
 main_menu() {
     while true; do
