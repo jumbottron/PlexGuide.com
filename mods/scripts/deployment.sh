@@ -131,8 +131,8 @@ main_menu() {
         echo -e "${BLUE}PG: Docker Apps${NC}"
         echo ""  # Blank line for separation
         echo "1) View Deployed Apps [${RUNNING_COUNT}]"
-        echo "2) Apps [Deploy]"
-        echo "3) Apps [Destroy]"
+        echo "2) Deploy New App"
+        echo "3) Destroy App"
         echo "4) Exit"
         echo ""  # Space between options and input prompt
 
@@ -145,16 +145,7 @@ main_menu() {
             2)
                 APP_LIST=$(list_available_apps)
 
-                echo -e "${BLUE}PG: App Deployment - Available Apps${NC}"
-                echo ""  # Blank line for separation
-
-                # Check if APP_LIST is empty or contains the "No More Apps To Deploy" message
-                if [[ "$APP_LIST" == "${ORANGE}No More Apps To Deploy${NC}" ]]; then
-                    echo -e "$APP_LIST"
-                else
-                    echo -e "${GREEN}Available Apps:${NC} ${APP_LIST[*]}"
-                fi
-
+                echo -e "${GREEN}Available Apps:${NC} ${APP_LIST[*]}"
                 echo ""  # Blank line for separation
 
                 if [[ "$APP_LIST" != "${ORANGE}No More Apps To Deploy${NC}" ]]; then
