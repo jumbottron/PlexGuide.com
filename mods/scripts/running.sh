@@ -28,7 +28,7 @@ deploy_app() {
 }
 
 # Main menu function
-main_menu() {
+main_menu2() {
     while true; do
         clear
 
@@ -73,4 +73,4 @@ main_menu() {
 }
 
 # Call the main menu function
-main_menu
+main_menu2
