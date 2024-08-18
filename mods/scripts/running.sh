@@ -1,9 +1,10 @@
 #!/bin/bash
 
-# ANSI color codes for green, red, and blue
+# ANSI color codes for green, red, blue, and orange
 GREEN="\033[0;32m"
 RED="\033[0;31m"
 BLUE="\033[0;34m"
+ORANGE="\033[0;33m"
 NC="\033[0m" # No color
 
 # Source the apps_interface function from the external script
@@ -46,7 +47,7 @@ main_menu() {
         echo ""  # Blank line for separation
 
         # Display the list of running Docker apps, excluding cf_tunnel
-        echo -e "${RED}App to View/Edit:${NC} $APP_LIST"
+        echo -e "${ORANGE}App to View/Edit:${NC} $APP_LIST"
         echo ""  # Blank line for separation
 
         # Prompt the user to enter an app name or exit
