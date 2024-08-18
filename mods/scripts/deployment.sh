@@ -48,27 +48,6 @@ deploy_app() {
     apps_interface "$app_name"
 }
 
-# Function to view the selected app's status
-view_app() {
-    local app_name=$1
-    local app_container=$(docker ps --filter "name=$app_name" --format "{{.ID}}")
-
-    if [[ -n "$app_container" ]]; then
-        echo "Viewing $app_name ..."
-        docker inspect "$app_container"
-        
-        # Notify the user that the app is being viewed and display the app name in green
-        echo ""
-        echo -e "${GREEN}${app_name}${NC} is currently running."
-        echo "Press any key to continue..."
-        read -n 1 -s
-    else
-        echo "Error: The app $app_name is not running or does not exist."
-        echo "Press any key to continue..."
-        read -n 1 -s
-    fi
-}
-
 # Function to destroy the selected app
 destroy_app() {
     local app_name=$1
@@ -112,15 +91,12 @@ main_menu() {
         
         echo ""  # Blank line for separation
 
-        read -p "$(echo -e "Type [${GREEN}1${NC}] to View, [${GREEN}App${NC}] to Deploy, [${RED}Destroy${NC}] to Remove, or [${RED}Exit${NC}]: ")" app_choice
+        read -p "$(echo -e "Type [${GREEN}App${NC}] to Deploy, [${RED}Destroy${NC}] to Remove, or [${RED}Exit${NC}]: ")" app_choice
 
         app_choice=$(echo "$app_choice" | tr '[:upper:]' '[:lower:]')
 
         if [[ "$app_choice" == "exit" ]]; then
             exit 0
-        elif [[ "$app_choice" == "1" ]]; then
-            read -p "Enter the name of the app to view: " view_choice
-            view_app "$view_choice"
         elif [[ "$app_choice" == "destroy" ]]; then
             read -p "Enter the name of the app to destroy: " destroy_choice
             destroy_app "$destroy_choice"
