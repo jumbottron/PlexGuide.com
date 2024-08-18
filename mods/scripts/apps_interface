@@ -166,6 +166,7 @@ yes / no: " delete_choice
     while true; do
         clear
         check_deployment_status  # Display the initial status
+        source "$config_path"  # Refresh variables to reflect any changes
         echo ""
         echo "1) Appdata Path: $appdata_path"
         echo "2) Port: $port_number"
@@ -187,12 +188,22 @@ yes / no: " delete_choice
                 clear
                 echo -e "${RED}Warning: This is an advanced option.${NC} Visit https://plexguide.com/wiki/not-generated-yet for more information."
                 echo ""
-                echo "Any changes made will result in the container being automatically redeployed."
+                echo "The container will automatically redeploy if you proceed forward."
                 echo "Once changes are made, press CTRL+X to save and exit."
                 echo ""
-                read -p "Press Enter to continue..."
-                nano "$config_path"
-                redeploy_app "with the updated configuration"
+                read -p "Do you want to proceed? Type yes or no: " proceed_choice
+                case ${proceed_choice,,} in  # Convert input to lowercase
+                    yes)
+                        nano "$config_path"
+                        redeploy_app "with the updated configuration"
+                        ;;
+                    no)
+                        echo "Returning to the main menu."
+                        ;;
+                    *)
+                        echo "Invalid input. Returning to the main menu."
+                        ;;
+                esac
                 ;;
             D|d)
                 redeploy_app
