@@ -28,7 +28,7 @@ docker run -d \
   -e NZBGET_PASS="${user_password}" `#optional` \
   -p "${port_number}":6789 \
   -v "${appdata_path}":/config \
-  -v "${clientdownload_path}":/downloads \
+  -v "${download_path}":/downloads \
   --restart unless-stopped \
   nzbgetcom/nzbget:latest
 
