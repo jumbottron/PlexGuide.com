@@ -125,11 +125,14 @@ main_menu() {
 
         create_apps_directory
 
-        echo -e "${BLUE}PG: App Deployment - Available Apps${NC}"
+        # List the running apps for option 1
+        RUNNING_COUNT=$(docker ps --format '{{.Names}}' | wc -l)
+
+        echo -e "${BLUE}PG: Docker Apps${NC}"
         echo ""  # Blank line for separation
-        echo "1) View & Manage Running Apps"
-        echo "2) Deploy New App"
-        echo "3) Destroy App"
+        echo "1) View Deployed Apps [${RUNNING_COUNT}]"
+        echo "2) Apps [Deploy]"
+        echo "3) Apps [Destroy]"
         echo "4) Exit"
         echo ""  # Space between options and input prompt
 
@@ -142,21 +145,34 @@ main_menu() {
             2)
                 APP_LIST=$(list_available_apps)
 
-                echo -e "${GREEN}Available Apps:${NC} ${APP_LIST[*]}"
+                echo -e "${BLUE}PG: App Deployment - Available Apps${NC}"
                 echo ""  # Blank line for separation
 
-                read -p "$(echo -e "Type [${GREEN}App${NC}] to Deploy, or [${RED}Exit${NC}]: ")" app_choice
+                # Check if APP_LIST is empty or contains the "No More Apps To Deploy" message
+                if [[ "$APP_LIST" == "${ORANGE}No More Apps To Deploy${NC}" ]]; then
+                    echo -e "$APP_LIST"
+                else
+                    echo -e "${GREEN}Available Apps:${NC} ${APP_LIST[*]}"
+                fi
 
-                app_choice=$(echo "$app_choice" | tr '[:upper:]' '[:lower:]')
+                echo ""  # Blank line for separation
 
-                if [[ "$app_choice" != "exit" ]]; then
-                    # Check if the app_choice matches any of the available apps exactly
-                    if [[ " ${APP_LIST[@]} " =~ " ${app_choice} " ]]; then
-                        deploy_app "$app_choice"
-                    else
-                        echo "Invalid choice. Please try again."
-                        read -p "Press Enter to continue..."
+                if [[ "$APP_LIST" != "${ORANGE}No More Apps To Deploy${NC}" ]]; then
+                    read -p "$(echo -e "Type [${GREEN}App${NC}] to Deploy, or [${RED}Exit${NC}]: ")" app_choice
+
+                    app_choice=$(echo "$app_choice" | tr '[:upper:]' '[:lower:]')
+
+                    if [[ "$app_choice" != "exit" ]]; then
+                        # Check if the app_choice matches any of the available apps exactly
+                        if [[ " ${APP_LIST[@]} " =~ " ${app_choice} " ]]; then
+                            deploy_app "$app_choice"
+                        else
+                            echo "Invalid choice. Please try again."
+                            read -p "Press Enter to continue..."
+                        fi
                     fi
+                else
+                    read -p "Press Enter to return to the main menu..."
                 fi
                 ;;
             3)
