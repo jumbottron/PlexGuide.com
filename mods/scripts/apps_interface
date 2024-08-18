@@ -229,6 +229,7 @@ apps_interface() {
     while true; do
         clear
         check_deployment_status  # Display the initial status
+        source "$config_path" # Refresh values
         echo ""
         echo "D) Deploy $app_name"
         echo "A) Appdata Path: $appdata_path"
