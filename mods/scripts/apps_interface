@@ -68,74 +68,99 @@ apps_interface() {
         fi
     }
 
+    # Function to validate the appdata path
+    validate_appdata_path() {
+        local path=$1
+
+        if [[ -d "$path" ]]; then
+            return 0  # Path is valid and exists
+        else
+            mkdir -p "$path" 2>/dev/null
+            if [[ $? -eq 0 ]]; then
+                return 0  # Path successfully created
+            else
+                return 1  # Path is invalid and cannot be created
+            fi
+        fi
+    }
+
     # Function to change the appdata path
     change_appdata_path() {
         clear
         echo "Current Appdata Path: $appdata_path"
-        read -p "Enter the new Appdata Path for $app_name or type [exit] to cancel: " new_appdata_path
+        while true; do
+            read -p "Enter the new Appdata Path for $app_name or type [exit] to cancel: " new_appdata_path
 
-        if [[ "$new_appdata_path" == "exit" ]]; then
-            echo "No changes made."
-        elif [[ -n "$new_appdata_path" ]]; then
-            # Check if the current appdata directory is empty
-            if [ -z "$(ls -A "$appdata_path")" ]; then
-                echo "The current appdata directory is empty. No data will be moved."
-                appdata_path=$new_appdata_path
-                sed -i "s|^appdata_path=.*|appdata_path=${appdata_path}|" "$config_path"
-                echo "Appdata path updated to $appdata_path."
-            else
-                echo ""  # Blank line for separation
-                echo "Do you want to move the prior appdata to the new location?"
-                echo "Failure to do so will result in prior data loss if the container starts with new data."
-                echo ""  # Blank line for separation
-                read -p "Type: yes / no / exit: " move_choice
-
-                move_choice=$(echo "$move_choice" | tr '[:upper:]' '[:lower:]')  # Convert input to lowercase
-
-                if [[ "$move_choice" == "exit" ]]; then
-                    echo "Operation aborted."
-                    return
-                elif [[ "$move_choice" == "yes" ]]; then
-                    # Move data to the new location
-                    mkdir -p "$new_appdata_path"
-                    chmod +x "$new_appdata_path"
-                    mv "$appdata_path/"* "$new_appdata_path/"
-                    echo "Data moved to the new location: $new_appdata_path"
-                elif [[ "$move_choice" == "no" ]]; then
-                    echo ""  # Blank line for separation
-                    read -p "Do you want to delete the old appdata? Type: yes / no: " delete_choice
-                    delete_choice=$(echo "$delete_choice" | tr '[:upper:]' '[:lower:]')  # Convert input to lowercase
-
-                    if [[ "$delete_choice" == "yes" ]]; then
-                        rm -rf "$appdata_path"
-                        echo "Old appdata at $appdata_path deleted."
+            if [[ "$new_appdata_path" == "exit" ]]; then
+                echo "No changes made."
+                return
+            elif [[ -n "$new_appdata_path" ]]; then
+                if validate_appdata_path "$new_appdata_path"; then
+                    # Check if the current appdata directory is empty
+                    if [ -z "$(ls -A "$appdata_path")" ]; then
+                        echo "The current appdata directory is empty. No data will be moved."
+                        appdata_path=$new_appdata_path
+                        sed -i "s|^appdata_path=.*|appdata_path=${appdata_path}|" "$config_path"
+                        echo "Appdata path updated to $appdata_path."
                     else
-                        echo "Old appdata retained."
+                        echo ""  # Blank line for separation
+                        echo "Do you want to move the prior appdata to the new location?"
+                        echo "Failure to do so will result in prior data loss if the container starts with new data."
+                        echo ""  # Blank line for separation
+                        read -p "Type: yes / no / exit: " move_choice
+
+                        move_choice=$(echo "$move_choice" | tr '[:upper:]' '[:lower:]')  # Convert input to lowercase
+
+                        if [[ "$move_choice" == "exit" ]]; then
+                            echo "Operation aborted."
+                            return
+                        elif [[ "$move_choice" == "yes" ]]; then
+                            # Move data to the new location
+                            mkdir -p "$new_appdata_path"
+                            chmod +x "$new_appdata_path"
+                            mv "$appdata_path/"* "$new_appdata_path/"
+                            echo "Data moved to the new location: $new_appdata_path"
+                        elif [[ "$move_choice" == "no" ]]; then
+                            echo ""  # Blank line for separation
+                            read -p "Do you want to delete the old appdata? Type: yes / no: " delete_choice
+                            delete_choice=$(echo "$delete_choice" | tr '[:upper:]' '[:lower:]')  # Convert input to lowercase
+
+                            if [[ "$delete_choice" == "yes" ]]; then
+                                rm -rf "$appdata_path"
+                                echo "Old appdata at $appdata_path deleted."
+                            else
+                                echo "Old appdata retained."
+                            fi
+                        else
+                            echo "Invalid input. Operation aborted."
+                            return
+                        fi
+
+                        appdata_path=$new_appdata_path
+                        sed -i "s|^appdata_path=.*|appdata_path=${appdata_path}|" "$config_path"
+                        echo "Appdata path updated to $appdata_path."
                     fi
+
+                    # Check if the app is deployed and stop/remove it before redeploying
+                    local container_status=$(docker ps --filter "name=$app_name" --format "{{.Names}}")
+                    if [[ -n "$container_status" ]]; then
+                        echo "Stopping and removing the existing container for $app_name ..."
+                        docker stop "$app_name"
+                        docker rm "$app_name"
+                        echo "Redeploying $app_name with the new appdata path..."
+                        bash "$app_path" "$app_name"
+                    fi
+
+                    break  # Exit the loop once the path is successfully changed
                 else
-                    echo "Invalid input. Operation aborted."
-                    return
+                    echo "Invalid path. Please provide a valid path."
+                    read -p "Press Enter to continue..."
                 fi
-
-                appdata_path=$new_appdata_path
-                sed -i "s|^appdata_path=.*|appdata_path=${appdata_path}|" "$config_path"
-                echo "Appdata path updated to $appdata_path."
+            else
+                echo "Invalid input. Please provide a valid path."
+                read -p "Press Enter to continue..."
             fi
-
-            # Check if the app is deployed and stop/remove it before redeploying
-            local container_status=$(docker ps --filter "name=$app_name" --format "{{.Names}}")
-            if [[ -n "$container_status" ]]; then
-                echo "Stopping and removing the existing container for $app_name ..."
-                docker stop "$app_name"
-                docker rm "$app_name"
-                echo "Redeploying $app_name with the new appdata path..."
-                bash "$app_path" "$app_name"
-            fi
-        else
-            echo "Invalid input. Please provide a valid path."
-            read -p "Press Enter to continue..."
-            change_appdata_path  # Recursive call to retry path change
-        fi
+        done
     }
 
     # Create config file if it doesn't exist
