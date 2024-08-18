@@ -74,8 +74,10 @@ main_menu() {
         ;;
       4)
         clear
-        echo -e "To Start Again - Type: [${BLUE}pg${NC}] or [${BLUE}plexguide${NC}], then space"
         echo "Visit https://plexguide.com"
+        echo ""  # Space
+        echo -e "To Start Again - Type: [${BLUE}pg${NC}] or [${BLUE}plexguide${NC}]"
+        echo ""  # Space
         exit 0
         ;;
       *)
