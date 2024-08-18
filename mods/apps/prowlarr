@@ -7,7 +7,7 @@
 
 # Run the Prowlarr Docker container with the specified settings
 docker run -d \
-  --name=${app_name}" \
+  --name="${app_name}" \
   -e PUID=1000 \
   -e PGID=1000 \
   -e TZ=${time_zone}" \
