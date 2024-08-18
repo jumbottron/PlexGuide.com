@@ -5,7 +5,7 @@
 ##### Custom Resolution Width: 1280
 ##### Langague: en-US
 ##### Version: latest
-##### Volume: /pg/appdata/firefox
+##### AppData Path: /pg/appdata/firefox
 
 # Specify the app name and config file path
 app_name=$1
@@ -25,7 +25,7 @@ docker run -d --name="${app_name}" \
 	--env 'FIREFOX_LANG="${latest}"' \
 	--env 'CUSTOM_RES_W="${custom_resolution_width}"' \
 	--env 'CUSTOM_RES_H="${custom_resolution_height}"' \
-	--volume "${volume}":/firefox \
+	--volume "${appdata_path}":/firefox \
 	ich777/firefox
 
 # Verify the Docker container is running
