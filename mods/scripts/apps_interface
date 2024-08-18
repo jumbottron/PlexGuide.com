@@ -57,6 +57,31 @@ apps_interface() {
         fi
     }
 
+    # Function to change the appdata path
+    change_appdata_path() {
+        clear
+        echo "Current Appdata Path: $appdata_path"
+        read -p "Enter the new Appdata Path for $app_name or type [exit] to cancel: " new_appdata_path
+
+        if [[ "$new_appdata_path" == "exit" ]]; then
+            echo "No changes made."
+        elif [[ -n "$new_appdata_path" ]]; then
+            appdata_path=$new_appdata_path
+            sed -i "s|^appdata_path=.*|appdata_path=${appdata_path}|" "$config_path"
+            echo "Appdata path updated to $appdata_path."
+
+            # Ensure the new appdata directory exists and is executable
+            if [[ ! -d "$appdata_path" ]]; then
+                mkdir -p "$appdata_path"
+                chmod +x "$appdata_path"
+            fi
+        else
+            echo "Invalid input. Please provide a valid path."
+            read -p "Press Enter to continue..."
+            change_appdata_path  # Recursive call to retry path change
+        fi
+    }
+
     # Create config file if it doesn't exist
     if [[ ! -f "$config_path" ]]; then
         touch "$config_path"
@@ -99,8 +124,7 @@ apps_interface() {
 
         case $choice in
             1)
-                echo "Appdata Path: $appdata_path"
-                read -p "Press Enter to continue..."
+                change_appdata_path
                 ;;
             3)
                 change_port_number
