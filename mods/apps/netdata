@@ -1,10 +1,8 @@
 #!/bin/bash
 
-# Default Port: 19999
-
-##### AppData Path: /pg/appdata/netdata
 ##### Port Number: 19999
 ##### Time Zone: America/New_York
+##### AppData Path: /pg/appdata/netdata
 
 # Specify the app name and config file path
 app_name=$1
@@ -19,7 +17,7 @@ else
 fi
 
 # Deploy Netdata with the updated paths
-docker run -d --name="$app_name" \
+docker run -d --name="${app_name}" \
   -p "${port_number}":19999 \
   -v "${appdata_path}"/netdataconfig:/etc/netdata \
   -v "${appdata_path}"/netdatalib:/var/lib/netdata \
