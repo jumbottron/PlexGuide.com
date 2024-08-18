@@ -48,47 +48,5 @@ deploy_app() {
     apps_interface "$app_name"
 }
 
-# Main menu function
-main_menu() {
-    while true; do
-        clear
-
-        create_apps_directory
-
-        APP_LIST=$(list_available_apps)
-
-        echo -e "${BLUE}PG: App Deployment - Available Apps${NC}"
-        echo ""  # Blank line for separation
-
-        # Check if APP_LIST is empty or contains the "No More Apps To Deploy" message
-        if [[ "$APP_LIST" == "${ORANGE}No More Apps To Deploy${NC}" ]]; then
-            echo -e "$APP_LIST"
-        else
-            echo -e "${GREEN}Available Apps:${NC} ${APP_LIST[*]}"
-        fi
-        
-        echo ""  # Blank line for separation
-
-        read -p "$(echo -e "Type [${GREEN}App${NC}] to Deploy, [${RED}Destroy${NC}] to Remove, or [${RED}Exit${NC}]: ")" app_choice
-
-        app_choice=$(echo "$app_choice" | tr '[:upper:]' '[:lower:]')
-
-        if [[ "$app_choice" == "exit" ]]; then
-            exit 0
-        elif [[ "$app_choice" == "destroy" ]]; then
-            read -p "Enter the name of the app to destroy: " destroy_choice
-            destroy_app "$destroy_choice"
-        else
-            # Check if the app_choice matches any of the available apps exactly
-            if [[ " ${APP_LIST[@]} " =~ " ${app_choice} " ]]; then
-                deploy_app "$app_choice"
-            else
-                echo "Invalid choice. Please try again."
-                read -p "Press Enter to continue..."
-            fi
-        fi
-    done
-}
-
 # Call the main menu function
 main_menu
