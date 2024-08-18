@@ -47,11 +47,12 @@ apps_interface() {
         local container_status=$(docker ps --filter "name=^/${app_name}$" --format "{{.Names}}")
 
         if [[ "$container_status" == "$app_name" ]]; then
-            echo -e "\033[0;32m[Deployed]\033[0m $app_name"  # Green
+            echo -e "${GREEN}[Deployed]${NC} $app_name"  # Green
+            return 0
         else
-            echo -e "\033[0;31m[Not Deployed]\033[0m $app_name"  # Red
+            echo -e "${RED}[Not Deployed]${NC} $app_name"  # Red
+            return 1
         fi
-        echo "$container_status"
     }
 
     # Function to get or set the port number
@@ -221,6 +222,8 @@ yes / no: " delete_choice
         clear
         local container_status=$(check_deployment_status)  # Check container status
 
+        echo ""  # Display header with container status
+        check_deployment_status
         echo ""
         echo "1) Appdata Path: $appdata_path"
         echo "2) Port: $port_number"
