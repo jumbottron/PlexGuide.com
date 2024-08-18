@@ -28,9 +28,12 @@ deploy_app() {
 }
 
 # Main menu function
-main_menu2() {
+main_menu() {
     while true; do
         clear
+
+        # Prompt the user to press Enter to continue
+read -p "Press Enter to continue...69"
 
         # Get the list of running Docker apps, excluding cf_tunnel
         APP_LIST=$(list_running_docker_apps)
@@ -73,4 +76,4 @@ main_menu2() {
 }
 
 # Call the main menu function
-main_menu2
+main_menu
