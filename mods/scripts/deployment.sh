@@ -48,8 +48,8 @@ deploy_app() {
     fi
 }
 
-# Main menu function
-main_menu() {
+# Main deployment function
+deployment_function() {
     while true; do
         clear
 
@@ -83,6 +83,3 @@ main_menu() {
         fi
     done
 }
-
-# Call the main menu function
-main_menu
