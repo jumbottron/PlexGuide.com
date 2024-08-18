@@ -44,8 +44,9 @@ apps_interface() {
 
     # Function to check the Docker container status
     check_deployment_status() {
-        docker ps --filter "name=$app_name" --format "{{.Names}}" &> /dev/null
-        if [[ $? -eq 0 ]]; then
+        local container_status=$(docker ps --filter "name=^/${app_name}$" --format "{{.Names}}")
+
+        if [[ "$container_status" == "$app_name" ]]; then
             echo -e "\033[0;32m[Deployed]\033[0m $app_name"  # Green
         else
             echo -e "\033[0;31m[Not Deployed]\033[0m $app_name"  # Red
@@ -142,7 +143,7 @@ yes / no: " delete_choice
 
     # Function to redeploy the app
     redeploy_app() {
-        docker ps --filter "name=$app_name" --format "{{.Names}}" &> /dev/null
+        docker ps --filter "name=^/${app_name}$" --format "{{.Names}}" &> /dev/null
         if [[ $? -eq 0 ]]; then
             echo "Stopping and removing the existing container for $app_name ..."
             docker stop "$app_name" && docker rm "$app_name"
