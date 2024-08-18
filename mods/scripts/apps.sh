@@ -22,32 +22,28 @@ main_menu() {
     echo -e "${BLUE}PG: Docker Apps${NC}"
     echo ""  # Blank line for separation
     # Display the main menu options
-    echo "1) View Deployed Apps [ $APP_COUNT ]"
-    echo -e "2) Apps [${GREEN}Deploy${NC}]"
-    echo -e "3) Apps [${RED}Destroy${NC}]"
-    echo "4) Exit"
+    echo -e "V) Apps [${BLUE}View${NC}] [ $APP_COUNT ]"
+    echo -e "D) Apps [${GREEN}Deploy${NC}]"
+    echo "Z) Exit"
     echo ""  # Space between options and input prompt
 
     # Prompt the user for input
-    read -p "Enter your choice [1-4]: " choice
+    read -p "Enter your choice [V/D/Z]: " choice
 
     case $choice in
-      1)
+      V|v)
         /pg/scripts/running.sh
         ;;
-      2)
+      D|d)
         /pg/scripts/deployment.sh
         ;;
-      3)
-        /pg/scripts/destroy.sh
-        ;;
-      4)
+      Z|z)
         exit 0
         ;;
       *)
         clear
         echo ""  # Blank line for separation
-        echo "Incorrect selection. Please enter a number between 1 and 4."
+        echo "Incorrect selection. Please enter V, D, or Z."
         echo -e "[${GREEN}Press Enter${NC}] to continue..."
         read
         ;;
