@@ -130,6 +130,15 @@ apps_interface() {
                 change_port_number
                 ;;
             D|d)
+                # Check if the app is deployed
+                local container_status=$(docker ps --filter "name=$app_name" --format "{{.Names}}")
+
+                if [[ -n "$container_status" ]]; then
+                    echo "Stopping and removing the existing container for $app_name ..."
+                    docker stop "$app_name"
+                    docker rm "$app_name"
+                fi
+
                 if [[ -f "$app_path" ]]; then
                     echo "Deploying $app_name ..."
                     bash "$app_path" "$app_name"
