@@ -15,16 +15,14 @@ clear
 
 # Function to create the /pg/apps directory if it doesn't exist
 create_apps_directory() {
-    if [[ ! -d "/pg/apps" ]]; then
-        mkdir -p /pg/apps
-    fi
+    [[ ! -d "/pg/apps" ]] && mkdir -p /pg/apps
 }
 
 # Function to list all available apps in /pg/apps, excluding those already running in Docker
 list_available_apps() {
     local all_apps=$(ls -1 /pg/apps | sort)
     local running_apps=$(docker ps --format '{{.Names}}' | sort)
-    
+
     local available_apps=()
     for app in $all_apps; do
         if ! echo "$running_apps" | grep -i -w "$app" >/dev/null; then
@@ -55,14 +53,14 @@ main_menu() {
 
         create_apps_directory
 
-        APP_LIST=$(list_available_apps)
+        # Change APP_LIST to an array
+        APP_LIST=($(list_available_apps))
 
         echo -e "${BLUE}PG: App Deployment - Available Apps${NC}"
         echo ""  # Blank line for separation
 
-        # Check if APP_LIST is empty or contains the "No More Apps To Deploy" message
-        if [[ "$APP_LIST" == "${ORANGE}No More Apps To Deploy${NC}" ]]; then
-            echo -e "$APP_LIST"
+        if [[ ${#APP_LIST[@]} -eq 0 ]]; then
+            echo -e "${ORANGE}No More Apps To Deploy${NC}"
         else
             echo -e "${GREEN}Available Apps:${NC} ${APP_LIST[*]}"
         fi
@@ -76,8 +74,16 @@ main_menu() {
         if [[ "$app_choice" == "exit" ]]; then
             exit 0
         else
-            # Check if the app_choice matches any of the available apps exactly
-            if [[ " ${APP_LIST[@]} " =~ " ${app_choice} " ]]; then
+            # Loop through the available apps to check if the choice matches any
+            found=false
+            for app in "${APP_LIST[@]}"; do
+                if [[ "$app_choice" == "$app" ]]; then
+                    found=true
+                    break
+                fi
+            done
+
+            if [[ "$found" == true ]]; then
                 deploy_app "$app_choice"
             else
                 echo "Invalid choice. Please try again."
