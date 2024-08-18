@@ -34,24 +34,23 @@ main_menu() {
     echo -e "${RED}Welcome to PlexGuide: $VERSION${NC}"
     echo ""  # Blank line for separation
     # Display the main menu options
-    echo "Please select an option:"
-    echo "1) CloudFlare Tunnel (Domains)"
-    echo "2) Apps Management"
-    echo "3) Reinstall PlexGuide"
+    echo "A) Apps Management"
+    echo "C) CloudFlare Tunnel (Domains)"
+    echo "R) Reinstall PlexGuide"
     echo "Z) Exit"
     echo ""  # Space between options and input prompt
 
     # Prompt the user for input
-    read -p "Enter your choice [1-3/Z]: " choice
+    read -p "Enter your choice [A/C/R/Z]: " choice
 
-    case ${choice,,} in  # Convert input to lowercase for z/Z handling
-      1)
-        /pg/scripts/cf_tunnel.sh
-        ;;
-      2)
+    case ${choice,,} in  # Convert input to lowercase for a/A, c/C, r/R, z/Z handling
+      a)
         /pg/scripts/apps.sh
         ;;
-      3)
+      c)
+        /pg/scripts/cf_tunnel.sh
+        ;;
+      r)
         clear
         local reinstall_code=$(printf "%04d" $((RANDOM % 10000)))  # Generate a 4-digit code
         while true; do
