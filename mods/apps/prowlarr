@@ -1,6 +1,5 @@
 #!/bin/bash
 
-##### App Name: Prowlarr
 ##### AppData Path: /pg/appdata/prowlarr
 ##### Port Number: 9696
 ##### Time Zone: America/New_York
