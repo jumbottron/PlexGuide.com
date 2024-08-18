@@ -50,14 +50,14 @@ show_menu() {
     fi
 
     echo
-    echo "1) View Token"
-    echo "2) Change Token"
-    echo "3) Deploy Container"
+    echo "V) View Token"
+    echo "C) Change Token"
+    echo "D) Deploy Container"
     if container_exists; then
-        echo "4) Stop & Destroy Container"
-        echo "5) Exit"
+        echo "S) Stop & Destroy Container"
+        echo "Z) Exit"
     else
-        echo "4) Exit"
+        echo "Z) Exit"
     fi
     echo
 }
@@ -65,24 +65,44 @@ show_menu() {
 # Function to prompt the user with a choice
 prompt_choice() {
     read -p "Select an option: " choice
-    case $choice in
-        1)
+    case ${choice,,} in  # Convert input to lowercase for v/V, c/C, d/D, s/S, z/Z handling
+        v)
             view_token
             ;;
-        2)
-            change_token
+        c)
+            local change_code=$(printf "%04d" $((RANDOM % 10000)))  # Generate a 4-digit code
+            while true; do
+                read -p "$(echo -e "To change the Cloudflare token, type [${RED}${change_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: ")" input_code
+                if [[ "$input_code" == "$change_code" ]]; then
+                    change_token
+                    break
+                elif [[ "${input_code,,}" == "no" ]]; then
+                    echo "Operation cancelled."
+                    break
+                else
+                    echo -e "${RED}Invalid response.${NC} Please type [${RED}${change_code}${NC}] or [${GREEN}no${NC}]."
+                fi
+            done
             ;;
-        3)
-            deploy_container
+        d)
+            local deploy_code=$(printf "%04d" $((RANDOM % 10000)))  # Generate a 4-digit code
+            while true; do
+                read -p "$(echo -e "To deploy the container, type [${RED}${deploy_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: ")" input_code
+                if [[ "$input_code" == "$deploy_code" ]]; then
+                    deploy_container
+                    break
+                elif [[ "${input_code,,}" == "no" ]]; then
+                    echo "Operation cancelled."
+                    break
+                else
+                    echo -e "${RED}Invalid response.${NC} Please type [${RED}${deploy_code}${NC}] or [${GREEN}no${NC}]."
+                fi
+            done
             ;;
-        4)
-            if container_exists; then
-                stop_destroy_container
-            else
-                exit 0
-            fi
+        s)
+            stop_destroy_container
             ;;
-        5)
+        z)
             exit 0
             ;;
         *)
