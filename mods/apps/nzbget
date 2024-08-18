@@ -1,10 +1,11 @@
 #!/bin/bash
 
-##### Port Number: 8989
+##### Port Number: 6789
 ##### Time Zone: America/New_York
-##### AppData Path: /pg/appdata/sonarr
-##### TV Path: /pg/media/tv
-##### ClientDownload Path: /pg/downloads
+##### AppData Path: /pg/appdata/nzbget
+##### Download Path: /pg/downloads/nzbget
+##### User Name: nzbget 
+##### User Password: tegbzn6789
 
 # Specify the app name and config file path
 app_name=$1
@@ -19,16 +20,17 @@ else
 fi
 
 docker run -d \
-  --name="${app_name}" \
+  --name=nzbget \
   -e PUID=1000 \
   -e PGID=1000 \
   -e TZ="${time_zone}" \
-  -p "${port_number}":8989 \
+  -e NZBGET_USER="${user_name}" `#optional` \
+  -e NZBGET_PASS="${user_password}" `#optional` \
+  -p "${port_number}":6789 \
   -v "${appdata_path}":/config \
-  -v "${tv_path}":/tv \
   -v "${clientdownload_path}":/downloads \
   --restart unless-stopped \
-  lscr.io/linuxserver/sonarr:latest
+  nzbgetcom/nzbget:latest
 
 # Verify the Docker container is running
 docker ps | grep "$app_name"
