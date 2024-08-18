@@ -21,11 +21,11 @@ fi
 
 docker run -d \
   --name=--name="${app_name}"\
-  --security-opt seccomp=unconfined `#optional` \
+  --security-opt seccomp=unconfined \
   -e PUID=1000 \
   -e PGID=1000 \
   -e TZ="${time_zone}"\
-  -e FIREFOX_CLI=https://www.linuxserver.io/ `#optional` \
+  -e FIREFOX_CLI=https://www.linuxserver.io/ \
   -p "${port_number1}":3000 \
   -p "${port_number2}":3001 \
   -v "${appdata_path}":/config \
