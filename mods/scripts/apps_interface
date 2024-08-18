@@ -287,4 +287,5 @@ apps_interface() {
     done
 }
 
-apps_interface "netdata"
+# Example usage: call apps_interface with a dynamic app name
+apps_interface "$1"
