@@ -80,13 +80,15 @@ apps_interface() {
         if [[ -z "$(ls -A "$appdata_path")" ]]; then
             echo "The current appdata directory is empty. No data will be moved."
         else
-            read -p "Do you want to move the prior appdata to the new location? Type: yes / no / exit: " move_choice
+            read -p "Do you want to move the prior appdata to the new location? Type: \
+yes / no / exit: " move_choice
             case ${move_choice,,} in  # Convert input to lowercase
                 yes)
                     mv "$appdata_path/"* "$1/" && echo "Data moved to the new location: $1"
                     ;;
                 no)
-                    read -p "Do you want to delete the old appdata? Type: yes / no: " delete_choice
+                    read -p "Do you want to delete the old appdata? Type: \
+yes / no: " delete_choice
                     [[ ${delete_choice,,} == "yes" ]] && rm -rf "$appdata_path" && echo "Old appdata deleted."
                     ;;
                 exit)
