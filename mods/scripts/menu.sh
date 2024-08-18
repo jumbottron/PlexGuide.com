@@ -38,13 +38,13 @@ main_menu() {
     echo "1) CloudFlare Tunnel (Domains)"
     echo "2) Apps Management"
     echo "3) Reinstall PlexGuide"
-    echo "4) Exit"
+    echo "Z) Exit"
     echo ""  # Space between options and input prompt
 
     # Prompt the user for input
-    read -p "Enter your choice [1-4]: " choice
+    read -p "Enter your choice [1-3/Z]: " choice
 
-    case $choice in
+    case ${choice,,} in  # Convert input to lowercase for z/Z handling
       1)
         /pg/scripts/cf_tunnel.sh
         ;;
@@ -53,26 +53,39 @@ main_menu() {
         ;;
       3)
         clear
-        echo "Downloading and executing the install script..."
-        # Download the install.sh script
-        curl -o /tmp/install.sh https://raw.githubusercontent.com/plexguide/PlexGuide.com/v11/mods/install/install.sh
-        
-        # Make the script executable
-        chmod +x /tmp/install.sh
+        local reinstall_code=$(printf "%04d" $((RANDOM % 10000)))  # Generate a 4-digit code
+        while true; do
+          read -p "$(echo -e "To reinstall PlexGuide, type [${RED}${reinstall_code}${NC}] to proceed or [${RED}no${NC}] to cancel: ")" input_code
+          if [[ "$input_code" == "$reinstall_code" ]]; then
+            clear
+            echo "Downloading and executing the install script..."
+            # Download the install.sh script
+            curl -o /tmp/install.sh https://raw.githubusercontent.com/plexguide/PlexGuide.com/v11/mods/install/install.sh
+            
+            # Make the script executable
+            chmod +x /tmp/install.sh
 
-        # Execute the script
-        /tmp/install.sh
+            # Execute the script
+            /tmp/install.sh
 
-        # Cleanup
-        rm -f /tmp/install.sh
+            # Cleanup
+            rm -f /tmp/install.sh
 
-        # Exit and reload using the plexguide command
-        bash /pg/scripts/basics.sh
-        echo "Reloading PlexGuide..."
-        sleep 2
-        exec plexguide
+            # Exit and reload using the plexguide command
+            bash /pg/scripts/basics.sh
+            echo "Reloading PlexGuide..."
+            sleep 2
+            exec plexguide
+            break
+          elif [[ "${input_code,,}" == "no" ]]; then
+            echo "Operation cancelled."
+            break
+          else
+            echo -e "${RED}Invalid response.${NC} Please type [${RED}${reinstall_code}${NC}] or [${RED}no${NC}]."
+          fi
+        done
         ;;
-      4)
+      z)
         clear
         echo "Visit https://plexguide.com"
         echo -e "To Start Again - Type: [${RED}pg${NC}] or [${RED}plexguide${NC}]"
