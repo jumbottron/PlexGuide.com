@@ -86,7 +86,8 @@ apps_interface() {
 
         if [[ "$new_port_number" =~ ^[0-9]+$ ]] && ((new_port_number >= 1 && new_port_number <= 65000)); then
             sed -i "s/^port_number=.*/port_number=${new_port_number}/" "$config_path"
-            redeploy_app "with the new port number"
+            stop_and_remove_app
+            redeploy_app
         elif [[ "$new_port_number" == "exit" ]]; then
             echo "No changes made."
         else
@@ -127,7 +128,8 @@ apps_interface() {
                 return
             elif validate_or_create_path "$new_appdata_path"; then
                 move_or_delete_appdata "$new_appdata_path"
-                redeploy_app "with the new appdata path"
+                stop_and_remove_app
+                redeploy_app
                 break
             else
                 echo "Invalid path. Please provide a valid path."
@@ -173,6 +175,14 @@ apps_interface() {
         else
             echo "Container $app_name is not running."
         fi
+    }
+
+    # Function to deploy the app's Docker container
+    redeploy_app() {
+        echo "Deploying $app_name..."
+        bash "$app_path" "$app_name"
+        echo -e "${BLUE}${app_name}${NC} has been deployed."
+        read -p "Press Enter to continue..."
     }
 
     # Function to kill the Docker container
@@ -261,6 +271,7 @@ apps_interface() {
                     read -p "$(echo -e "Deploy/Redeploy $app_name?\nType [${RED}${deploy_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: ")" deploy_choice
                     if [[ "$deploy_choice" == "$deploy_code" ]]; then
                         stop_and_remove_app
+                        redeploy_app  # Deploy the container after stopping/removing
                         break
                     elif [[ "${deploy_choice,,}" == "no" ]]; then
                         echo "Operation cancelled."
