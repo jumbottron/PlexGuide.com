@@ -239,7 +239,7 @@ apps_interface() {
     while true; do
         clear
         check_deployment_status  # Display the initial status
-        echo "[Not Deployed] $app_name"
+        echo ""
         echo "D) Deploy $app_name"
         echo "A) Appdata Path: $appdata_path"
         echo "P) Port: $port_number"
