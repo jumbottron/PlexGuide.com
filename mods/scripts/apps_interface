@@ -1,167 +1,14 @@
 #!/bin/bash
 
+# Source the functions from the external support script
+source /pg/scripts/apps_interface_support
+
 # Function: apps_interface
 apps_interface() {
     local app_name=$1
     local config_path="/pg/config/${app_name}.cfg"
     local default_appdata_path="/pg/appdata/${app_name}"
     local app_path="/pg/apps/${app_name}"
-
-    # Function to check the Docker container status
-    check_deployment_status() {
-        local container_status=$(docker ps --filter "name=$app_name" --format "{{.Names}}")
-
-        if [[ -n "$container_status" ]]; then
-            echo -e "\033[0;32m[Deployed]\033[0m $app_name"  # Green
-        else
-            echo -e "\033[0;31m[Not Deployed]\033[0m $app_name"  # Red
-        fi
-    }
-
-    # Function to get and store the port number
-    get_port_number() {
-        if ! grep -q '^port_number=' "$config_path"; then
-            if [[ -f "$app_path" ]]; then
-                port_number=$(grep -m 1 '# Default Port:' "$app_path" | awk '{print $NF}')
-                if [[ -n "$port_number" ]]; then
-                    echo "port_number=${port_number}" >> "$config_path"
-                else
-                    echo "Error: Default port not found in $app_path."
-                    exit 1
-                fi
-            else
-                echo "Error: App script not found at $app_path."
-                exit 1
-            fi
-        else
-            source "$config_path"
-        fi
-    }
-
-    # Function to change the port number
-    change_port_number() {
-        clear
-        echo "Current Port: $port_number"
-        read -p "Enter the new Port for $app_name (1-65000) or type [exit] to cancel: " new_port_number
-
-        if [[ "$new_port_number" =~ ^[0-9]+$ ]] && ((new_port_number >= 1 && new_port_number <= 65000)); then
-            port_number=$new_port_number
-            sed -i "s/^port_number=.*/port_number=${port_number}/" "$config_path"
-            echo "Port number updated to $port_number."
-
-            # Check if the app is deployed and stop/remove it before redeploying
-            local container_status=$(docker ps --filter "name=$app_name" --format "{{.Names}}")
-            if [[ -n "$container_status" ]]; then
-                echo "Stopping and removing the existing container for $app_name ..."
-                docker stop "$app_name"
-                docker rm "$app_name"
-                echo "Redeploying $app_name with the new port number..."
-                bash "$app_path" "$app_name"
-            fi
-
-        elif [[ "$new_port_number" == "exit" ]]; then
-            echo "No changes made."
-        else
-            echo "Invalid input. Please enter a number between 1 and 65000."
-            read -p "Press Enter to continue..."
-            change_port_number  # Recursive call to retry port change
-        fi
-    }
-
-    # Function to validate the appdata path
-    validate_appdata_path() {
-        local path=$1
-
-        if [[ -d "$path" ]]; then
-            return 0  # Path is valid and exists
-        else
-            mkdir -p "$path" 2>/dev/null
-            if [[ $? -eq 0 ]]; then
-                return 0  # Path successfully created
-            else
-                return 1  # Path is invalid and cannot be created
-            fi
-        fi
-    }
-
-    # Function to change the appdata path
-    change_appdata_path() {
-        clear
-        echo "Current Appdata Path: $appdata_path"
-        while true; do
-            read -p "Enter the new Appdata Path for $app_name or type [exit] to cancel: " new_appdata_path
-
-            if [[ "$new_appdata_path" == "exit" ]]; then
-                echo "No changes made."
-                return
-            elif [[ -n "$new_appdata_path" ]]; then
-                if validate_appdata_path "$new_appdata_path"; then
-                    # Check if the current appdata directory is empty
-                    if [ -z "$(ls -A "$appdata_path")" ]; then
-                        echo "The current appdata directory is empty. No data will be moved."
-                        appdata_path=$new_appdata_path
-                        sed -i "s|^appdata_path=.*|appdata_path=${appdata_path}|" "$config_path"
-                        echo "Appdata path updated to $appdata_path."
-                    else
-                        echo ""  # Blank line for separation
-                        echo "Do you want to move the prior appdata to the new location?"
-                        echo "Failure to do so will result in prior data loss if the container starts with new data."
-                        echo ""  # Blank line for separation
-                        read -p "Type: yes / no / exit: " move_choice
-
-                        move_choice=$(echo "$move_choice" | tr '[:upper:]' '[:lower:]')  # Convert input to lowercase
-
-                        if [[ "$move_choice" == "exit" ]]; then
-                            echo "Operation aborted."
-                            return
-                        elif [[ "$move_choice" == "yes" ]]; then
-                            # Move data to the new location
-                            mkdir -p "$new_appdata_path"
-                            chmod +x "$new_appdata_path"
-                            mv "$appdata_path/"* "$new_appdata_path/"
-                            echo "Data moved to the new location: $new_appdata_path"
-                        elif [[ "$move_choice" == "no" ]]; then
-                            echo ""  # Blank line for separation
-                            read -p "Do you want to delete the old appdata? Type: yes / no: " delete_choice
-                            delete_choice=$(echo "$delete_choice" | tr '[:upper:]' '[:lower:]')  # Convert input to lowercase
-
-                            if [[ "$delete_choice" == "yes" ]]; then
-                                rm -rf "$appdata_path"
-                                echo "Old appdata at $appdata_path deleted."
-                            else
-                                echo "Old appdata retained."
-                            fi
-                        else
-                            echo "Invalid input. Operation aborted."
-                            return
-                        fi
-
-                        appdata_path=$new_appdata_path
-                        sed -i "s|^appdata_path=.*|appdata_path=${appdata_path}|" "$config_path"
-                        echo "Appdata path updated to $appdata_path."
-                    fi
-
-                    # Check if the app is deployed and stop/remove it before redeploying
-                    local container_status=$(docker ps --filter "name=$app_name" --format "{{.Names}}")
-                    if [[ -n "$container_status" ]]; then
-                        echo "Stopping and removing the existing container for $app_name ..."
-                        docker stop "$app_name"
-                        docker rm "$app_name"
-                        echo "Redeploying $app_name with the new appdata path..."
-                        bash "$app_path" "$app_name"
-                    fi
-
-                    break  # Exit the loop once the path is successfully changed
-                else
-                    echo "Invalid path. Please provide a valid path."
-                    read -p "Press Enter to continue..."
-                fi
-            else
-                echo "Invalid input. Please provide a valid path."
-                read -p "Press Enter to continue..."
-            fi
-        done
-    }
 
     # Create config file if it doesn't exist
     if [[ ! -f "$config_path" ]]; then
@@ -179,21 +26,18 @@ apps_interface() {
     fi
 
     # Get the port number from the config or app script
-    get_port_number
+    get_port_number "$app_name" "$config_path" "$app_path"
 
     # Read appdata_path and port_number from the config file
     source "$config_path"
-    
+
     # Ensure the appdata directory exists and is executable
-    if [[ ! -d "$appdata_path" ]]; then
-        mkdir -p "$appdata_path"
-        chmod +x "$appdata_path"
-    fi
+    ensure_directory_exists "$appdata_path"
 
     # Menu
     while true; do
         clear
-        check_deployment_status  # Display the initial status
+        check_deployment_status "$app_name"  # Display the initial status
         echo ""
         echo "1) Appdata Path: $appdata_path"
         echo "3) Port: $port_number"
@@ -205,37 +49,13 @@ apps_interface() {
 
         case $choice in
             1)
-                change_appdata_path
+                change_appdata_path "$app_name" "$config_path" "$appdata_path"
                 ;;
             3)
-                change_port_number
+                change_port_number "$app_name" "$config_path" "$port_number"
                 ;;
             D|d)
-                # Check if the app is deployed
-                local container_status=$(docker ps --filter "name=$app_name" --format "{{.Names}}")
-
-                if [[ -n "$container_status" ]]; then
-                    echo "Stopping and removing the existing container for $app_name ..."
-                    docker stop "$app_name"
-                    docker rm "$app_name"
-                fi
-
-                if [[ -f "$app_path" ]]; then
-                    echo "Deploying $app_name ..."
-                    bash "$app_path" "$app_name"
-
-                    # Notify the user that the app has been deployed and display the app name in blue
-                    echo ""
-                    echo -e "\033[0;34m${app_name}\033[0m has been deployed."
-                    read -p "Press Enter to continue..."
-                else
-                    echo "Error: The app script for $app_name does not exist or is not executable."
-                    read -p "Press Enter to continue..."
-                fi
-
-                # Refresh the deployment status after deployment
-                clear
-                check_deployment_status
+                deploy_app "$app_name" "$app_path"
                 ;;
             Z|z)
                 break
