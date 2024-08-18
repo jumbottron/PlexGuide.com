@@ -3,7 +3,7 @@
 ##### Port Number: 7878
 ##### Time Zone: America/New_York
 ##### AppData Path: /pg/appdata/radarr
-##### TV Path: /pg/media/tv
+##### Movies Path: /pg/media/movies
 ##### ClientDownload Path: /pg/downloads
 
 # Specify the app name and config file path
@@ -25,7 +25,7 @@ docker run -d \
   -e TZ="${time_zone}" \
   -p "${port_number}":7878 \
   -v "${appdata_path}":/config \
-  -v "${tv_path}":/tv \
+  -v "${movies_path}":/movies \
   -v "${clientdownload_path}":/downloads \
   --restart unless-stopped \
   lscr.io/linuxserver/radarr:latest
