@@ -3,8 +3,8 @@
 # Configuration file path
 CONFIG_FILE="/pg/config/config.cfg"
 
-# ANSI color codes for blue and no color
-BLUE="\033[0;34m"
+# ANSI color codes for red and no color
+RED="\033[0;31m"
 NC="\033[0m" # No color
 
 # Clear the screen at the start
@@ -31,7 +31,7 @@ load_config
 main_menu() {
   while true; do
     clear
-    echo -e "${BLUE}Welcome to PlexGuide: $VERSION${NC}"
+    echo -e "${RED}Welcome to PlexGuide: $VERSION${NC}"
     echo ""  # Blank line for separation
     # Display the main menu options
     echo "Please select an option:"
@@ -75,9 +75,8 @@ main_menu() {
       4)
         clear
         echo "Visit https://plexguide.com"
-        echo ""  # Space
-        echo -e "To Start Again - Type: [${BLUE}pg${NC}] or [${BLUE}plexguide${NC}]"
-        echo ""  # Space
+        echo -e "To Start Again - Type: [${RED}pg${NC}] or [${RED}plexguide${NC}]"
+        echo ""  # Space before exiting
         exit 0
         ;;
       *)
