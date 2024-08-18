@@ -1,0 +1,32 @@
+#!/bin/bash
+
+##### Port Number: 8089
+##### Custom Resolution Height: 768
+##### Custom Resolution Width: 1280
+##### Langague: en-US
+##### Version: latest
+##### Volume: /pg/appdata/firefox
+
+# Specify the app name and config file path
+app_name=$1
+config_path="/pg/config/${app_name}.cfg"
+
+# Source the configuration file to get the appdata_path and app_name
+if [[ -f "$config_path" ]]; then
+    source "$config_path"
+else
+    echo "Error: Configuration file not found at $config_path."
+    exit 1
+fi
+
+docker run -d --name="${app_name}" \
+	-p "${port_number}":8080 \
+	--env 'FIREFOX_V="${version}"' \
+	--env 'FIREFOX_LANG="${latest}"' \
+	--env 'CUSTOM_RES_W="${custom_resolution_width}"' \
+	--env 'CUSTOM_RES_H="${custom_resolution_height}"' \
+	--volume "${volume}":/firefox \
+	ich777/firefox
+
+# Verify the Docker container is running
+docker ps | grep "$app_name"
