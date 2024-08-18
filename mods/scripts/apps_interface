@@ -77,15 +77,42 @@ apps_interface() {
         if [[ "$new_appdata_path" == "exit" ]]; then
             echo "No changes made."
         elif [[ -n "$new_appdata_path" ]]; then
+            echo ""  # Blank line for separation
+            echo "Do you want to move the prior appdata to the new location?"
+            echo "Failure to do so will result in prior data loss if the container starts with new data."
+            echo ""  # Blank line for separation
+            read -p "Type: yes / no / exit: " move_choice
+
+            move_choice=$(echo "$move_choice" | tr '[:upper:]' '[:lower:]')  # Convert input to lowercase
+
+            if [[ "$move_choice" == "exit" ]]; then
+                echo "Operation aborted."
+                return
+            elif [[ "$move_choice" == "yes" ]]; then
+                # Move data to the new location
+                mkdir -p "$new_appdata_path"
+                chmod +x "$new_appdata_path"
+                mv "$appdata_path/"* "$new_appdata_path/"
+                echo "Data moved to the new location: $new_appdata_path"
+            elif [[ "$move_choice" == "no" ]]; then
+                echo ""  # Blank line for separation
+                read -p "Do you want to delete the old appdata? Type: yes / no: " delete_choice
+                delete_choice=$(echo "$delete_choice" | tr '[:upper:]' '[:lower:]')  # Convert input to lowercase
+
+                if [[ "$delete_choice" == "yes" ]]; then
+                    rm -rf "$appdata_path"
+                    echo "Old appdata at $appdata_path deleted."
+                else
+                    echo "Old appdata retained."
+                fi
+            else
+                echo "Invalid input. Operation aborted."
+                return
+            fi
+
             appdata_path=$new_appdata_path
             sed -i "s|^appdata_path=.*|appdata_path=${appdata_path}|" "$config_path"
             echo "Appdata path updated to $appdata_path."
-
-            # Ensure the new appdata directory exists and is executable
-            if [[ ! -d "$appdata_path" ]]; then
-                mkdir -p "$appdata_path"
-                chmod +x "$appdata_path"
-            fi
 
             # Check if the app is deployed and stop/remove it before redeploying
             local container_status=$(docker ps --filter "name=$app_name" --format "{{.Names}}")
