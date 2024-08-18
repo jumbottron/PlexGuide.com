@@ -53,7 +53,7 @@ main_menu() {
 
         create_apps_directory
 
-        # Change APP_LIST to an array
+        # Get the list of available apps
         APP_LIST=($(list_available_apps))
 
         echo -e "${BLUE}PG: App Deployment - Available Apps${NC}"
@@ -74,16 +74,8 @@ main_menu() {
         if [[ "$app_choice" == "exit" ]]; then
             exit 0
         else
-            # Loop through the available apps to check if the choice matches any
-            found=false
-            for app in "${APP_LIST[@]}"; do
-                if [[ "$app_choice" == "$app" ]]; then
-                    found=true
-                    break
-                fi
-            done
-
-            if [[ "$found" == true ]]; then
+            # Check if the selected app is in the list of available apps
+            if [[ " ${APP_LIST[@]} " =~ " $app_choice " ]]; then
                 deploy_app "$app_choice"
             else
                 echo "Invalid choice. Please try again."
