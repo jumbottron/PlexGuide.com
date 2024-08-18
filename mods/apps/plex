@@ -19,7 +19,6 @@ read -p "Enter your Plex claim key: " CLAIM_KEY
 
 # Set the default Docker image version, appdata location, and timezone
 DOCKER_VERSION=${2:-"latest"}
-APPDATA_LOCATION=${3:-"/pg/appdata/plex"}
 TIMEZONE=${4:-"America/New_York"}
 
 # Ensure the media directory exists
