@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Configuration file path
-CONFIG_FILE="/pg/config/config.cfg"
+CONFIG_FILE="/pg/config/cf_tunnel.cfg"
 
 # ANSI color codes for green, red, and blue
 GREEN="\033[0;32m"
@@ -67,9 +67,11 @@ prompt_choice() {
     read -p "Select an option: " choice
     case ${choice,,} in  # Convert input to lowercase for v/V, c/C, d/D, s/S, z/Z handling
         v)
+            clear
             view_token
             ;;
         c)
+            clear
             local change_code=$(printf "%04d" $((RANDOM % 10000)))  # Generate a 4-digit code
             while true; do
                 read -p "$(echo -e "To change the Cloudflare token, type [${RED}${change_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: ")" input_code
@@ -85,6 +87,7 @@ prompt_choice() {
             done
             ;;
         d)
+            clear
             local deploy_code=$(printf "%04d" $((RANDOM % 10000)))  # Generate a 4-digit code
             while true; do
                 read -p "$(echo -e "To deploy the container, type [${RED}${deploy_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: ")" input_code
@@ -100,12 +103,15 @@ prompt_choice() {
             done
             ;;
         s)
+            clear
             stop_destroy_container
             ;;
         z)
+            clear
             exit 0
             ;;
         *)
+            clear
             echo "Invalid choice. Please select a valid option."
             sleep 2
             show_menu
@@ -133,6 +139,7 @@ view_token() {
 
 # Function to change the Cloudflare token
 change_token() {
+    clear
     read -p "Enter new Cloudflare token: " CLOUDFLARE_TOKEN
     save_token_to_config
     echo "Cloudflare token has been updated and saved to $CONFIG_FILE."
@@ -143,6 +150,7 @@ change_token() {
 
 # Function to deploy or redeploy the container
 deploy_container() {
+    clear
     if container_exists; then
         echo "Redeploying container..."
         docker stop cf_tunnel
@@ -160,6 +168,7 @@ deploy_container() {
 
 # Function to stop and destroy the container
 stop_destroy_container() {
+    clear
     echo "Stopping and destroying the container..."
     docker stop cf_tunnel
     docker rm cf_tunnel
