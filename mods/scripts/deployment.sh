@@ -69,7 +69,7 @@ main_menu() {
         
         echo ""  # Blank line for separation
 
-        read -p "$(echo -e "Type [${GREEN}App${NC}] to Deploy, [${RED}Destroy${NC}] to Remove, or [${RED}Exit${NC}]: ")" app_choice
+        read -p "$(echo -e "Type [${GREEN}App${NC}] to Deploy or [${RED}Exit${NC}]: ")" app_choice
 
         app_choice=$(echo "$app_choice" | tr '[:upper:]' '[:lower:]')
 
