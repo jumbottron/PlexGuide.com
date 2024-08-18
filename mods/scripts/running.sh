@@ -30,15 +30,15 @@ main_menu() {
             exit 0
         fi
 
-        echo -e "${BLUE}PG: App Destroy - App to Destroy${NC}"
+        echo -e "${BLUE}PG: Running Apps - View/Edit${NC}"
         echo ""  # Blank line for separation
 
         # Display the list of running Docker apps, excluding cf_tunnel
-        echo -e "${RED}App to Destroy:${NC} $APP_LIST"
+        echo -e "${RED}App to View/Edit:${NC} $APP_LIST"
         echo ""  # Blank line for separation
 
         # Prompt the user to enter an app name or exit
-        read -p "$(echo -e "Type [${GREEN}App${NC}] to Destroy or [${RED}Exit${NC}]: ")" app_choice
+        read -p "$(echo -e "Type [${GREEN}App${NC}] to View/Edit or [${RED}Exit${NC}]: ")" app_choice
 
         # Convert the user input to lowercase for case-insensitive matching
         app_choice=$(echo "$app_choice" | tr '[:upper:]' '[:lower:]')
