@@ -25,10 +25,10 @@ echo -e "${BLUE}Expose Port Configuration for ${app_name}${NC}"
 echo ""
 echo "Current Setting: ${expose:-"Not Set"}"
 echo ""
-echo "Would you like to expose the port?"
-echo " - Type [${GREEN}yes${NC}] to expose the port."
-echo " - Type [${RED}no${NC}] to keep it private (127.0.0.1 only)."
-echo " - Type [exit] to cancel."
+printf "Would you like to expose the port?\n"
+printf " - Type [${GREEN}yes${NC}] to expose the port.\n"
+printf " - Type [${RED}no${NC}] to keep it private (127.0.0.1 only).\n"
+printf " - Type [exit] to cancel.\n"
 
 read -p "Your choice: " choice
 
