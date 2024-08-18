@@ -6,12 +6,24 @@ RED="\033[0;31m"
 BLUE="\033[0;34m"
 NC="\033[0m" # No color
 
+# Source the apps_interface function from the external script
+source /pg/scripts/apps_interface
+
 # Clear the screen at the start
 clear
 
 # Function to list running Docker apps, excluding cf_tunnel
 list_running_docker_apps() {
     docker ps --format '{{.Names}}' | grep -v 'cf_tunnel' | sort | tr '\n' ' '
+}
+
+# Function to deploy the selected app
+deploy_app() {
+    local app_name=$1
+    local app_path="/pg/apps/$app_name"
+
+    # Call the apps_interface function
+    apps_interface "$app_name"
 }
 
 # Main menu function
@@ -24,7 +36,7 @@ main_menu() {
 
         if [[ -z "$APP_LIST" ]]; then
             clear
-            echo -e "${RED}Cannot Destroy Apps as None Exist.${NC}"
+            echo -e "${RED}Cannot View/Edit Apps as None Exist.${NC}"
             echo ""  # Blank line for separation
             read -p "$(echo -e "${RED}Press Enter to continue...${NC}")"
             exit 0
@@ -50,9 +62,8 @@ main_menu() {
 
         # Check if the app exists in the list of running Docker apps (case-insensitive)
         if echo "$APP_LIST" | grep -i -w "$app_choice" >/dev/null; then
-            echo "Stopping and removing $app_choice ..."
-            docker stop "$app_choice"
-            docker rm "$app_choice"
+            # Deploy the selected app by calling the apps_interface function
+            deploy_app "$app_choice"
         else
             echo "Invalid choice. Please try again."
             read -p "Press Enter to continue..."
