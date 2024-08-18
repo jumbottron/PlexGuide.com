@@ -14,13 +14,13 @@ Quick Notes:
 1. Once installed, type pg or plexguide <<<
 
 <p align="center">
-  <img src="https://i.imgur.com/yhBCIl6.jpeg" alt="Menu Example" width="55%">
+  <img src="https://i.imgur.com/yhBCIl6.jpeg" alt="Menu Example" width="65%">
 </p>
 <p align="center">
-  <img src="https://i.imgur.com/92aMmy2.jpeg" alt="Plex Example" width="55%">
+  <img src="https://i.imgur.com/92aMmy2.jpeg" alt="Plex Example" width="65%">
 </p>
 <p align="center">
-  <img src="https://i.imgur.com/goozBTI.jpeg" alt="Plex Example" width="55%">
+  <img src="https://i.imgur.com/goozBTI.jpeg" alt="Plex Example" width="65%">
 </p>
 
 Stuff below is old and dataed and not relevant. Update will be done when completed.
