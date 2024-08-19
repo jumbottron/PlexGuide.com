@@ -31,18 +31,18 @@ Stuff below is old and dataed and not relevant. Update will be done when complet
 ----
 Status: Early Beta - Works
 
-Deployable Apps: Jacket, JellyFin, Lidarr, NetData, NZBGET, Overseer, Ombi, SABNZBD, Plex, Prowlarr, Radarr, Sonarr, UpTimeKuma
+**<span style="color:green">Deployable Apps:</span>** Jacket, JellyFin, Lidarr, NetData, NZBGET, Overseer, Ombi, SABNZBD, Plex, Prowlarr, Radarr, Sonarr, UpTimeKuma
 
 Working On:
 
-◯ [ ] Enable Personal Apps from Personal Repo  
-◯ [ ] Install GPU Drivers & Add on to apps  
-◯ [ ] Incorporate MergerFS to merge multiple local drives < main focus  
-◯ [ ] Incorporate CloudDrives < secondary focus  
-◯ [ ] AppData Backup & Restore  
-◯ [ ] Enable Update to provide Alpha, Beta, and Stable Builds  
-◯ [ ] Add More Applications  
-◯ [ ] Create Detailed Wiki
+[ ] Enable Personal Apps from Personal Repo  
+[ ] Install GPU Drivers & Add on to apps  
+[ ] Incorporate MergerFS to merge multiple local drives < main focus  
+[ ] Incorporate CloudDrives < secondary focus  
+[ ] AppData Backup & Restore  
+[ ] Enable Update to provide Alpha, Beta, and Stable Builds  
+[ ] Add More Applications  
+[ ] Create Detailed Wiki
 
 ----
 
