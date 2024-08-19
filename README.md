@@ -33,6 +33,14 @@ Status: Early Beta - Works
 
 **<span style="color:green">Deployable Apps:</span>** Jacket, JellyFin, Lidarr, NetData, NZBGET, Overseer, Ombi, SABNZBD, Plex, Prowlarr, Radarr, Sonarr, UpTimeKuma
 
+Currently Works:
+
+- Advanced Configuration of App Variables
+- Expose/Close Ports
+- CloudFlare Tunnel works perfectly
+- Change Port and AppData Location
+- Quick Reinstall/Update of PG Beta (will be more advanced)
+
 Working On:
 
 [ ] Enable Personal Apps from Personal Repo  
