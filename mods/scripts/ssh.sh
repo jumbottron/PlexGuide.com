@@ -1,22 +1,35 @@
 #!/bin/bash
 
+# Configuration file path
+SSH_CONFIG_FILE="/pg/config/ssh.cfg"
+
 # ANSI color codes
 RED="\033[0;31m"
 GREEN="\033[0;32m"
 BLUE="\033[0;34m"
 NC="\033[0m" # No color
 
+# Function to load or initialize SSH configuration
+load_ssh_config() {
+    if [[ -f "$SSH_CONFIG_FILE" ]]; then
+        source "$SSH_CONFIG_FILE"
+    else
+        echo "PORT=22" > "$SSH_CONFIG_FILE"
+        source "$SSH_CONFIG_FILE"
+    fi
+}
+
 # Function to check if SSH is active
 check_ssh_status() {
     systemctl is-active --quiet ssh && SSH_STATUS="${GREEN}Active - SSH Port Open${NC}" || SSH_STATUS="${RED}Inactive - SSH Port Closed${NC}"
 }
 
-# Function to detect the SSH port
+# Function to detect the SSH port from the config
 detect_ssh_port() {
-    SSH_PORT=$(ss -tuln | grep -E ':(22|[0-9]{2,5}) ' | grep ssh | awk '{print $5}' | cut -d: -f2)
-    if [[ -z "$SSH_PORT" ]]; then
-        SSH_PORT="unknown"
+    if [[ -f "$SSH_CONFIG_FILE" ]]; then
+        source "$SSH_CONFIG_FILE"
     fi
+    SSH_PORT=${PORT:-"unknown"}
 }
 
 # Function to display the SSH status and port
@@ -75,6 +88,8 @@ install_ssh() {
             sudo systemctl enable ssh
             sudo systemctl restart ssh
 
+            # Update SSH configuration file
+            echo "PORT=$new_port" > "$SSH_CONFIG_FILE"
             echo "SSH has been installed and configured on port $new_port."
         else
             echo -e "${RED}Invalid port number. Please enter a value between 1 and 65000.${NC}"
@@ -121,6 +136,9 @@ port_management() {
             sudo sed -i "s/^Port .*/Port $new_port/" /etc/ssh/sshd_config
             sudo ufw allow $new_port/tcp
             sudo systemctl reload sshd
+
+            # Update SSH configuration file
+            echo "PORT=$new_port" > "$SSH_CONFIG_FILE"
             echo "SSH port has been changed to $new_port."
         else
             echo -e "${RED}Invalid port number. Please enter a value between 1 and 65000.${NC}"
@@ -133,7 +151,8 @@ port_management() {
 main_menu() {
   while true; do
     clear
-    display_ssh_info
+    load_ssh_config  # Load or initialize SSH config
+    display_ssh_info  # Display current SSH status and port
 
     # Display the main menu options
     echo "I) Install SSH Server"
