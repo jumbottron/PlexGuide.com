@@ -44,7 +44,7 @@ while true; do
         break
     elif [[ "$user_input" == "$no_code" ]]; then
         echo "Port will remain private."
-        sed -i 's|^expose=.*|expose="--publish 127.0.0.1:"|' "$config_path"
+        sed -i 's|^expose=.*|expose="127.0.0.1:"|' "$config_path"
         break
     elif [[ "$user_input" == "exit" ]]; then
         echo "Operation cancelled."
