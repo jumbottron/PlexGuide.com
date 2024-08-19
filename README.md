@@ -1,7 +1,5 @@
 ##### WANT TO HELP? CLICK THE ★ (STAR LOGO) in the Upper-Right! 
 
-![image](https://github.com/user-attachments/assets/11fa104a-a6c7-4c77-8f2b-649e8a167b47)
-
 <p align="right">
   <img src="https://i.imgur.com/XI1WGxi.png" alt="Menu Example" width="35%">
 </p>
