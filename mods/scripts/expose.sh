@@ -30,7 +30,7 @@ echo -e "${BLUE}Expose Port Configuration for ${app_name}${NC}"
 echo ""
 echo "Current Setting: ${expose:-"Port Exposed"}"
 echo ""
-printf "Make a selection?\n"
+printf "Would you like to expose the port?\n"
 printf " - Type [${GREEN}${yes_code}${NC}] to expose the port. (access remotely)\n"
 printf " - Type [${RED}${no_code}${NC}] to keep it private (127.0.0.1; localhost only).\n"
 echo ""
@@ -40,7 +40,7 @@ while true; do
     read -p "Type [${yes_code}] [${no_code}] or [exit]: " user_input
     if [[ "$user_input" == "$yes_code" ]]; then
         echo "Port will be exposed."
-        sed -i 's|^expose=.*|expose="--publish-all"|' "$config_path"
+        sed -i 's|^expose=.*|expose=""|' "$config_path"
         break
     elif [[ "$user_input" == "$no_code" ]]; then
         echo "Port will remain private."
@@ -64,4 +64,3 @@ echo ""
 echo -e "${RED}Please redeploy the Docker container from the main menu.${NC}"
 echo ""
 read -p "Press Enter to acknowledge..."
-
