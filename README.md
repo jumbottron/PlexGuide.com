@@ -31,29 +31,33 @@ Stuff below is old and dataed and not relevant. Update will be done when complet
 ----
 Status: Early Beta - Works
 
-Tested On: Ubuntu 22 Desktop, Ubuntu Server 24 LTS
+**Tested On:**  
+- Ubuntu 22 Desktop  
+- Ubuntu Server 24 LTS
 
-**<span style="color:green">Deployable Apps:</span>** Jacket, JellyFin, Lidarr, NetData, NZBGET, Overseer, Ombi, SABNZBD, Plex, Prowlarr, Radarr, Sonarr, UpTimeKuma
+**<span style="color:green">Deployable Apps:</span>**  
+Jacket, JellyFin, Lidarr, NetData, NZBGET, Overseer, Ombi, SABNZBD, Plex, Prowlarr, Radarr, Sonarr, UpTimeKuma
 
-Currently Works:
+### **Current Functionality**
 
-- Advanced Configuration of App Variables
-- Expose/Close Ports
-- CloudFlare Tunnel works perfectly
-- Change Port and AppData Location
-- Quick Reinstall/Update of PG Beta (will be more advanced)
+- **Advanced Configuration of App Variables**: Allows for detailed customization of app settings.
+- **Port Management**: Easily expose or close ports as needed.
+- **CloudFlare Tunnel Integration**: Seamlessly integrates CloudFlare Tunnel for secure access.
+- **Port and AppData Management**: Change app ports and AppData locations.
+- **Quick Reinstall/Update of PG Beta**: Streamlined process for reinstalling or updating to the latest PG Beta.
+- **SSH Installer/Manager**: Added for easy SSH management.
 
-Working On:
+### **In Progress**
 
-[ ] Enable Personal Apps from Personal Repo  
-[ ] Install GPU Drivers & Add on to apps  
-[ ] Incorporate MergerFS to merge multiple local drives < main focus  
-[ ] Incorporate CloudDrives < secondary focus  
-[ ] AppData Backup & Restore  
-[ ] Enable Update to provide Alpha, Beta, and Stable Builds  
-[ ] Add More Applications 
-[ ] Add SSH Script to turn off/on and change ports 
-[ ] Create Detailed Wiki
+- [ ] Enable Personal Apps from Personal Repo  
+- [ ] Install GPU Drivers & Add-ons to Apps  
+- [ ] Incorporate MergerFS to Merge Multiple Local Drives (Main Focus)  
+- [ ] Incorporate CloudDrives (Secondary Focus)  
+- [ ] AppData Backup & Restore  
+- [ ] Enable Updates to Provide Alpha, Beta, and Stable Builds  
+- [ ] Add More Applications  
+- [ ] Create Detailed Wiki
+
 
 ----
 
