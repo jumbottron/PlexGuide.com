@@ -35,13 +35,13 @@ Deployable Apps: Jacket, JellyFin, Lidarr, NetData, NZBGET, Overseer, Ombi, SABN
 
 Working On:
 
-◯ [ ] Enable Personal Apps from Personal Repo 
-◯ [ ] Install GPU Drivers & Add on to apps
+◯ [ ] Enable Personal Apps from Personal Repo  
+◯ [ ] Install GPU Drivers & Add on to apps  
 ◯ [ ] Incorporate MergerFS to merge multiple local drives < main focus  
 ◯ [ ] Incorporate CloudDrives < secondary focus  
 ◯ [ ] AppData Backup & Restore  
 ◯ [ ] Enable Update to provide Alpha, Beta, and Stable Builds  
-◯ [ ] Add More Applications
+◯ [ ] Add More Applications  
 ◯ [ ] Create Detailed Wiki
 
 ----
