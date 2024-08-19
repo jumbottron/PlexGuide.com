@@ -1,6 +1,6 @@
 ##### WANT TO HELP? CLICK THE ★ (STAR LOGO) in the Upper-Right! 
 
-<p align="right">
+<p align="left">
   <img src="https://i.imgur.com/XI1WGxi.png" alt="Menu Example" width="15%">
 </p>
 
