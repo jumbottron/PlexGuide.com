@@ -40,14 +40,28 @@ while true; do
     read -p "Type [${yes_code}] [${no_code}] or [exit]: " user_input
     if [[ "$user_input" == "$yes_code" ]]; then
         echo "Port will be exposed."
+        sed -i 's|^expose=.*|expose="--publish-all"|' "$config_path"
         break
     elif [[ "$user_input" == "$no_code" ]]; then
         echo "Port will remain private."
+        sed -i 's|^expose=.*|expose="--publish 127.0.0.1:"|' "$config_path"
         break
     elif [[ "$user_input" == "exit" ]]; then
         echo "Operation cancelled."
-        break
+        exit 0
     else
         echo "Invalid input. Please try again."
     fi
 done
+
+# Stop and remove the Docker container
+echo "Stopping and removing the Docker container..."
+docker stop "$app_name" && docker rm "$app_name"
+echo "Docker container has been stopped and removed."
+
+# Inform the user to redeploy the container
+echo ""
+echo -e "${RED}Please redeploy the Docker container from the main menu.${NC}"
+echo ""
+read -p "Press Enter to acknowledge..."
+
