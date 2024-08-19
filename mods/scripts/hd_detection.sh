@@ -2,6 +2,7 @@
 
 # ANSI color codes
 RED="\033[0;31m"
+GREEN="\033[0;32m"
 NC="\033[0m" # No color
 
 # Clear the screen at the start
@@ -32,6 +33,7 @@ while IFS= read -r line; do
 done < <(lsblk -d -o NAME,SIZE,TYPE,MODEL | grep -w 'disk')
 
 # Notify the user
+echo ""
 echo -e "${RED}The operating system is installed on disk: $OS_DISK${NC}"
-echo "Press [Enter] to exit."
+echo -e "Press [${GREEN}Enter${NC}] to exit."
 read
