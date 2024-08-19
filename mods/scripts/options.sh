@@ -11,10 +11,6 @@ NC="\033[0m" # No color
 # Clear the screen at the start
 clear
 
-# Ensure /pg/scripts/basics.sh is executable, then run it in the background
-chmod +x /pg/scripts/basics.sh
-/pg/scripts/basics.sh &
-
 # Function to source the configuration file
 load_config() {
     if [[ -f "$CONFIG_FILE" ]]; then
@@ -41,11 +37,7 @@ graphics_cards() {
 # Function for SSH Management option
 ssh_management() {
     clear
-    echo -e "${BLUE}SSH Management${NC}"
-    echo ""  # Space for separation
-    echo "This is where you'd manage your SSH settings."
-    echo "Add your SSH-related commands here."
-    read -p "Press Enter to return to the main menu..."
+    /pg/scripts/ssh.sh
 }
 
 # Function to exit the script
@@ -93,4 +85,3 @@ main_menu() {
 
 # Call the main menu function
 main_menu
-
