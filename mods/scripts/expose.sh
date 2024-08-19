@@ -34,8 +34,6 @@ printf "Would you like to expose the port?\n"
 printf " - Type [${GREEN}${yes_code}${NC}] to expose the port. (access remotely)\n"
 printf " - Type [${RED}${no_code}${NC}] to keep it private (127.0.0.1; localhost only).\n"
 echo ""
-printf " - Type [exit] to cancel.\n"
-echo ""
 
 # Prompt the user for input and validate
 while true; do
