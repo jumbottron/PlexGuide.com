@@ -31,6 +31,11 @@ apps_management() {
     /pg/scripts/apps.sh
 }
 
+# Function for HardDisk Management
+harddisk_management() {
+    /pg/scripts/drivemenu.sh
+}
+
 # Function for CloudFlare Tunnel Management
 cloudflare_tunnel() {
     /pg/scripts/cf_tunnel.sh
@@ -85,6 +90,7 @@ main_menu() {
     echo ""  # Blank line for separation
     # Display the main menu options
     echo "A) Apps Management"
+    echo "H) HardDisk Management"
     echo "C) CloudFlare Tunnel (Domains)"
     echo "O) Options"
     echo "R) Reinstall PlexGuide"
@@ -96,6 +102,7 @@ main_menu() {
 
     case ${choice,,} in  # Convert input to lowercase for a/A, c/C, r/R, o/O, z/Z handling
       a) apps_management ;;
+      h) harddisk_management ;; 
       c) cloudflare_tunnel ;;
       r) reinstall_plexguide ;;
       o) options_menu ;;
