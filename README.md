@@ -10,7 +10,7 @@ To get started, follow the detailed instructions provided in the [PlexGuide Inst
 sudo apt-get update -y && sudo apt-get install -y curl git && curl -o /tmp/install.sh https://raw.githubusercontent.com/plexguide/PlexGuide.com/v11/mods/install/install.sh && chmod +x /tmp/install.sh && /tmp/install.sh && chmod +x /pg/scripts/menu.sh && /pg/scripts/menu.sh
 ```
 
-Working on PG11
+### Working on PG11
 
 * Simple, debloated, no fancy menus and executes for exactly what you need!
 * Very early beta and this will take awhile
