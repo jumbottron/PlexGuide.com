@@ -83,6 +83,11 @@ install_ssh() {
             # Allow the new port through the firewall
             sudo ufw allow $new_port/tcp
 
+            # Close the previous port if it was different
+            if [[ "$new_port" != "$SSH_PORT" ]]; then
+                sudo ufw delete allow $SSH_PORT/tcp
+            fi
+
             # Reload and restart SSH service to apply changes
             sudo systemctl reload sshd
             sudo systemctl enable ssh
@@ -105,6 +110,7 @@ uninstall_ssh() {
         sudo apt-get purge -y openssh-server
         sudo ufw delete allow $SSH_PORT/tcp
         echo "SSH server has been uninstalled."
+        echo -e "${RED}Warning:${NC} Since SSH has been uninstalled, your remote session will end once you disconnect from the server."
     fi
     read -p "Press Enter to return to the menu..."
 }
@@ -122,7 +128,9 @@ enable_ssh() {
 disable_ssh() {
     if require_pin; then
         sudo systemctl disable ssh --now
+        sudo ufw delete allow $SSH_PORT/tcp
         echo "SSH has been disabled."
+        echo -e "${RED}Warning:${NC} Since SSH has been disabled, your remote session will end once you disconnect from the server."
     fi
     read -p "Press Enter to return to the menu..."
 }
@@ -133,6 +141,10 @@ port_management() {
         echo -n "Enter the new SSH port number: "
         read new_port
         if [[ $new_port -gt 0 && $new_port -le 65000 ]]; then
+            # Close the old SSH port
+            sudo ufw delete allow $SSH_PORT/tcp
+
+            # Update SSH configuration
             sudo sed -i "s/^Port .*/Port $new_port/" /etc/ssh/sshd_config
             sudo ufw allow $new_port/tcp
             sudo systemctl reload sshd
@@ -140,6 +152,10 @@ port_management() {
             # Update SSH configuration file
             echo "PORT=$new_port" > "$SSH_CONFIG_FILE"
             echo "SSH port has been changed to $new_port."
+
+            # Display warning for remote SSH sessions
+            echo -e "${RED}Warning:${NC} Since the port has changed, your remote session will end once you disconnect from the server."
+            echo -e "You must use the command \`ssh -p $new_port <IP_ADDRESS>\` to reconnect."
         else
             echo -e "${RED}Invalid port number. Please enter a value between 1 and 65000.${NC}"
         fi
