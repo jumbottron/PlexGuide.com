@@ -29,15 +29,20 @@ Quick Notes:
 Stuff below is old and dataed and not relevant. Update will be done when completed.
 
 ----
-_**Table of Contents**_
+Status: Early Beta - Works
 
-1. [PG YouTube](#1-pg-youtube)
-2. [Project Statement](#2-project-statement)
-3. [Functional Use](#3-functional-use)
-4. [Testimonials](#4-testimonials)
-5. [Recommended Reading](#5-recommended-reading)
-6. [Having Issues?](#6-having-issues)
-7. [Conclusion](#7-conclusion)
+Deployable Apps: Jacket, JellyFin, Lidarr, NetData, NZBGET, Overseer, Ombi, SABNZBD, Plex, Prowlarr, Radarr, Sonarr, UpTimeKuma
+
+Working On:
+
+◯ [ ] Enable Personal Apps from Personal Repo 
+◯ [ ] Install GPU Drivers & Add on to apps
+◯ [ ] Incorporate MergerFS to merge multiple local drives < main focus  
+◯ [ ] Incorporate CloudDrives < secondary focus  
+◯ [ ] AppData Backup & Restore  
+◯ [ ] Enable Update to provide Alpha, Beta, and Stable Builds  
+◯ [ ] Add More Applications
+◯ [ ] Create Detailed Wiki
 
 ----
 
