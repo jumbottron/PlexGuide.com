@@ -1,9 +1,0 @@
-#!/bin/bash
-############# https://github.com/plexguide/PlexGuide.com/graphs/contributors ###
-traefik_security() {
-
-ts_path="$traefik_path/t.security"
-
-if [[ $(cat $ts_path) != "ON" ]]; then
-  echo "ON" > $ts_path; else echo "OFF" > $ts_path; fi
-}
