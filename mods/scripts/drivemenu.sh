@@ -67,6 +67,7 @@ main_menu() {
     check_mergerfs_status
     echo -e "${BLUE}PG: Drive Management${NC} - MergerFS Status: $MERGERFS_STATUS"
     echo ""  # Space for separation
+    echo "V) View Drives"
     echo "M) Manage Drives"
     echo "A) Add a Drive"
     echo "F) Format a Drive"
@@ -76,9 +77,12 @@ main_menu() {
     echo ""  # Space between options and input prompt
 
     # Prompt the user for input
-    read -p "Enter your choice [M/A/F/I/U/Z]: " choice
+    read -p "Enter your choice [V/M/A/F/I/U/Z]: " choice
 
-    case ${choice,,} in  # Convert input to lowercase for m/M, a/A, f/F, i/I, u/U, z/Z handling
+    case ${choice,,} in  # Convert input to lowercase for v/V, m/M, a/A, f/F, i/I, u/U, z/Z handling
+      v)
+        /pg/scripts/hd_detection.sh
+        ;;
       m|a|f)
         if $MERGERFS_INSTALLED; then
             echo "Executing option..."
