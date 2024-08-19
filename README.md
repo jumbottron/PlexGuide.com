@@ -31,7 +31,7 @@ Stuff below is old and dataed and not relevant. Update will be done when complet
 ----
 Status: Early Beta - Works
 
-Tested On: Ubuntu 22 Desktop 
+Tested On: Ubuntu 22 Desktop, Ubuntu Server 24 LTS
 
 **<span style="color:green">Deployable Apps:</span>** Jacket, JellyFin, Lidarr, NetData, NZBGET, Overseer, Ombi, SABNZBD, Plex, Prowlarr, Radarr, Sonarr, UpTimeKuma
 
