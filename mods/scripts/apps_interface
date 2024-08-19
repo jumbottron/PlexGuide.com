@@ -6,6 +6,8 @@ GREEN="\033[0;32m"
 BLUE="\033[0;34m"
 NC="\033[0m" # No color
 
+source /pg/scripts/expose_check.sh
+
 # Function: parse_and_store_defaults
 parse_and_store_defaults() {
     local app_name=$1
