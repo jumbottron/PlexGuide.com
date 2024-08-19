@@ -98,7 +98,7 @@ main_menu() {
     echo ""  # Space between options and input prompt
 
     # Prompt the user for input
-    read -p "Enter your choice [A/C/R/O/Z]: " choice
+    read -p "Enter your choice [A/H/C/R/O/Z]: " choice
 
     case ${choice,,} in  # Convert input to lowercase for a/A, c/C, r/R, o/O, z/Z handling
       a) apps_management ;;
