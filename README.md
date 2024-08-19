@@ -49,7 +49,8 @@ Working On:
 [ ] Incorporate CloudDrives < secondary focus  
 [ ] AppData Backup & Restore  
 [ ] Enable Update to provide Alpha, Beta, and Stable Builds  
-[ ] Add More Applications  
+[ ] Add More Applications 
+[ ] Add SSH Script to turn off/on and change ports 
 [ ] Create Detailed Wiki
 
 ----
