@@ -65,8 +65,7 @@ main_menu() {
   while true; do
     clear
     check_mergerfs_status
-    echo -e "${BLUE}PlexGuide: Drive Management${NC}"
-    echo -e "MergerFS Status: $MERGERFS_STATUS"
+    echo -e "${BLUE}PG: Drive Management${NC} - MergerFS Status: $MERGERFS_STATUS"
     echo ""  # Space for separation
     echo "M) Manage Drives"
     echo "A) Add a Drive"
