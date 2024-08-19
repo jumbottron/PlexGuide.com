@@ -26,8 +26,6 @@ Quick Notes:
   <img src="https://i.imgur.com/WkEyL9D.jpeg" alt="Plex Example" width="65%">
 </p>
 
-Stuff below is old and dataed and not relevant. Update will be done when completed.
-
 ----
 Status: Early Beta - Works
 
