@@ -14,7 +14,7 @@ Quick Notes:
 1. Once installed, type pg or plexguide <<<
 
 <p align="center">
-  <img src="https://i.imgur.com/ucDtrko.jpeg" alt="Menu Example" width="65%">
+  <img src="https://i.imgur.com/tuJpsTR.jpeg" alt="Menu Example" width="65%">
 </p>
 <p align="center">
   <img src="https://i.imgur.com/M7G2LLl.jpeg" alt="Plex Example" width="65%">
