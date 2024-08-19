@@ -2,7 +2,7 @@
 
 ## PlexGuide Installation
 
-To get started, follow the detailed instructions provided in the [PlexGuide Install Information](https://github.com/plexguide/PlexGuide.com/wiki/PlexGuide-Install-Information). This [Wiki](https://github.com/plexguide/PlexGuide.com/wiki) will also provide more information in regards to docker, applications, and much more!
+To get started, follow the detailed instructions provided in the [PlexGuide Installation Information](https://github.com/plexguide/PlexGuide.com/wiki/PlexGuide-Install-Information). The [Wiki](https://github.com/plexguide/PlexGuide.com/wiki) will also provide more information in regards to docker, applications, and much more!
 
 Working on PG11
 
