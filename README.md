@@ -1,7 +1,7 @@
 ##### WANT TO HELP? CLICK THE ★ (STAR LOGO) in the Upper-Right! 
 
 <p align="right">
-  <img src="https://i.imgur.com/XI1WGxi.png" alt="Menu Example" width="25%">
+  <img src="https://i.imgur.com/XI1WGxi.png" alt="Menu Example" width="15%">
 </p>
 
 ## PlexGuide Installation
