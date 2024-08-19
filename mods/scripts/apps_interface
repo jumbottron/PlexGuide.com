@@ -229,7 +229,7 @@ apps_interface() {
                 read -p "Press Enter to continue..."
                 return
             elif [[ "${reset_choice,,}" == "no" ]]; then
-                echo "Operation cancelled."
+                echo "Operation Cancelled."
                 return
             else
                 echo -e "${RED}Invalid response.${NC} Please type [${RED}${reset_code}${NC}] or [${GREEN}no${NC}]."
@@ -291,7 +291,7 @@ apps_interface() {
             p)
                 change_port_number
                 ;;
-            e)
+            c)
                 clear
                 local edit_code=$(printf "%04d" $((RANDOM % 10000)))
                 echo -e "${RED}Warning: This is an advanced option.${NC}"
@@ -315,11 +315,11 @@ apps_interface() {
                     fi
                 done
                 ;;
+            e)
+                bash /pg/scripts/expose.sh "$app_name"
+                ;;
             k)
                 kill_docker_container
-                ;;
-            x)
-                bash /pg/scripts/expose.sh "$app_name"
                 ;;
             y)
                 reset_config_file
