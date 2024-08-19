@@ -4,6 +4,12 @@
 
 To get started, follow the detailed instructions provided in the [PlexGuide Installation Information](https://github.com/plexguide/PlexGuide.com/wiki/PlexGuide-Install-Information). The [Wiki](https://github.com/plexguide/PlexGuide.com/wiki) will also provide more information in regards to docker, applications, and much more!
 
+### Quick Instatllation Command
+
+```bash
+sudo apt-get update -y && sudo apt-get install -y curl git && curl -o /tmp/install.sh https://raw.githubusercontent.com/plexguide/PlexGuide.com/v11/mods/install/install.sh && chmod +x /tmp/install.sh && /tmp/install.sh && chmod +x /pg/scripts/menu.sh && /pg/scripts/menu.sh
+```
+
 Working on PG11
 
 * Simple, debloated, no fancy menus and executes for exactly what you need!
