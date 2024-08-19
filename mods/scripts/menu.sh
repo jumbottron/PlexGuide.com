@@ -86,8 +86,8 @@ main_menu() {
     # Display the main menu options
     echo "A) Apps Management"
     echo "C) CloudFlare Tunnel (Domains)"
-    echo "R) Reinstall PlexGuide"
     echo "O) Options"
+    echo "R) Reinstall PlexGuide"
     echo "Z) Exit"
     echo ""  # Space between options and input prompt
 
