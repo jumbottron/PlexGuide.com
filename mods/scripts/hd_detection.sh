@@ -16,24 +16,35 @@ if ! command -v lsblk &> /dev/null; then
     echo "lsblk has been installed."
 fi
 
-# Detect the disk the OS is running on
-OS_DISK=$(lsblk -no NAME,MOUNTPOINT | grep -w / | awk '{print $1}' | sed 's/[0-9]*$//')
+# Detect the root partition and its parent disk
+ROOT_PARTITION=$(lsblk -no NAME,MOUNTPOINT | grep -w / | awk '{print $1}')
+ROOT_DISK=$(lsblk -no PKNAME "/dev/$ROOT_PARTITION")
 
-# Detect all hard drives and highlight the OS disk
+# Detect all hard drives, include file system format, and highlight the OS disk
 echo "PG: HardDrive Detector"
 echo ""
 
-# Loop through each disk and highlight the one with the OS
+# Loop through each disk, including file system type, and highlight the OS disk
 while IFS= read -r line; do
-    if [[ "$line" == "$OS_DISK"* ]]; then
-        echo -e "${RED}${line}${NC}"  # Highlight the OS disk in red
+    disk_name=$(echo $line | awk '{print $1}')
+    fstype=$(lsblk -no FSTYPE "/dev/$disk_name")
+    
+    # Handle case where FSTYPE is empty
+    if [[ -z "$fstype" ]]; then
+        fstype="No file system"
+    fi
+    
+    formatted_line=$(echo "$line" | awk -v fstype="$fstype" '{printf "%-12s %-10s %-6s %-15s %-s\n", $1, $2, $3, fstype, $4}')
+    
+    if [[ "$disk_name" == "$ROOT_DISK" ]]; then
+        echo -e "${RED}${formatted_line}${NC}"  # Highlight the OS disk in red
     else
-        echo "$line"
+        echo "$formatted_line"
     fi
 done < <(lsblk -d -o NAME,SIZE,TYPE,MODEL | grep -w 'disk')
 
 # Notify the user
 echo ""
-echo -e "${RED}The operating system is installed on disk: $OS_DISK${NC}"
+echo -e "${RED}The operating system is installed on disk: $ROOT_DISK${NC}"
 echo -e "Press [${GREEN}Enter${NC}] to exit."
 read
