@@ -24,24 +24,14 @@ ROOT_DISK=$(lsblk -no PKNAME "/dev/$ROOT_PARTITION")
 echo "PG: HardDrive Detector"
 echo ""
 
-# Loop through each disk, including file system type, and highlight the OS disk
-while IFS= read -r line; do
-    disk_name=$(echo $line | awk '{print $1}')
-    fstype=$(lsblk -no FSTYPE "/dev/$disk_name")
-    
-    # Handle case where FSTYPE is empty
-    if [[ -z "$fstype" ]]; then
-        fstype="No file system"
-    fi
-    
-    formatted_line=$(echo "$line" | awk -v fstype="$fstype" '{printf "%-12s %-10s %-6s %-15s %-s\n", $1, $2, $3, fstype, $4}')
-    
-    if [[ "$disk_name" == "$ROOT_DISK" ]]; then
-        echo -e "${RED}${formatted_line}${NC}"  # Highlight the OS disk in red
+# Display disk information with file system type, highlight the OS disk
+lsblk -o NAME,SIZE,TYPE,FSTYPE,MODEL | while read -r line; do
+    if [[ "$line" =~ ^$ROOT_DISK ]]; then
+        echo -e "${RED}${line}${NC}"  # Highlight the OS disk in red
     else
-        echo "$formatted_line"
+        echo "$line"
     fi
-done < <(lsblk -d -o NAME,SIZE,TYPE,MODEL | grep -w 'disk')
+done
 
 # Notify the user
 echo ""
