@@ -80,27 +80,3 @@ Working On:
 1. Backup and Restore data through your Google Drive
 1. Aligns data and ports for efficiency
 1. Deploys with a simple installer and a GUI like interface (commands do not have to be typed out)
-
-## 4. Testimonials
-<p align="center"><kbd><img src="https://plexguide.com/wikipics/pg-assistyou.gif" width="400""></kbd></p>
-
-[**Dexxa:**](https://plexguide.com/threads/cant-install-plex-guide.1005/#post-5724) Cant believe how it easy it was to install Plex and link Plex to Google Drive, when i just knew how to install Plex on its on, i tried many ways to mount Google Drive to my Plex and couldn't get it to work, but this did it for me in minutes, I'll be using this script from now on, on all my servers, thank you.
-
-[**Cyb3rGh05t:**](https://plexguide.com/threads/thank-you-pg-team.942/) hi PGBlitz Team, just want to say thank you to the PGBlitz Team :) you did an amazing job:) Everything is really easy to setup an the interface is also very nice :) Thanks for all the hard work an all the support :) you guys rock :) .Keep up that good work. looking further for new features on PGBlitz :) thanks :)
-
-## 5. Recommended Reading
-
-In general, it's best to go down the line on the wiki on how to install PGBlitz and run through the steps, but one major goal is to provide a list of reading on some basic fundamentals; which will ensure better execution.
-
-[**[Click Here]**](https://github.com/plexguide/PlexGuide.com/wiki/Pre-Reading) to view the list!
-
-## 6. Having Issues?
-
-[**[Click Here]**](https://github.com/plexguide/PlexGuide.com/wiki/Common-Issues) for more information!
-
-## 7. Conclusion
-Well anyways... welcome to the PlexGuide! Visit our forums @ [**https://plexguide.com/forums**](https://plexguide.com/forums).
-
-<p align="right">
-<a href="https://plexguide.com" target="_blank"><img src="https://github.com/PGBlitz/Assets/blob/master/logos/blitz-small.png?raw=true" width="75"/>
-</p>
