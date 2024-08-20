@@ -14,12 +14,7 @@ else
     exit 1
 fi
 
-# Configuration Paths
-config_path="/pg/config/plex_debrid"
-app_name="plex_debrid"
-
 # Run the Docker container with the specified settings
-echo "Running the itstoggle/plex_debrid Docker container..."
 docker run -d \
   --name="${app_name}" \
   --network=host \
