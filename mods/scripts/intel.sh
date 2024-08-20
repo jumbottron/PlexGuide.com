@@ -6,9 +6,43 @@ GREEN="\033[0;32m"
 BLUE="\033[0;34m"
 NC="\033[0m" # No color
 
+# Function to check if Intel Top is installed
+check_intel_top_installed() {
+    if command -v intel_gpu_top &> /dev/null; then
+        echo -e "${GREEN}[Installed]${NC}"
+        return 0
+    else
+        echo -e "${RED}[Not Installed]${NC}"
+        return 1
+    fi
+}
+
 # Function to generate a random 4-digit code
 generate_code() {
     echo $((RANDOM % 9000 + 1000))
+}
+
+# Function to install Intel Top
+install_intel_top() {
+    if command -v intel_gpu_top &> /dev/null; then
+        echo "Intel Top is already installed. Upgrading to the latest version..."
+        sudo apt-get update && sudo apt-get upgrade intel-gpu-tools -y
+    else
+        echo "Installing Intel Top..."
+        sudo apt-get update && sudo apt-get install intel-gpu-tools -y
+    fi
+    echo "Intel Top installation/upgrade complete."
+}
+
+# Function to uninstall Intel Top
+uninstall_intel_top() {
+    if command -v intel_gpu_top &> /dev/null; then
+        echo "Uninstalling Intel Top..."
+        sudo apt-get remove intel-gpu-tools -y
+        echo "Intel Top has been uninstalled."
+    else
+        echo -e "${RED}Intel Top cannot be uninstalled because it is not installed.${NC}"
+    fi
 }
 
 # Main menu function
