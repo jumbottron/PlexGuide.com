@@ -4,7 +4,6 @@
 clear
 echo "PG: GPU Driver Management"
 echo
-echo "A) AMD"
 echo "I) Intel"
 echo "N) NVIDIA"
 echo
@@ -14,10 +13,6 @@ read -p "Select a letter [A/I/N] or [exit] to quit: " user_choice
 
 # Handle user input
 case "$user_choice" in
-    A|a)
-        echo "Redirecting to AMD driver management..."
-        /pg/scripts/amd.sh
-        ;;
     I|i)
         echo "Redirecting to Intel driver management..."
         /pg/scripts/intel.sh
