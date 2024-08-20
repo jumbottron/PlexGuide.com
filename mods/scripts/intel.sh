@@ -19,19 +19,17 @@ check_intel_top_installed() {
 
 # Function to generate a random 4-digit code
 generate_code() {
-    echo $((RANDOM % 9000 + 1000))
+    echo -e "${RED}$((RANDOM % 9000 + 1000))${NC}"
 }
 
 # Function to install Intel Top
 install_intel_top() {
     if command -v intel_gpu_top &> /dev/null; then
         echo "Intel Top is already installed. Upgrading to the latest version..."
-        # Command to upgrade Intel Top (replace with actual upgrade command)
-        # sudo apt-get update && sudo apt-get upgrade intel-gpu-tools -y
+        sudo apt-get update && sudo apt-get upgrade intel-gpu-tools -y
     else
         echo "Installing Intel Top..."
-        # Command to install Intel Top (replace with actual install command)
-        # sudo apt-get update && sudo apt-get install intel-gpu-tools -y
+        sudo apt-get update && sudo apt-get install intel-gpu-tools -y
     fi
     echo "Intel Top installation/upgrade complete."
 }
@@ -40,8 +38,7 @@ install_intel_top() {
 uninstall_intel_top() {
     if command -v intel_gpu_top &> /dev/null; then
         echo "Uninstalling Intel Top..."
-        # Command to uninstall Intel Top (replace with actual uninstall command)
-        # sudo apt-get remove intel-gpu-tools -y
+        sudo apt-get remove intel-gpu-tools -y
         echo "Intel Top has been uninstalled."
     else
         echo -e "${RED}Intel Top cannot be uninstalled because it is not installed.${NC}"
@@ -66,9 +63,10 @@ intel_top_menu() {
 
         case ${choice,,} in  # Convert input to lowercase for i/I, u/U, z/Z handling
             i)
+                clear
                 code=$(generate_code)
-                read -p "Enter the 4-digit code [$code] to proceed or type 'exit' to go back: " input_code
-                if [[ "$input_code" == "$code" ]]; then
+                read -p "Enter the 4-digit code $code to proceed or type [${GREEN}exit${NC}] to go back: " input_code
+                if [[ "$input_code" == "${code//[!0-9]/}" ]]; then
                     install_intel_top
                 elif [[ "${input_code,,}" == "exit" ]]; then
                     continue
@@ -78,9 +76,10 @@ intel_top_menu() {
                 read -p "Press Enter to continue..."
                 ;;
             u)
+                clear
                 code=$(generate_code)
-                read -p "Enter the 4-digit code [$code] to proceed or type 'exit' to go back: " input_code
-                if [[ "$input_code" == "$code" ]]; then
+                read -p "Enter the 4-digit code $code to proceed or type [${GREEN}exit${NC}] to go back: " input_code
+                if [[ "$input_code" == "${code//[!0-9]/}" ]]; then
                     uninstall_intel_top
                 elif [[ "${input_code,,}" == "exit" ]]; then
                     continue
