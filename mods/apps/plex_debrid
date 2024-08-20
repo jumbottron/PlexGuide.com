@@ -4,10 +4,6 @@
 config_path="/pg/config/plex_debrid"
 app_name="plex_debrid"
 
-# Pull the Docker image
-echo "Pulling the itstoggle/plex_debrid Docker image..."
-docker pull itstoggle/plex_debrid
-
 # Run the Docker container with the specified settings
 echo "Running the itstoggle/plex_debrid Docker container..."
 docker run -d \
