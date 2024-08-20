@@ -60,11 +60,11 @@ Jacket, JellyFin, Lidarr, NetData, NZBGET, Overseer, Ombi, SABNZBD, Plex, Prowla
 - **Port and AppData Management**: Change app ports and AppData locations.
 - **Quick Reinstall/Update of PG Beta**: Streamlined process for reinstalling or updating to the latest PG Beta.
 - **SSH Installer/Manager**: Added for easy SSH management.
+- **Intel/NVIDIA GPU Manager**: Install / Uninstall GPU Drivers easily.
 
 ### **In Progress**
 
 - [ ] Enable Personal Apps from Personal Repo  
-- [ ] Install GPU Drivers & Add-ons to Apps  
 - [ ] Incorporate MergerFS to Merge Multiple Local Drives (Main Focus)  
 - [ ] Incorporate CloudDrives (Secondary Focus)  
 - [ ] AppData Backup & Restore  
