@@ -14,7 +14,7 @@ load_config
 # Function for Graphics Cards option
 graphics_cards() {
     clear
-    /pg/apps/graphics.sh
+    /pg/scripts/graphics.sh
 }
 
 # Function for SSH Management option
