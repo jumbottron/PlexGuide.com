@@ -98,7 +98,7 @@ deployment_function() {
             display_available_apps "${APP_LIST[@]}"
         fi
         
-        echo "════════════════════════════════════════════════════════════════════"
+        echo "════════════════════════════════════════════════════════════════════════════════"
         # Prompt the user to enter an app name or exit
         read -p "$(echo -e "Type [${GREEN}App${NC}] to Deploy or [${RED}Exit${NC}]: ")" app_choice
 
