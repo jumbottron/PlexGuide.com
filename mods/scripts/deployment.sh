@@ -13,6 +13,10 @@ source /pg/scripts/apps_interface
 # Clear the screen at the start
 clear
 
+# Terminal width and maximum character length per line
+TERMINAL_WIDTH=98
+MAX_LINE_LENGTH=91
+
 # Function to create the /pg/apps directory if it doesn't exist
 create_apps_directory() {
     [[ ! -d "/pg/apps" ]] && mkdir -p /pg/apps
@@ -31,6 +35,33 @@ list_available_apps() {
     done
 
     echo "${available_apps[@]}"
+}
+
+# Function to display the available apps in a formatted way
+display_available_apps() {
+    local apps_list=("$@")
+    local current_line="Available Apps: "
+    local current_length=${#current_line}
+
+    for app in "${apps_list[@]}"; do
+        local app_length=${#app}
+        local new_length=$((current_length + app_length + 1)) # +1 for the space
+
+        # If adding the app would exceed the maximum length, start a new line
+        if [[ $new_length -gt $TERMINAL_WIDTH ]]; then
+            echo "$current_line"
+            current_line="$app "
+            current_length=$((app_length + 1)) # Reset with the new app and a space
+        else
+            current_line+="$app "
+            current_length=$new_length
+        fi
+    done
+
+    # Print the last line if it has content
+    if [[ -n $current_line ]]; then
+        echo "$current_line"
+    fi
 }
 
 # Function to deploy the selected app
@@ -64,7 +95,7 @@ deployment_function() {
         if [[ ${#APP_LIST[@]} -eq 0 ]]; then
             echo -e "${ORANGE}No More Apps To Deploy${NC}"
         else
-            echo -e "${GREEN}Available Apps:${NC} ${APP_LIST[*]}"
+            display_available_apps "${APP_LIST[@]}"
         fi
         
         echo ""  # Blank line for separation
@@ -83,3 +114,6 @@ deployment_function() {
         fi
     done
 }
+
+# Call the main deployment function
+deployment_function
