@@ -14,8 +14,8 @@ source /pg/scripts/apps_interface
 clear
 
 # Terminal width and maximum character length per line
-TERMINAL_WIDTH=98
-MAX_LINE_LENGTH=91
+TERMINAL_WIDTH=80
+MAX_LINE_LENGTH=72
 
 # Function to list running Docker apps, excluding cf_tunnel
 list_running_docker_apps() {
@@ -80,7 +80,7 @@ running_function() {
         # Display the list of running Docker apps, excluding cf_tunnel
         display_running_apps "${APP_LIST[@]}"
         
-        echo "════════════════════════════════════════════════════════════════════════════════════════════════"
+        echo "═════════════════════════════════════════════════════════════════"
         # Prompt the user to enter an app name or exit
         read -p "$(echo -e "Type [${GREEN}App${NC}] to View/Edit or [${RED}Exit${NC}]: ")" app_choice
 
