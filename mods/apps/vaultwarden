@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ##### Port Number: 4748
-##### AppData Path: /pg/apps/vaultwarden
+##### AppData Path: /pg/appdata/vaultwarden
 ##### Signups Enabled: false
 ##### WebSocket Enabled: false
 
