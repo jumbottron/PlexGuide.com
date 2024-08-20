@@ -65,7 +65,7 @@ intel_top_menu() {
         echo ""  # Space between options and input prompt
 
         # Prompt the user for input
-        read -p "Enter your choice [I/Z${uninstall_option:+/U}]: " choice
+        read -p "Enter your choice: " choice
 
         case ${choice,,} in  # Convert input to lowercase for i/I, u/U, z/Z handling
             i)
