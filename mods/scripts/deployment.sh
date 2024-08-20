@@ -14,8 +14,8 @@ source /pg/scripts/apps_interface
 clear
 
 # Terminal width and maximum character length per line
-TERMINAL_WIDTH=98
-MAX_LINE_LENGTH=91
+TERMINAL_WIDTH=80
+MAX_LINE_LENGTH=72
 
 # Function to create the /pg/apps directory if it doesn't exist
 create_apps_directory() {
@@ -98,7 +98,7 @@ deployment_function() {
             display_available_apps "${APP_LIST[@]}"
         fi
         
-        echo "════════════════════════════════════════════════════════════════════════════════════════════════"
+        echo "════════════════════════════════════════════════════════════════════"
         # Prompt the user to enter an app name or exit
         read -p "$(echo -e "Type [${GREEN}App${NC}] to Deploy or [${RED}Exit${NC}]: ")" app_choice
 
