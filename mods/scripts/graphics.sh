@@ -6,6 +6,7 @@ echo "PG: GPU Driver Management"
 echo
 echo "I) Intel"
 echo "N) NVIDIA"
+echo "Z) Exit"
 echo
 
 # Prompt the user for input
