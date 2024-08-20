@@ -20,15 +20,16 @@ fi
 # Prompt the user for the Plex claim key
 read -p "Enter your Plex claim key: " CLAIM_KEY
 
-# Run the Plex Docker container with the specified settings
+# Run the Plex Docker container with the specified settings, including the Real-Debrid volume
 docker run -d \
   --name="${app_name}" \
   --network=host \
-  -e PLEX_CLAIM=$CLAIM_KEY \
+  -e PLEX_CLAIM="$CLAIM_KEY" \
   -e TZ="${time_zone}" \
   -v "${appdata_path}":/config \
   -v "${media_path}":/media \
   -v /etc/localtime:/etc/localtime:ro \
+  -v realdebrid:/torrents \
   --restart unless-stopped \
   plexinc/pms-docker:plexpass
 
