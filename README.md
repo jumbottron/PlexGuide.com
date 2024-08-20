@@ -71,3 +71,4 @@ Jacket, JellyFin, Lidarr, NetData, NZBGET, Overseer, Ombi, SABNZBD, Plex, Prowla
 - [ ] Enable Updates to Provide Alpha, Beta, and Stable Builds  
 - [ ] Add More Applications  
 - [ ] Create Detailed Wiki
+- [ ] Deployment of PlexDebrid
