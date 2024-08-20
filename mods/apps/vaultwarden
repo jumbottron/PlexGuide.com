@@ -32,7 +32,6 @@ fi
 # Run the Vaultwarden container with the specified settings
 docker run -d \
   --name="${app_name}" \
-  -e ADMIN_TOKEN="${admin_token}" \
   -e SIGNUPS_ALLOWED="${signups_allowed}" \
   -e INVITATIONS_ALLOWED="${invitations_allowed}" \
   -e WEBSOCKET_ENABLED="${websocket_enabled}" \
