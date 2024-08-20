@@ -1,8 +1,9 @@
 #!/bin/bash
 
-##### Port Number: 4748
-##### AppData Path: /pg/appdata/vaultwarden
-##### Signups Enabled: false
+##### Port Number: 4743
+##### AppData Path: /mnt/user/appdata/vaultwarden
+##### Signups Allowed: false
+##### Invitations Allowed: false
 ##### WebSocket Enabled: false
 
 # Specify the app name and config file path
@@ -18,15 +19,24 @@ generate_random_token() {
 if [[ ! -f "$config_path" ]]; then
     echo "Creating configuration file at $config_path."
     mkdir -p "$(dirname "$config_path")"
-    echo "port_number=4748" > "$config_path"
-    echo "appdata_path=/pg/apps/vaultwarden" >> "$config_path"
+    echo "port_number=4743" > "$config_path"
+    echo "appdata_path=/mnt/user/appdata/vaultwarden" >> "$config_path"
     echo "admin_token=$(generate_random_token)" >> "$config_path"
-    echo "signups_enabled=false" >> "$config_path"
+    echo "signups_allowed=false" >> "$config_path"
+    echo "invitations_allowed=false" >> "$config_path"
     echo "websocket_enabled=false" >> "$config_path"
 fi
 
-# Source the configuration file to get the appdata_path, port_number, admin_token, signups_enabled, and websocket_enabled
+# Source the configuration file
 source "$config_path"
+
+# Ensure the appdata path exists and is a directory
+if [[ ! -d "$appdata_path" ]]; then
+    echo "Creating appdata directory at $appdata_path."
+    mkdir -p "$appdata_path"
+    chmod -R 775 "$appdata_path"
+    chown -R nobody:users "$appdata_path"
+fi
 
 # Generate a random admin token if it's not already set in the config file
 if [[ -z "$admin_token" ]]; then
@@ -41,11 +51,21 @@ docker pull vaultwarden/server:latest
 # Run the Vaultwarden container with the specified settings
 docker run -d \
   --name="${app_name}" \
-  -e ADMIN_TOKEN="${admin_token}" \
-  -e SIGNUPS_ALLOWED="${signups_enabled}" \
+  --net="bridge" \
+  --pids-limit 2048 \
+  -e TZ="America/New_York" \
+  -e HOST_OS="Unraid" \
+  -e HOST_HOSTNAME="Tower" \
+  -e HOST_CONTAINERNAME="${app_name}" \
+  -e SIGNUPS_ALLOWED="${signups_allowed}" \
+  -e INVITATIONS_ALLOWED="${invitations_allowed}" \
   -e WEBSOCKET_ENABLED="${websocket_enabled}" \
-  -p "${port_number}":4748 \
-  -v "${appdata_path}":/data/ \
+  -e ADMIN_TOKEN="${admin_token}" \
+  -l net.unraid.docker.managed="dockerman" \
+  -l net.unraid.docker.webui="http://[IP]:[PORT:80]/admin" \
+  -l net.unraid.docker.icon="https://raw.githubusercontent.com/selfhosters/unRAID-CA-templates/master/templates/img/vaultwarden.png" \
+  -p "${port_number}:80/tcp" \
+  -v "${appdata_path}:/data:rw" \
   --restart unless-stopped \
   vaultwarden/server:latest
 
