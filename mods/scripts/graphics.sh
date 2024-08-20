@@ -9,7 +9,7 @@ echo "N) NVIDIA"
 echo
 
 # Prompt the user for input
-read -p "Select a letter [A/I/N] or [exit] to quit: " user_choice
+read -p "Select a letter [A/I/Z]: " user_choice
 
 # Handle user input
 case "$user_choice" in
@@ -21,7 +21,7 @@ case "$user_choice" in
         echo "Redirecting to Nvidia driver management..."
         /pg/scripts/nvidia.sh
         ;;
-    exit|EXIT|Exit)
+    Z|z)
         echo "Exiting..."
         exit 0
         ;;
