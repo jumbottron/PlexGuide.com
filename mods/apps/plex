@@ -20,12 +20,6 @@ fi
 # Prompt the user for the Plex claim key
 read -p "Enter your Plex claim key: " CLAIM_KEY
 
-# Set the default Docker image version, appdata location, and timezone
-DOCKER_VERSION=${2:-"latest"}
-
-# Pull the specified version of the Plex Docker image
-docker pull plexinc/pms-docker:$DOCKER_VERSION
-
 # Run the Plex Docker container with the specified settings
 docker run -d \
   --name="${app_name}" \
@@ -36,7 +30,7 @@ docker run -d \
   -v "${media_path}":/media \
   -v /etc/localtime:/etc/localtime:ro \
   --restart unless-stopped \
-  plexinc/pms-docker:$DOCKER_VERSION
+  plexinc/pms-docker:plexpass
 
 # Verify the Docker container is running
 docker ps | grep "$app_name"
