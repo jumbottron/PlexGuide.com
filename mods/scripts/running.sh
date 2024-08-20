@@ -80,7 +80,7 @@ running_function() {
         # Display the list of running Docker apps, excluding cf_tunnel
         display_running_apps "${APP_LIST[@]}"
         
-        echo "═══════════════════════════════════════════════════════════════════════════════"
+        echo "════════════════════════════════════════════════════════════════════════════════"
         # Prompt the user to enter an app name or exit
         read -p "$(echo -e "Type [${GREEN}App${NC}] to View/Edit or [${RED}Exit${NC}]: ")" app_choice
 
