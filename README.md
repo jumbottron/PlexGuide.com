@@ -14,7 +14,7 @@ Visit the [PlexGuide Installation Information](https://github.com/plexguide/Plex
 ## PlexGuide Wiki 
 The [Wiki](https://github.com/plexguide/PlexGuide.com/wiki) will also provide more information in regards to docker, applications, and much more!
 
-### Quick Instatllation Command
+### Quick Install Command
 
 ```bash
 sudo apt-get update -y && sudo apt-get install -y curl git && curl -o /tmp/install.sh https://raw.githubusercontent.com/plexguide/PlexGuide.com/v11/mods/install/install.sh && chmod +x /tmp/install.sh && /tmp/install.sh && chmod +x /pg/scripts/menu.sh && /pg/scripts/menu.sh
