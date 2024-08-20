@@ -20,7 +20,7 @@ case "$user_choice" in
         ;;
     I|i)
         echo "Redirecting to Intel driver management..."
-        /path/to/intel.sh
+        /pg/scripts/intel.sh
         ;;
     N|n)
         echo "Option N) NVIDIA will be updated. Press Enter to acknowledge."
