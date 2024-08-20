@@ -1,0 +1,53 @@
+#!/bin/bash
+
+##### Port Number: 4748
+##### AppData Path: /pg/apps/vaultwarden
+##### Signups Enabled: false
+##### WebSocket Enabled: false
+
+# Specify the app name and config file path
+app_name="vaultwarden"
+config_path="/pg/config/${app_name}.cfg"
+
+# Function to generate a random 16-character admin token (letters a-z and numbers 0-9)
+generate_random_token() {
+    tr -dc 'a-z0-9' < /dev/urandom | head -c 16
+}
+
+# Create the config file if it doesn't exist
+if [[ ! -f "$config_path" ]]; then
+    echo "Creating configuration file at $config_path."
+    mkdir -p "$(dirname "$config_path")"
+    echo "port_number=4748" > "$config_path"
+    echo "appdata_path=/pg/apps/vaultwarden" >> "$config_path"
+    echo "admin_token=$(generate_random_token)" >> "$config_path"
+    echo "signups_enabled=false" >> "$config_path"
+    echo "websocket_enabled=false" >> "$config_path"
+fi
+
+# Source the configuration file to get the appdata_path, port_number, admin_token, signups_enabled, and websocket_enabled
+source "$config_path"
+
+# Generate a random admin token if it's not already set in the config file
+if [[ -z "$admin_token" ]]; then
+    echo "Admin token not found in the config file. Generating a new one."
+    admin_token=$(generate_random_token)
+    echo "admin_token=$admin_token" >> "$config_path"
+fi
+
+# Pull the latest Vaultwarden image
+docker pull vaultwarden/server:latest
+
+# Run the Vaultwarden container with the specified settings
+docker run -d \
+  --name="${app_name}" \
+  -e ADMIN_TOKEN="${admin_token}" \
+  -e SIGNUPS_ALLOWED="${signups_enabled}" \
+  -e WEBSOCKET_ENABLED="${websocket_enabled}" \
+  -p "${port_number}":4748 \
+  -v "${appdata_path}":/data/ \
+  --restart unless-stopped \
+  vaultwarden/server:latest
+
+# Verify the Docker container is running
+docker ps | grep "$app_name"
