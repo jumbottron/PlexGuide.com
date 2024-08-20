@@ -31,7 +31,7 @@ install_intel_top() {
         echo "Installing Intel Top..."
         sudo apt-get update && sudo apt-get install intel-gpu-tools -y
     fi
-    echo "Intel Top installation/upgrade complete."
+    echo -e "${GREEN}Intel Top installation/upgrade complete.${NC}"
 }
 
 # Function to uninstall Intel Top
@@ -39,7 +39,7 @@ uninstall_intel_top() {
     if command -v intel_gpu_top &> /dev/null; then
         echo "Uninstalling Intel Top..."
         sudo apt-get remove intel-gpu-tools -y
-        echo "Intel Top has been uninstalled."
+        echo -e "${GREEN}Intel Top has been uninstalled.${NC}"
     else
         echo -e "${RED}Intel Top cannot be uninstalled because it is not installed.${NC}"
     fi
@@ -65,8 +65,7 @@ intel_top_menu() {
             i)
                 clear
                 code=$(generate_code)
-                echo -e "Enter the 4-digit code ${RED}$code${NC} to proceed or type [${GREEN}exit${NC}] to go back: "
-                read -r input_code
+                read -p "Enter the 4-digit code ${RED}$code${NC} to proceed or type [${GREEN}exit${NC}] to go back: " input_code
                 if [[ "$input_code" == "$code" ]]; then
                     install_intel_top
                 elif [[ "${input_code,,}" == "exit" ]]; then
@@ -79,8 +78,7 @@ intel_top_menu() {
             u)
                 clear
                 code=$(generate_code)
-                echo -e "Enter the 4-digit code ${RED}$code${NC} to proceed or type [${GREEN}exit${NC}] to go back: "
-                read -r input_code
+                read -p "Enter the 4-digit code ${RED}$code${NC} to proceed or type [${GREEN}exit${NC}] to go back: " input_code
                 if [[ "$input_code" == "$code" ]]; then
                     uninstall_intel_top
                 elif [[ "${input_code,,}" == "exit" ]]; then
