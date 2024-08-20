@@ -40,8 +40,8 @@ list_available_apps() {
 # Function to display the available apps in a formatted way
 display_available_apps() {
     local apps_list=("$@")
-    local current_line="Available Apps: "
-    local current_length=${#current_line}
+    local current_line=""
+    local current_length=0
 
     for app in "${apps_list[@]}"; do
         local app_length=${#app}
@@ -89,7 +89,7 @@ deployment_function() {
         # Get the list of available apps
         APP_LIST=($(list_available_apps))
 
-        echo -e "${BLUE}PG: App Deployment - Available Apps${NC}"
+        echo -e "${RED}PG: Deployable Apps${NC}"
         echo ""  # Blank line for separation
 
         if [[ ${#APP_LIST[@]} -eq 0 ]]; then
@@ -98,8 +98,8 @@ deployment_function() {
             display_available_apps "${APP_LIST[@]}"
         fi
         
-        echo ""  # Blank line for separation
-
+        echo "════════════════════════════════════════════════════════════════════════════════════════════════"
+        # Prompt the user to enter an app name or exit
         read -p "$(echo -e "Type [${GREEN}App${NC}] to Deploy or [${RED}Exit${NC}]: ")" app_choice
 
         app_choice=$(echo "$app_choice" | tr '[:upper:]' '[:lower:]')
