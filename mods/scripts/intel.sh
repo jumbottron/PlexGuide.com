@@ -51,21 +51,26 @@ intel_top_menu() {
         clear
         echo -e "${BLUE}PG: Intel Top Management${NC}"
         echo -n "Status: "
-        check_intel_top_installed
-        echo ""  # Space for separation
-        echo "I) Install Intel Top"
-        echo "U) Uninstall Intel Top"
+        
+        if check_intel_top_installed; then
+            echo "I) Reinstall/Upgrade Intel Top"
+            echo "U) Uninstall Intel Top"
+        else
+            echo "I) Install Intel Top"
+        fi
+        
         echo "Z) Exit"
         echo ""  # Space between options and input prompt
 
         # Prompt the user for input
-        read -p "Enter your choice [I/U/Z]: " choice
+        read -p "Enter your choice [I/Z${uninstall_option:+/U}]: " choice
 
         case ${choice,,} in  # Convert input to lowercase for i/I, u/U, z/Z handling
             i)
                 clear
                 code=$(generate_code)
-                read -p "Enter the 4-digit code ${RED}$code${NC} to proceed or type [${GREEN}exit${NC}] to go back: " input_code
+                echo -e "Enter the 4-digit code ${RED}$code${NC} to proceed or type [${GREEN}exit${NC}] to go back: "
+                read -r input_code
                 if [[ "$input_code" == "$code" ]]; then
                     install_intel_top
                 elif [[ "${input_code,,}" == "exit" ]]; then
@@ -78,7 +83,8 @@ intel_top_menu() {
             u)
                 clear
                 code=$(generate_code)
-                read -p "Enter the 4-digit code ${RED}$code${NC} to proceed or type [${GREEN}exit${NC}] to go back: " input_code
+                echo -e "Enter the 4-digit code ${RED}$code${NC} to proceed or type [${GREEN}exit${NC}] to go back: "
+                read -r input_code
                 if [[ "$input_code" == "$code" ]]; then
                     uninstall_intel_top
                 elif [[ "${input_code,,}" == "exit" ]]; then
