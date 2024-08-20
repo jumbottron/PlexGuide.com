@@ -15,8 +15,8 @@ read -p "Select a letter [A/I/N] or [exit] to quit: " user_choice
 # Handle user input
 case "$user_choice" in
     A|a)
-        echo "Option A) AMD will be updated. Press Enter to acknowledge."
-        read -p ""
+        echo "Redirecting to AMD driver management..."
+        /pg/scripts/amd.sh
         ;;
     I|i)
         echo "Redirecting to Intel driver management..."
