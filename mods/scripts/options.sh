@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Configuration file path
-CONFIG_FILE="/pg/config/config.cfg"
-
 # ANSI color codes
 RED="\033[0;31m"
 BLUE="\033[0;34m"
@@ -11,27 +8,13 @@ NC="\033[0m" # No color
 # Clear the screen at the start
 clear
 
-# Function to source the configuration file
-load_config() {
-    if [[ -f "$CONFIG_FILE" ]]; then
-        source "$CONFIG_FILE"
-    else
-        echo "VERSION=\"11.0 Beta\"" > "$CONFIG_FILE"
-        source "$CONFIG_FILE"
-    fi
-}
-
 # Load the configuration
 load_config
 
 # Function for Graphics Cards option
 graphics_cards() {
     clear
-    echo -e "${BLUE}Graphics Cards Management${NC}"
-    echo ""  # Space for separation
-    echo "This is where you'd manage your Graphics Cards."
-    echo "Add your GPU-related commands here."
-    read -p "Press Enter to return to the main menu..."
+    /pg/apps/graphics.sh
 }
 
 # Function for SSH Management option
