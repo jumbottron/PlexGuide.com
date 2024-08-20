@@ -25,8 +25,8 @@ list_running_docker_apps() {
 # Function to display running Docker apps in a formatted way
 display_running_apps() {
     local apps_list=("$@")
-    local current_line="App to View/Edit: "
-    local current_length=${#current_line}
+    local current_line=""
+    local current_length=0
 
     for app in "${apps_list[@]}"; do
         local app_length=${#app}
@@ -74,16 +74,13 @@ running_function() {
             exit 0
         fi
 
-        echo -e "${BLUE}PG: Running Apps - View/Edit${NC}"
+        echo -e "${RED}PG: Running Apps [View | Edit]${NC}"
         echo ""  # Blank line for separation
 
         # Display the list of running Docker apps, excluding cf_tunnel
         display_running_apps "${APP_LIST[@]}"
         
-        echo ""  # Add a blank line for separation
-        echo "--------------------------------------------------------------------------------"
-        echo ""  # Add another blank line for separation
-
+        echo "════════════════════════════════════════════════════════════════════════════════════════════════"
         # Prompt the user to enter an app name or exit
         read -p "$(echo -e "Type [${GREEN}App${NC}] to View/Edit or [${RED}Exit${NC}]: ")" app_choice
 
