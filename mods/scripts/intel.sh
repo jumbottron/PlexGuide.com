@@ -51,6 +51,7 @@ intel_top_menu() {
         clear
         echo -e "${BLUE}PG: Intel Top Management${NC}"
         echo -n "Status: "
+        echo ""
         
         if check_intel_top_installed; then
             echo "I) Reinstall/Upgrade Intel Top"
