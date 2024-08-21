@@ -24,4 +24,4 @@ done
 [ -n "$current_line" ] && echo "$current_line"
 
 echo
-read -p "Press [Enter] to exit the view." dummy
+read -p "Press [Enter] to Exit" dummy
