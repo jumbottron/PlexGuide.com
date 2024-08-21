@@ -68,18 +68,23 @@ open_port() {
 
     echo
     code=$(generate_code)
-    read -p "$(echo -e "Enter the 4-digit code [${RED}${code}${NC}] to proceed or [${GREEN}exit${NC}] to cancel: ")" input_code
 
-    if [[ "$input_code" == "$code" ]]; then
-        # Command to open the port for both IPv4/IPv6 and TCP/UDP
-        sudo ufw allow $port_number/tcp
-        sudo ufw allow $port_number/udp
-        print_wrapped_text "Port $port_number has been opened for TCP and UDP on both IPv4 and IPv6." "$GREEN"
-    elif [[ "${input_code,,}" == "exit" ]]; then
-        print_wrapped_text "Operation cancelled." "$NC"
-    else
-        print_wrapped_text "Incorrect code. Operation aborted." "$NC"
-    fi
+    while true; do
+        read -p "$(echo -e "Enter the 4-digit code [${RED}${code}${NC}] to proceed or [${GREEN}exit${NC}] to cancel: ")" input_code
+
+        if [[ "$input_code" == "$code" ]]; then
+            # Command to open the port for both IPv4/IPv6 and TCP/UDP
+            sudo ufw allow $port_number/tcp
+            sudo ufw allow $port_number/udp
+            print_wrapped_text "Port $port_number has been opened for TCP and UDP on both IPv4 and IPv6." "$GREEN"
+            break
+        elif [[ "${input_code,,}" == "exit" ]]; then
+            print_wrapped_text "Operation cancelled." "$NC"
+            break
+        else
+            print_wrapped_text "Incorrect code. Please try again." "$RED"
+        fi
+    done
 
     read -p "Press Enter to return..."
 }
