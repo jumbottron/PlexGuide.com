@@ -61,7 +61,7 @@ while true; do
 
   case "$choice" in
     V|v) bash /pg/scripts/portsecurity_view.sh ;;
-    O|o) open_port ;;
+    O|o) bash /pg/scripts/portsecurity_open.sh ;;
     C|c) close_port ;;
     Z|z) exit 0 ;;
     *) echo "Invalid option. Please try again." ;;
