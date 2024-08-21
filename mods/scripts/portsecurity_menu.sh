@@ -31,11 +31,7 @@ prompt_for_code() {
 open_port() {
   clear_screen
   prompt_for_code
-  read -p "Enter the port number to open: " port_number
-  # Replace the following line with the actual command to open a port
-  echo "Opening port $port_number..."
-  # Example: sudo ufw allow $port_number
-  echo "Port $port_number has been opened."
+  echo "This is an example placeholder for opening a port until implemented."
   read -p "Press Enter to return to the menu..."
 }
 
@@ -43,27 +39,23 @@ open_port() {
 close_port() {
   clear_screen
   prompt_for_code
-  read -p "Enter the port number to close: " port_number
-  # Replace the following line with the actual command to close a port
-  echo "Closing port $port_number..."
-  # Example: sudo ufw deny $port_number
-  echo "Port $port_number has been closed."
+  echo "This is an example placeholder for closing a port until implemented."
   read -p "Press Enter to return to the menu..."
 }
 
 # Main menu loop
 while true; do
   clear_screen
-  echo -e "\e[31mV) View Open Ports\e[0m"
-  echo -e "\e[31mO) Open a Port\e[0m"
-  echo -e "\e[31mC) Close a Port\e[0m"
-  echo -e "\e[31mZ) Exit\e[0m"
+  echo "V) View Open Ports"
+  echo "O) Open a Port"
+  echo "C) Close a Port"
+  echo "Z) Exit"
   echo
 
   read -p "Choose an option: " choice
 
   case "$choice" in
-    V|v) bash ./portsecurity_view.sh ;;
+    V|v) bash /pg/scripts/portsecurity_view.sh ;;
     O|o) open_port ;;
     C|c) close_port ;;
     Z|z) exit 0 ;;
