@@ -72,8 +72,7 @@ nvidia_drivers_menu() {
             i)
                 clear
                 code=$(generate_code)
-                echo -e "Enter the 4-digit code ${RED}$code${NC} to proceed or type [${GREEN}exit${NC}] to go back: "
-                read -r input_code
+                read -p "$(echo -e "Enter the 4-digit code [${RED}${code}${NC}] to proceed or [${GREEN}exit${NC}] to go back: ")" input_code
                 if [[ "$input_code" == "$code" ]]; then
                     install_nvidia_drivers
                 elif [[ "${input_code,,}" == "exit" ]]; then
@@ -86,8 +85,7 @@ nvidia_drivers_menu() {
             u)
                 clear
                 code=$(generate_code)
-                echo -e "Enter the 4-digit code ${RED}$code${NC} to proceed or type [${GREEN}exit${NC}] to go back: "
-                read -r input_code
+                read -p "$(echo -e "Enter the 4-digit code [${RED}${code}${NC}] to proceed or [${GREEN}exit${NC}] to go back: ")" input_code
                 if [[ "$input_code" == "$code" ]]; then
                     uninstall_nvidia_drivers
                 elif [[ "${input_code,,}" == "exit" ]]; then
