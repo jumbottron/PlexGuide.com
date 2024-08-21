@@ -14,7 +14,7 @@ generate_code() {
 # Function to check if a port is open
 is_port_open() {
     local port=$1
-    if ss -tuln | grep -q ":$port "; then
+    if sudo ufw status | grep -q "$port"; then
         return 0
     else
         return 1
@@ -32,10 +32,13 @@ validate_port() {
     fi
 }
 
-# Function to open a port
+# Function to open a port for both IPv4 and IPv6, TCP and UDP
 open_port() {
     clear
-    echo -e "${BLUE}PG: PortSecurity - Open Port${NC}"
+    echo -e "${BLUE}PG: Firewall Security - Open Port${NC}"
+    echo
+    echo -e "${RED}WARNING: This is an advanced configuration.${NC}"
+    echo "For simplicity, if you open a port it will open it for IPv4 and IPv6 addresses and for TCP and UDP."
     echo
 
     read -p "Enter the port number you would like to open: " port_number
@@ -51,15 +54,15 @@ open_port() {
         exit 1
     fi
 
-    clear
-    echo "To confirm, you must type the 4-digit code to open port $port_number."
+    echo
     code=$(generate_code)
     read -p "$(echo -e "Enter the 4-digit code [${RED}${code}${NC}] to proceed or [${GREEN}exit${NC}] to cancel: ")" input_code
 
     if [[ "$input_code" == "$code" ]]; then
-        # Command to open the port (e.g., using UFW or iptables)
-        sudo ufw allow $port_number
-        echo -e "${GREEN}Port $port_number has been opened.${NC}"
+        # Command to open the port for both IPv4/IPv6 and TCP/UDP
+        sudo ufw allow $port_number/tcp
+        sudo ufw allow $port_number/udp
+        echo -e "${GREEN}Port $port_number has been opened for TCP and UDP on both IPv4 and IPv6.${NC}"
     elif [[ "${input_code,,}" == "exit" ]]; then
         echo "Operation cancelled."
     else
