@@ -6,11 +6,6 @@ GREEN="\033[0;32m"
 BLUE="\033[0;34m"
 NC="\033[0m" # No color
 
-# Function to generate a random 4-digit code
-generate_code() {
-    echo $((RANDOM % 9000 + 1000))
-}
-
 # Function to check if a port is open
 is_port_open() {
     local port=$1
@@ -32,25 +27,26 @@ validate_port() {
     fi
 }
 
-# Function to wrap text to 80 characters
-wrap_text() {
-    echo "$1" | fold -s -w 80
+# Function to print wrapped text with color support
+print_wrapped_text() {
+    local text="$1"
+    local color="$2"
+    echo -e "$color$(echo "$text" | fold -s -w 80)$NC"
 }
 
 # Function to open a port for both IPv4 and IPv6, TCP and UDP
 open_port() {
     clear
-    wrap_text "${BLUE}PG: Firewall Security - Open Port${NC}"
+    print_wrapped_text "PG: Firewall Security - Open Port" "$BLUE"
     echo
-    wrap_text "${RED}WARNING: This is an advanced configuration.${NC}"
-    wrap_text "For simplicity, if you open a port it will open it for IPv4 and IPv6 addresses"
-    wrap_text "and for TCP and UDP."
+    print_wrapped_text "WARNING: This is an advanced configuration." "$RED"
+    print_wrapped_text "For simplicity, if you open a port it will open it for IPv4 and IPv6 addresses and for TCP and UDP." "$NC"
     echo
 
     read -p "Enter the port number you would like to open: " port_number
 
     if is_port_open $port_number; then
-        wrap_text "${RED}Port $port_number is already open.${NC}"
+        print_wrapped_text "Port $port_number is already open." "$RED"
         read -p "Press Enter to return..."
         exit 0
     fi
@@ -62,17 +58,17 @@ open_port() {
 
     echo
     code=$(generate_code)
-    read -p "$(wrap_text "Enter the 4-digit code [${RED}${code}${NC}] to proceed or [${GREEN}exit${NC}] to cancel: ")" input_code
+    read -p "$(echo -e "Enter the 4-digit code [${RED}${code}${NC}] to proceed or [${GREEN}exit${NC}] to cancel: ")" input_code
 
     if [[ "$input_code" == "$code" ]]; then
         # Command to open the port for both IPv4/IPv6 and TCP/UDP
         sudo ufw allow $port_number/tcp
         sudo ufw allow $port_number/udp
-        wrap_text "${GREEN}Port $port_number has been opened for TCP and UDP on both IPv4 and IPv6.${NC}"
+        print_wrapped_text "Port $port_number has been opened for TCP and UDP on both IPv4 and IPv6." "$GREEN"
     elif [[ "${input_code,,}" == "exit" ]]; then
-        wrap_text "Operation cancelled."
+        print_wrapped_text "Operation cancelled." "$NC"
     else
-        wrap_text "Incorrect code. Operation aborted."
+        print_wrapped_text "Incorrect code. Operation aborted." "$NC"
     fi
 
     read -p "Press Enter to return..."
