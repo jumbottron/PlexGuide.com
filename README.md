@@ -23,31 +23,23 @@ sudo apt-get update -y && sudo apt-get install -y curl git && curl -o /tmp/insta
 ### Working on PG11
 
 * Simple, debloated, no fancy menus and executes for exactly what you need!
-* Very early beta and this will take awhile
-* To Test (Use Ubuntu or Debian) CMD Line: 
-
-Quick Notes:
-1. Once installed, type pg or plexguide <<<
+* Tested on UB 22/24 Server LTS (should work on Debian, but not tested)
+* To Test (Use Ubuntu or Debian) CMD Line; once installed, type `pg` or `plexguide`
 
 <p align="center">
-  <img src="https://i.imgur.com/tuJpsTR.jpeg" alt="Menu Example" width="65%">
-</p>
-<p align="center">
-  <img src="https://i.imgur.com/M7G2LLl.jpeg" alt="Plex Example" width="65%">
-</p>
-<p align="center">
-  <img src="https://i.imgur.com/goozBTI.jpeg" alt="Plex Example" width="65%">
-</p>
-<p align="center">
-  <img src="https://i.imgur.com/WkEyL9D.jpeg" alt="Plex Example" width="65%">
+  <table align="center">
+    <tr>
+      <td align="center"><img src="https://i.imgur.com/tuJpsTR.jpeg" alt="Menu Example" width="500"></td>
+      <td align="center"><img src="https://i.imgur.com/M7G2LLl.jpeg" alt="Plex Example" width="500"></td>
+    </tr>
+    <tr>
+      <td align="center"><img src="https://i.imgur.com/goozBTI.jpeg" alt="Plex Example" width="500"></td>
+      <td align="center"><img src="https://i.imgur.com/WkEyL9D.jpeg" alt="Plex Example" width="500"></td>
+    </tr>
+  </table>
 </p>
 
 ----
-Status: Early Beta - Works
-
-**Tested On:**  
-- Ubuntu 22 Desktop  
-- Ubuntu Server 24 LTS
 
 **<span style="color:green">Deployable Apps:</span>**  
 Jacket, JellyFin, Lidarr, NetData, NZBGET, Overseer, Ombi, SABNZBD, Plex, Prowlarr, Radarr, Sonarr, UpTimeKuma
