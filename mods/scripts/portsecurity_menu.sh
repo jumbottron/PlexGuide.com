@@ -53,7 +53,7 @@ while true; do
   echo "Z) Exit"
   echo
 
-  read -p "Choose an option: " choice
+  read -p "Choose Select an Option [V/O/C/Z]: " choice
 
   case "$choice" in
     V|v) bash /pg/scripts/portsecurity_view.sh ;;
