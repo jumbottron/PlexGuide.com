@@ -6,6 +6,11 @@ GREEN="\033[0;32m"
 BLUE="\033[0;34m"
 NC="\033[0m" # No color
 
+# Function to generate a random 4-digit code
+generate_code() {
+    echo $((RANDOM % 9000 + 1000))
+}
+
 # Function to check if a port is open
 is_port_open() {
     local port=$1
@@ -41,9 +46,15 @@ open_port() {
     echo
     print_wrapped_text "WARNING: This is an advanced configuration." "$RED"
     print_wrapped_text "For simplicity, if you open a port it will open it for IPv4 and IPv6 addresses and for TCP and UDP." "$NC"
+    print_wrapped_text "Understand the consequences of opening a firewall port and the security risk involved behind it." "$NC"
     echo
 
-    read -p "Enter the port number you would like to open: " port_number
+    read -p "$(echo -e "Enter the port number you would like to open or type [${GREEN}exit${NC}] to cancel: ")" port_number
+
+    if [[ "${port_number,,}" == "exit" ]]; then
+        echo "Operation cancelled."
+        exit 0
+    fi
 
     if is_port_open $port_number; then
         print_wrapped_text "Port $port_number is already open." "$RED"
