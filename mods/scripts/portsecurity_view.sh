@@ -1,27 +1,44 @@
 #!/bin/bash
 
-# Function to view open ports
-clear
-echo -e "\e[31mPG: Port Security View\e[0m"
-echo
+# ANSI color codes
+RED="\033[0;31m"
+GREEN="\033[0;32m"
+NC="\033[0m" # No color
 
-# Replace with the actual command to list open ports and sort them numerically
-open_ports=$(ss -tuln | grep LISTEN | awk '{print $5}' | cut -d: -f2 | sort -n | tr '\n' ',' | sed 's/,$//')
+# Function to check open ports on the firewall and format the output
+check_firewall_open_ports() {
+    clear
+    echo -e "${RED}PG: Firewall Open Ports Checker${NC}"
+    echo
 
-# Wrap open ports to fit within an 80-character width
-width=80
-current_line=""
-for port in ${open_ports//,/ }; do
-  if [ ${#current_line} -eq 0 ]; then
-    current_line="$port"
-  elif [ $((${#current_line} + ${#port} + 1)) -lt $width ]; then
-    current_line+=", $port"
-  else
-    echo "$current_line"
-    current_line="$port"
-  fi
-done
-[ -n "$current_line" ] && echo "$current_line"
+    # Gather the list of unique open ports
+    open_ports=$(sudo ufw status | grep -i "allow" | awk '{print $1}' | sed 's/\/.*//' | sort -n | uniq | tr '\n' ',' | sed 's/,$//')
 
-echo
-read -p "Press [Enter] to Exit" dummy
+    # Wrap open ports to fit within an 80-character width
+    max_width=80
+    current_line=""
+    for port in ${open_ports//,/ }; do
+        if [ ${#current_line} -eq 0 ]; then
+            current_line="$port"
+        elif [ $((${#current_line} + ${#port} + 2)) -lt $max_width ]; then
+            current_line+=", $port"
+        else
+            echo "$current_line"
+            current_line="$port"
+        fi
+    done
+
+    # Print the last line if it exists
+    [ -n "$current_line" ] && echo "$current_line"
+
+    # Print the separator line (80 characters long)
+    echo "════════════════════════════════════════════════════════════════════════════════"
+
+    echo -e "Press [${GREEN}Enter${NC}] to Exit"
+}
+
+# Call the function
+check_firewall_open_ports
+
+# Prompt to exit
+read -p "" dummy
