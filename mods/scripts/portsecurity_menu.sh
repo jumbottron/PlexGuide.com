@@ -13,7 +13,7 @@ generate_code() {
 # Function to clear the screen and display the main header
 clear_screen() {
   clear
-  echo -e "${RED}PG: Port Security${NC}"
+  echo -e "${RED}PG: Firewall Port Security${NC}"
   echo
 }
 
