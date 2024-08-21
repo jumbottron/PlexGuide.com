@@ -32,19 +32,25 @@ validate_port() {
     fi
 }
 
+# Function to wrap text to 80 characters
+wrap_text() {
+    echo "$1" | fold -s -w 80
+}
+
 # Function to open a port for both IPv4 and IPv6, TCP and UDP
 open_port() {
     clear
-    echo -e "${BLUE}PG: Firewall Security - Open Port${NC}"
+    wrap_text "${BLUE}PG: Firewall Security - Open Port${NC}"
     echo
-    echo -e "${RED}WARNING: This is an advanced configuration.${NC}"
-    echo "For simplicity, if you open a port it will open it for IPv4 and IPv6 addresses and for TCP and UDP."
+    wrap_text "${RED}WARNING: This is an advanced configuration.${NC}"
+    wrap_text "For simplicity, if you open a port it will open it for IPv4 and IPv6 addresses"
+    wrap_text "and for TCP and UDP."
     echo
 
     read -p "Enter the port number you would like to open: " port_number
 
     if is_port_open $port_number; then
-        echo -e "${RED}Port $port_number is already open.${NC}"
+        wrap_text "${RED}Port $port_number is already open.${NC}"
         read -p "Press Enter to return..."
         exit 0
     fi
@@ -56,17 +62,17 @@ open_port() {
 
     echo
     code=$(generate_code)
-    read -p "$(echo -e "Enter the 4-digit code [${RED}${code}${NC}] to proceed or [${GREEN}exit${NC}] to cancel: ")" input_code
+    read -p "$(wrap_text "Enter the 4-digit code [${RED}${code}${NC}] to proceed or [${GREEN}exit${NC}] to cancel: ")" input_code
 
     if [[ "$input_code" == "$code" ]]; then
         # Command to open the port for both IPv4/IPv6 and TCP/UDP
         sudo ufw allow $port_number/tcp
         sudo ufw allow $port_number/udp
-        echo -e "${GREEN}Port $port_number has been opened for TCP and UDP on both IPv4 and IPv6.${NC}"
+        wrap_text "${GREEN}Port $port_number has been opened for TCP and UDP on both IPv4 and IPv6.${NC}"
     elif [[ "${input_code,,}" == "exit" ]]; then
-        echo "Operation cancelled."
+        wrap_text "Operation cancelled."
     else
-        echo "Incorrect code. Operation aborted."
+        wrap_text "Incorrect code. Operation aborted."
     fi
 
     read -p "Press Enter to return..."
