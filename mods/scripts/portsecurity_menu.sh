@@ -16,7 +16,8 @@ clear_screen() {
 prompt_for_code() {
   local correct_code=$(generate_code)
   while true; do
-    read -p "Enter the 4-digit code to proceed or type 'exit' to cancel: " user_code
+    echo -e "Enter the 4-digit code \e[31m$correct_code\e[0m to proceed or type \e[32m[exit]\e[0m to cancel: "
+    read -p "" user_code
     if [[ $user_code == "$correct_code" ]]; then
       break
     elif [[ $user_code == "exit" ]]; then
