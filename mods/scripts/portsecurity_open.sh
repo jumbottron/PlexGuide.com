@@ -52,14 +52,14 @@ open_port() {
     fi
 
     clear
-    echo "Type the 4-digit code to confirm opening port $port_number."
+    echo "To confirm, you must type the 4-digit code to open port $port_number."
     code=$(generate_code)
     read -p "$(echo -e "Enter the 4-digit code [${RED}${code}${NC}] to proceed or [${GREEN}exit${NC}] to cancel: ")" input_code
 
     if [[ "$input_code" == "$code" ]]; then
         # Command to open the port (e.g., using UFW or iptables)
+        sudo ufw allow $port_number
         echo -e "${GREEN}Port $port_number has been opened.${NC}"
-        # Example: sudo ufw allow $port_number
     elif [[ "${input_code,,}" == "exit" ]]; then
         echo "Operation cancelled."
     else
