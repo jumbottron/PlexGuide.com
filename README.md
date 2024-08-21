@@ -61,6 +61,7 @@ Jacket, JellyFin, Lidarr, NetData, NZBGET, Overseer, Ombi, SABNZBD, Plex, Prowla
 - **Quick Reinstall/Update of PG Beta**: Streamlined process for reinstalling or updating to the latest PG Beta.
 - **SSH Installer/Manager**: Added for easy SSH management.
 - **Intel/NVIDIA GPU Manager**: Install / Uninstall GPU Drivers easily.
+- **Port Security**: View exposed ports (works), close (working), and open (working)
 
 ### **In Progress**
 
