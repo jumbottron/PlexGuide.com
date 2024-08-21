@@ -45,8 +45,7 @@ open_port() {
     print_wrapped_text "PG: Firewall Security - Open Port" "$BLUE"
     echo
     print_wrapped_text "WARNING: This is an advanced configuration." "$RED"
-    print_wrapped_text "For simplicity, if you open a port it will open it for IPv4 and IPv6 addresses and for TCP and UDP." "$NC"
-    print_wrapped_text "Understand the consequences of opening a firewall port and the security risk involved behind it." "$NC"
+    print_wrapped_text "For simplicity, if you open a port it will open it for IPv4 and IPv6 addresses and for TCP and UDP. Understand the consequences of opening a firewall port and the security risk involved behind it." "$NC"
     echo
 
     read -p "$(echo -e "Enter the port number you would like to open or type [${GREEN}exit${NC}] to cancel: ")" port_number
