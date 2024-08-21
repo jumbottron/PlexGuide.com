@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Define colors
+RED='\e[31m'
+GREEN='\e[32m'
+NC='\e[0m' # No Color
+
 # Function to generate a random 4-digit code
 generate_code() {
   echo $((RANDOM % 9000 + 1000))
@@ -8,7 +13,7 @@ generate_code() {
 # Function to clear the screen and display the main header
 clear_screen() {
   clear
-  echo -e "\e[31mPG: Port Security\e[0m"
+  echo -e "${RED}PG: Port Security${NC}"
   echo
 }
 
@@ -16,8 +21,7 @@ clear_screen() {
 prompt_for_code() {
   local correct_code=$(generate_code)
   while true; do
-    echo -e "Enter the 4-digit code [\e[31m$correct_code\e[0m] to proceed or type \e[32m[exit]\e[0m to cancel: "
-    read -p "" user_code
+    read -p "$(echo -e "Enter the 4-digit code [${RED}${correct_code}${NC}] to proceed or [${GREEN}exit${NC}] to cancel: ")" user_code
     if [[ $user_code == "$correct_code" ]]; then
       break
     elif [[ $user_code == "exit" ]]; then
@@ -53,7 +57,7 @@ while true; do
   echo "Z) Exit"
   echo
 
-  read -p "Choose Select an Option [V/O/C/Z]: " choice
+  read -p "Choose an option: " choice
 
   case "$choice" in
     V|v) bash /pg/scripts/portsecurity_view.sh ;;
