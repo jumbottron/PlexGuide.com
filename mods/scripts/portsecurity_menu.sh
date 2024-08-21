@@ -1,69 +1,76 @@
 #!/bin/bash
 
-# Define colors
-RED='\e[31m'
-GREEN='\e[32m'
-NC='\e[0m' # No Color
+# ANSI color codes
+RED="\033[0;31m"
+GREEN="\033[0;32m"
+BLUE="\033[0;34m"
+NC="\033[0m" # No color
 
 # Function to generate a random 4-digit code
 generate_code() {
-  echo $((RANDOM % 9000 + 1000))
+    echo $((RANDOM % 9000 + 1000))
 }
 
-# Function to clear the screen and display the main header
-clear_screen() {
-  clear
-  echo -e "${RED}PG: Firewall Port Security${NC}"
-  echo
-}
-
-# Function to prompt for a 4-digit code
-prompt_for_code() {
-  local correct_code=$(generate_code)
-  while true; do
-    read -p "$(echo -e "Enter the 4-digit code [${RED}${correct_code}${NC}] to proceed or [${GREEN}exit${NC}] to cancel: ")" user_code
-    if [[ $user_code == "$correct_code" ]]; then
-      break
-    elif [[ $user_code == "exit" ]]; then
-      exit 0
+# Function to check if a port is open
+is_port_open() {
+    local port=$1
+    if sudo ufw status | grep -q "$port"; then
+        return 0
     else
-      echo "Incorrect code. Please try again."
+        return 1
     fi
-  done
 }
 
-# Function to open a port
+# Function to validate the port number
+validate_port() {
+    local port=$1
+    if [[ $port -ge 1 && $port -le 65535 ]]; then
+        return 0
+    else
+        echo -e "${RED}Invalid port number. Please enter a valid port between 1 and 65535.${NC}"
+        return 1
+    fi
+}
+
+# Function to open a port for both IPv4 and IPv6, TCP and UDP
 open_port() {
-  clear_screen
-  prompt_for_code
-  echo "This is an example placeholder for opening a port until implemented."
-  read -p "Press Enter to return to the menu..."
+    clear
+    echo -e "${BLUE}PG: Firewall Security - Open Port${NC}"
+    echo
+    echo -e "${RED}WARNING: This is an advanced configuration.${NC}"
+    echo "For simplicity, if you open a port it will open it for IPv4 and IPv6 addresses and for TCP and UDP."
+    echo
+
+    read -p "Enter the port number you would like to open: " port_number
+
+    if is_port_open $port_number; then
+        echo -e "${RED}Port $port_number is already open.${NC}"
+        read -p "Press Enter to return..."
+        exit 0
+    fi
+
+    if ! validate_port $port_number; then
+        read -p "Press Enter to return..."
+        exit 1
+    fi
+
+    echo
+    code=$(generate_code)
+    read -p "$(echo -e "Enter the 4-digit code [${RED}${code}${NC}] to proceed or [${GREEN}exit${NC}] to cancel: ")" input_code
+
+    if [[ "$input_code" == "$code" ]]; then
+        # Command to open the port for both IPv4/IPv6 and TCP/UDP
+        sudo ufw allow $port_number/tcp
+        sudo ufw allow $port_number/udp
+        echo -e "${GREEN}Port $port_number has been opened for TCP and UDP on both IPv4 and IPv6.${NC}"
+    elif [[ "${input_code,,}" == "exit" ]]; then
+        echo "Operation cancelled."
+    else
+        echo "Incorrect code. Operation aborted."
+    fi
+
+    read -p "Press Enter to return..."
 }
 
-# Function to close a port
-close_port() {
-  clear_screen
-  prompt_for_code
-  echo "This is an example placeholder for closing a port until implemented."
-  read -p "Press Enter to return to the menu..."
-}
-
-# Main menu loop
-while true; do
-  clear_screen
-  echo "V) View Open Ports"
-  echo "O) Open a Port"
-  echo "C) Close a Port"
-  echo "Z) Exit"
-  echo
-
-  read -p "Choose an option: " choice
-
-  case "$choice" in
-    V|v) bash /pg/scripts/portsecurity_view.sh ;;
-    O|o) bash /pg/scripts/portsecurity_open.sh ;;
-    C|c) close_port ;;
-    Z|z) exit 0 ;;
-    *) echo "Invalid option. Please try again." ;;
-  esac
-done
+# Call the open_port function
+open_port
