@@ -6,7 +6,7 @@
 ##### Movies Path: /pg/media/movies
 ##### TV Path: /pg/media/tv
 ##### JF ServerUrl: 1.1.1.1
-##### Version Tag: lastest
+##### Version Tag: latest
 
 # Specify the app name and config file path
 app_name=$1
@@ -32,7 +32,7 @@ deploy_container() {
       -v "${tv_path}":/data/tvshows \
       -v "${movies_path}":/data/movies \
       --restart unless-stopped \
-      lscr.io/linuxserver/jellyfin:${version_tag}
+      lscr.io/linuxserver/jellyfin:"${version_tag}"
 
 # Verify the Docker container is running
 docker ps | grep "$app_name"
