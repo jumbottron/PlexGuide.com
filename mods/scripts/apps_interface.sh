@@ -121,4 +121,11 @@ apps_interface() {
                 ;;
             *)
                 echo "Invalid option, please try again."
-                read -
+                read -p "Press Enter to continue..."
+                ;;
+        esac
+    done
+}
+
+# Run the interface with the provided app name
+apps_interface "$1"
