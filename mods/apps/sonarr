@@ -5,6 +5,7 @@
 ##### AppData Path: /pg/appdata/sonarr
 ##### TV Path: /pg/media/tv
 ##### ClientDownload Path: /pg/downloads
+##### Verison Tag: latest
 
 # Specify the app name and config file path
 app_name=$1
@@ -18,17 +19,19 @@ else
     exit 1
 fi
 
-docker run -d \
-  --name="${app_name}" \
-  -e PUID=1000 \
-  -e PGID=1000 \
-  -e TZ="${time_zone}" \
-  -p "${port_number}":8989 \
-  -v "${appdata_path}":/config \
-  -v "${tv_path}":/tv \
-  -v "${clientdownload_path}":/downloads \
-  --restart unless-stopped \
-  lscr.io/linuxserver/sonarr:latest
-
-# Verify the Docker container is running
-docker ps | grep "$app_name"
+deploy_container() {
+    docker run -d \
+      --name="${app_name}" \
+      -e PUID=1000 \
+      -e PGID=1000 \
+      -e TZ="${time_zone}" \
+      -p "${port_number}":8989 \
+      -v "${appdata_path}":/config \
+      -v "${tv_path}":/tv \
+      -v "${clientdownload_path}":/downloads \
+      --restart unless-stopped \
+      lscr.io/linuxserver/sonarr:"${version_tag}"
+    
+    # Verify the Docker container is running
+    docker ps | grep "$app_name"
+}
