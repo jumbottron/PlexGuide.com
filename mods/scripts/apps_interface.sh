@@ -72,14 +72,15 @@ execute_dynamic_menu() {
 
 # Main Interface
 apps_interface() {
-    parse_and_store_defaults
-    
     local app_name=$1
     local config_path="/pg/config/${app_name}.cfg"
     local app_path="/pg/apps/${app_name}"
     local dynamic_menu_items=()
     local dynamic_menu_count=1
-    
+
+    # Call parse_and_store_defaults to populate the config file
+    parse_and_store_defaults "$app_name"
+
     # Parse the app script for dynamic menu items
     while IFS= read -r line; do
         if [[ "$line" =~ ^####\  ]]; then
