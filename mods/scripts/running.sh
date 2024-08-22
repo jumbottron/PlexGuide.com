@@ -7,9 +7,6 @@ BLUE="\033[0;34m"
 ORANGE="\033[0;33m"
 NC="\033[0m" # No color
 
-# Source the apps_interface function from the external script
-source /pg/scripts/apps_interface
-
 # Clear the screen at the start
 clear
 
@@ -49,13 +46,19 @@ display_running_apps() {
     fi
 }
 
-# Function to deploy the selected app
-deploy_app() {
+# Function to manage the selected app
+manage_app() {
     local app_name=$1
-    local app_path="/pg/apps/$app_name"
+    local app_script="/pg/scripts/apps_interface.sh"
 
-    # Call the apps_interface function
-    apps_interface "$app_name"
+    # Ensure the apps_interface.sh script exists before proceeding
+    if [[ -f "$app_script" ]]; then
+        # Execute the apps_interface.sh script with the app name as an argument
+        bash "$app_script" "$app_name"
+    else
+        echo "Error: Interface script $app_script not found!"
+        read -p "Press Enter to continue..."
+    fi
 }
 
 # Main running function
@@ -94,8 +97,8 @@ running_function() {
 
         # Check if the app exists in the list of running Docker apps (case-insensitive)
         if echo "${APP_LIST[@]}" | grep -i -w "$app_choice" >/dev/null; then
-            # Deploy the selected app by calling the apps_interface function
-            deploy_app "$app_choice"
+            # Manage the selected app by calling the apps_interface script
+            manage_app "$app_choice"
         else
             echo "Invalid choice. Please try again."
             read -p "Press Enter to continue..."
