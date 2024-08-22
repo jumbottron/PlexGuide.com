@@ -24,7 +24,7 @@ execute_dynamic_menu() {
     local selected_option=$1
 
     # Source the app script to load the functions
-    source /pg/apps/"$app_name"
+    #source /pg/apps/"$app_name"
 
     read -p "stop 2"  # Pause to observe output
     # Get the selected option name (e.g., "token" or "example")
