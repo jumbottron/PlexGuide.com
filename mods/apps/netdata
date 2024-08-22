@@ -18,6 +18,7 @@ deploy_container() {
         exit 1
     fi
     
+deploy_container() {
     # Deploy Netdata with the updated paths
     docker run -d --name="${app_name}" \
       -p "${port_number}":19999 \
