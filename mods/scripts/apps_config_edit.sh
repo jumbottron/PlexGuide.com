@@ -34,7 +34,7 @@ wrap_text "Visit https://plexguide.com/wiki/not-generated-yet for more informati
 echo ""
 wrap_text "If the container is running, it will be stopped/killed and removed due to the changes made. You will need to redeploy the container manually. Once changes are made, press CTRL+X to save and exit."
 echo ""
-wrap_text "Do you want to proceed? Type [${RED}${edit_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: "
+echo "Do you want to proceed? Type [${RED}${edit_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: "
 
 while true; do
     read -p "" edit_choice
