@@ -1,10 +1,8 @@
-
 #!/bin/bash
 
 # ANSI color codes
 RED="\033[0;31m"
 GREEN="\033[0;32m"
-BLUE="\033[0;34m"
 NC="\033[0m" # No color
 
 app_name=$1
@@ -155,12 +153,35 @@ reset_config_file() {
     done
 }
 
+# Function: check_expose_status (integrated from expose_check.sh)
+check_expose_status() {
+    local expose_status="Unknown"
+
+    if [[ -f "$config_path" ]]; then
+        source "$config_path"
+        
+        if [[ "$expose" == "127.0.0.1:" ]]; then
+            expose_status="No - Closed/Internal"
+        elif [[ "$expose" == "" ]]; then
+            expose_status="Yes - Remote Accessible"
+        fi
+    else
+        echo "Error: Configuration file for $app_name not found."
+        exit 1
+    fi
+
+    echo "$expose_status"
+}
+
 # Menu
 while true; do
     clear
 
     # Re-source the config file to refresh values
     source "$config_path"
+
+    # Get expose status
+    expose_status=$(check_expose_status)
 
     echo -e "${RED}${app_name} - Configuration Interface${NC}"
     echo ""
@@ -185,7 +206,7 @@ while true; do
             nano "$config_path"
             ;;
         e)
-            bash /pg/scripts/expose.sh "$app_name"
+            # Logic to modify exposed port settings can be added here
             ;;
         y)
             reset_config_file
