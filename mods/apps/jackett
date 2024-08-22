@@ -5,6 +5,7 @@
 ##### AppData Path: /pg/appdata/jackett
 ##### PathTo Blackhole: /pg/downloads/
 ##### Auto Update: true 
+##### Version Tag: latest
 
 # Specify the app name and config file path
 app_name=$1
@@ -18,18 +19,20 @@ else
     exit 1
 fi
 
-docker run -d \
-  --name="${app_name}" \
-  -e PUID=1000 \
-  -e PGID=1000 \
-  -e TZ="${time_zone}" \
-  -e AUTO_UPDATE="${auto_update}" \
-  -e RUN_OPTS= `#optional` \
-  -p "${port_number}":9117 \
-  -v "${appdata_path}":/config \
-  -v "${pathto_blackhole}":/downloads \
-  --restart unless-stopped \
-  lscr.io/linuxserver/jackett:latest
-
-# Verify the Docker container is running
-docker ps | grep "$app_name"
+deploy_container() {
+    docker run -d \
+      --name="${app_name}" \
+      -e PUID=1000 \
+      -e PGID=1000 \
+      -e TZ="${time_zone}" \
+      -e AUTO_UPDATE="${auto_update}" \
+      -e RUN_OPTS= `#optional` \
+      -p "${port_number}":9117 \
+      -v "${appdata_path}":/config \
+      -v "${pathto_blackhole}":/downloads \
+      --restart unless-stopped \
+      lscr.io/linuxserver/jackett:"${version_tag}"
+    
+    # Verify the Docker container is running
+    docker ps | grep "$app_name"
+}
