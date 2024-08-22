@@ -6,9 +6,6 @@ GREEN="\033[0;32m"
 BLUE="\033[0;34m"
 NC="\033[0m" # No color
 
-# Source
-source /pg/apps/"$app_name"
-
 # Function: check_deployment_status
 check_deployment_status() {
     local container_status=$(docker ps --filter "name=^/${app_name}$" --format "{{.Names}}")
@@ -24,31 +21,22 @@ check_deployment_status() {
 execute_dynamic_menu() {
     local selected_option=$1
 
-    echo "Selected option: $selected_option"  # Debugging: Check what option was selected
-
     # Source the app script to load the functions
-    echo "Sourcing script: $app_path"  # Debugging: Confirm which script is being sourced
-    if ! source "$app_path"; then
-        echo "Error: Failed to source $app_path"
-        read -p "Press Enter to continue..."
-        return
-    fi
+    source /pg/apps/"$app_name"
 
     # Get the selected option name (e.g., "token" or "example")
     local selected_name=$(echo "${dynamic_menu_items[$((selected_option-1))]}" | awk '{print $2}')
-    echo "Selected function name: $selected_name"  # Debugging: Check the function name extracted
 
     # Check if the function exists and execute it
-    if declare -f "${selected_name,,}" > /dev/null; then
+    if declare -f "$selected_name" > /dev/null; then
         echo "Executing commands for ${selected_name}..."
-        "${selected_name,,}"
-        echo "Finished executing ${selected_name}."
+        "$selected_name"  # Execute the function
     else
         echo "Error: No corresponding function found for ${selected_name}."
     fi
+
     read -p "Press Enter to continue..."  # Pause to observe output
 }
-
 
 # Main Interface
 apps_interface() {
@@ -100,7 +88,12 @@ apps_interface() {
                 bash /pg/scripts/apps_config_menu.sh "$app_name"
                 ;;
             [0-9]*)
-                read -p "Press Enter to continue..."
+                if [[ $choice -le ${#dynamic_menu_items[@]} ]]; then
+                    execute_dynamic_menu "$choice"
+                else
+                    echo "Invalid option, please try again."
+                    read -p "Press Enter to continue..."
+                fi
                 ;;
             z)
                 break
