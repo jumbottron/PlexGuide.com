@@ -32,10 +32,10 @@ validate_or_create_path() {
 change_port_number() {
     clear
     local port_code=$(printf "%04d" $((RANDOM % 10000)))
-    echo "Current Port: $port_number"
+    echo "Current Port: $port_number - Do you want to change the port number?"
     echo ""
     while true; do
-        read -p "$(echo -e "Do you want to change the port number? Type [${RED}${port_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: ")" port_choice
+        read -p "$(echo -e "Type [${RED}${port_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: ")" port_choice
         if [[ "$port_choice" == "$port_code" ]]; then
             break
         elif [[ "${port_choice,,}" == "no" ]]; then
@@ -91,11 +91,12 @@ move_or_delete_appdata() {
 # Function: change_appdata_path
 change_appdata_path() {
     clear
-    echo "Current Appdata Path: $appdata_path"
-    echo ""
     local path_code=$(printf "%04d" $((RANDOM % 10000)))
+    echo "Current Appdata Path: $appdata_path"
+    echo "Do you want to change the appdata path?"
+    echo ""
     while true; do
-        read -p "$(echo -e "Do you want to change the appdata path? Type [${RED}${path_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: ")" change_choice
+        read -p "$(echo -e "Type [${RED}${path_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: ")" change_choice
         if [[ "$change_choice" == "$path_code" ]]; then
             break
         elif [[ "${change_choice,,}" == "no" ]]; then
@@ -153,7 +154,7 @@ reset_config_file() {
     done
 }
 
-# Function: check_expose_status (integrated from expose_check.sh)
+# Function: check_expose_status
 check_expose_status() {
     local expose_status="Unknown"
 
