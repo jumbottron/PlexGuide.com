@@ -207,7 +207,7 @@ while true; do
             nano "$config_path"
             ;;
         e)
-            # Logic to modify exposed port settings can be added here
+            bash /pg/scripts/expose.sh
             ;;
         y)
             reset_config_file
