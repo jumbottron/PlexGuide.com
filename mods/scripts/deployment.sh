@@ -102,10 +102,6 @@ deployment_function() {
 
         app_choice=$(echo "$app_choice" | tr '[:upper:]' '[:lower:]')
 
-        # Debugging: Print out the app_choice and available apps
-        echo "You selected: $app_choice"
-        echo "Available apps: ${APP_LIST[@]}"
-
         if [[ "$app_choice" == "exit" ]]; then
             exit 0
         elif [[ " ${APP_LIST[@]} " =~ " $app_choice " ]]; then
