@@ -7,8 +7,8 @@
 
 #### Token
 ### START TOKEN COMMANDS
-echo "This is the Token command execution."
-# You can add more commands here related to Token.
+# Prompt the user for the Plex claim key
+read -p "Enter your Plex claim key: " CLAIM_KEY
 ### END TOKEN COMMANDS
 
 #### Example
@@ -28,9 +28,6 @@ else
     echo "Error: Configuration file not found at $config_path."
     exit 1
 fi
-
-# Prompt the user for the Plex claim key
-read -p "Enter your Plex claim key: " CLAIM_KEY
 
 # Run the Plex Docker container with the specified settings, including the Real-Debrid volume
 docker run -d \
