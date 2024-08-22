@@ -33,7 +33,7 @@ deploy_container() {
       -v "${appdata_path}":/config \
       -v "${download_path}":/downloads `#optional` \
       --restart unless-stopped \
-      lscr.io/linuxserver/qbittorrent:"${version_tag}
+      lscr.io/linuxserver/qbittorrent:"${version_tag}"
     
     # Verify the Docker container is running
     docker ps | grep "$app_name"
