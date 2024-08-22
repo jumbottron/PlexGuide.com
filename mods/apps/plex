@@ -6,13 +6,13 @@
 ##### AppData Path: /pg/appdata/plex
 
 #### Token
-token_command() {
+token() {
     echo "This is the Token command execution."
     read -p "Press Enter to continue..."
 }
 
 #### Example
-example_command() {
+example() {
     echo "This is the Example command execution."
     read -p "Press Enter to continue..."
 }
