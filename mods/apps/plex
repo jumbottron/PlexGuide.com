@@ -5,13 +5,13 @@
 ##### Time Zone: America/New_York
 ##### AppData Path: /pg/appdata/plex
 
-#### token
+#### Token
 token() {
     echo "This is the Token command execution - 99."
     read -p "Press Enter to continue..."
 }
 
-#### example
+#### Example
 example() {
     echo "This is the Example command execution - 98."
     read -p "Press Enter to continue..."
