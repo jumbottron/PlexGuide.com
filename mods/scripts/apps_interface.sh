@@ -36,11 +36,30 @@ redeploy_app() {
     read -p "Press Enter to continue..."
 }
 
+# Function: generate_dynamic_menu_items
+generate_dynamic_menu_items() {
+    local app_script="/pg/apps/${app_name}"
+    local menu_items=()
+    
+    if [[ -f "$app_script" ]]; then
+        while IFS= read -r line; do
+            if [[ "$line" =~ ^#### ]]; then
+                menu_items+=("${line/#\#\#\#\#/}")
+            fi
+        done < "$app_script"
+    fi
+
+    echo "${menu_items[@]}"
+}
+
 # Main Function: apps_interface
 apps_interface() {
     local app_name=$1
     local config_path="/pg/config/${app_name}.cfg"
     local app_path="/pg/apps/${app_name}"
+
+    # Generate dynamic menu items based on #### comments
+    local dynamic_menu_items=($(generate_dynamic_menu_items))
 
     # Menu
     while true; do
@@ -54,6 +73,14 @@ apps_interface() {
         echo "D) Deploy $app_name"
         echo "K) Kill Docker Container"
         echo "C) Configuration Options"
+
+        # Print dynamic menu items
+        local index=1
+        for item in "${dynamic_menu_items[@]}"; do
+            echo "$index) $item"
+            index=$((index + 1))
+        done
+
         echo "Z) Exit"
         echo ""
 
@@ -87,8 +114,14 @@ apps_interface() {
                 break
                 ;;
             *)
-                echo "Invalid option, please try again."
-                read -p "Press Enter to continue..."
+                # Check if the choice corresponds to a dynamic menu item
+                if [[ $choice =~ ^[0-9]+$ ]] && (( choice >= 1 && choice <= ${#dynamic_menu_items[@]} )); then
+                    echo "You selected: ${dynamic_menu_items[$((choice-1))]}"
+                    read -p "Press Enter to continue..."
+                else
+                    echo "Invalid option, please try again."
+                    read -p "Press Enter to continue..."
+                fi
                 ;;
         esac
     done
