@@ -36,69 +36,18 @@ redeploy_app() {
     read -p "Press Enter to continue..."
 }
 
-# Function: execute_dynamic_command
+# Function to execute commands for dynamic menu items
 execute_dynamic_command() {
-    local app_script="/pg/apps/${app_name}"
-    local start_delimiter="### START $1 COMMANDS"
-    local end_delimiter="### END $1 COMMANDS"
-    local inside_block=false
-
-    echo "Executing commands for $1..."
-
-    if [[ -f "$app_script" ]]; then
-        while IFS= read -r line; do
-            # Check for the start of the command block
-            if [[ "$line" == "$start_delimiter" ]]; then
-                inside_block=true
-                continue
-            fi
-
-            # Check for the end of the command block
-            if [[ "$line" == "$end_delimiter" ]]; then
-                inside_block=false
-                continue
-            fi
-
-            # Execute the command if inside the block
-            if [[ "$inside_block" == true ]]; then
-                line=$(echo "$line" | xargs)  # Remove leading and trailing whitespace
-                if [[ -n "$line" && ! "$line" =~ ^# ]]; then  # Ignore empty lines and comments
-                    echo "Executing command: $line"
-                    eval "$line"  # Execute the line as a command
-                fi
-            fi
-        done < "$app_script"
-    else
-        echo "Error: Script file for $app_name not found!"
-        read -p "Press Enter to continue..."
-    fi
+    local command_name=$1
+    echo "Executing commands for $command_name..."
+    bash -c "$command_name"_command
 }
 
-
-# Function: generate_dynamic_menu_items
-generate_dynamic_menu_items() {
-    local app_script="/pg/apps/${app_name}"
-    local menu_items=()
-    
-    if [[ -f "$app_script" ]]; then
-        while IFS= read -r line; do
-            if [[ "$line" =~ ^####[[:space:]]+(.*) ]]; then
-                menu_items+=("${BASH_REMATCH[1]}")
-            fi
-        done < "$app_script"
-    fi
-
-    echo "${menu_items[@]}"
-}
-
-# Main Function: apps_interface
+# Initial setup: Create config file, store app_name, set default appdata path
 apps_interface() {
     local app_name=$1
     local config_path="/pg/config/${app_name}.cfg"
     local app_path="/pg/apps/${app_name}"
-
-    # Generate dynamic menu items based on #### comments
-    local dynamic_menu_items=($(generate_dynamic_menu_items))
 
     # Menu
     while true; do
@@ -112,14 +61,10 @@ apps_interface() {
         echo "D) Deploy $app_name"
         echo "K) Kill Docker Container"
         echo "C) Configuration Options"
-
-        # Print dynamic menu items
-        local index=1
-        for item in "${dynamic_menu_items[@]}"; do
-            echo "$index) $item"
-            index=$((index + 1))
-        done
-
+        
+        # Dynamic menu items (token, example)
+        echo "1) Token"
+        echo "2) Example"
         echo "Z) Exit"
         echo ""
 
@@ -149,29 +94,22 @@ apps_interface() {
             c)
                 bash /pg/scripts/apps_config_menu.sh "$app_name"
                 ;;
+            1)
+                execute_dynamic_command "token"
+                ;;
+            2)
+                execute_dynamic_command "example"
+                ;;
             z)
                 break
                 ;;
             *)
-                # Check if the choice corresponds to a dynamic menu item
-                if [[ $choice =~ ^[0-9]+$ ]] && (( choice >= 1 && choice <= ${#dynamic_menu_items[@]} )); then
-                    # Execute the corresponding command block for the chosen item
-                    execute_dynamic_command "${dynamic_menu_items[$((choice-1))]}"
-                    read -p "Press Enter to continue..."
-                else
-                    echo "Invalid option, please try again."
-                    read -p "Press Enter to continue..."
-                fi
+                echo "Invalid option, please try again."
+                read -p "Press Enter to continue..."
                 ;;
         esac
     done
 }
 
-# Ensure the apps_interface function is called
-if [[ -z "$1" ]]; then
-    echo "Error: No app name provided."
-    echo "Usage: $0 <app_name>"
-    exit 1
-else
-    apps_interface "$1"
-fi
+# Call the main function with the provided app name
+apps_interface "$1"
