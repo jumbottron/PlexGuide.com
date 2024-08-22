@@ -26,7 +26,7 @@ deploy_container() {
       -p "${port_number}":3579 \
       -v "${appdata_path}":/config \
       --restart unless-stopped \
-      lscr.io/linuxserver/ombi:${version_tag}
+      lscr.io/linuxserver/ombi:"${version_tag}"
     
     # Verify the Docker container is running
     docker ps | grep "$app_name"
