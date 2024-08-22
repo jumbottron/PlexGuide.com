@@ -7,13 +7,13 @@
 
 #### token
 token() {
-    echo "This is the Token command execution."
+    echo "This is the Token command execution - 99."
     read -p "Press Enter to continue..."
 }
 
 #### example
 example() {
-    echo "This is the Example command execution."
+    echo "This is the Example command execution - 98."
     read -p "Press Enter to continue..."
 }
 
