@@ -50,7 +50,7 @@ execute_dynamic_command() {
             elif [[ "$line" == "$end_delimiter" ]]; then
                 inside_block=false
             elif [[ "$inside_block" == true ]]; then
-                eval "$line"
+                eval "$line"  # Execute each line inside the block
             fi
         done < "$app_script"
     else
