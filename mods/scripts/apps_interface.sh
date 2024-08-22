@@ -17,17 +17,6 @@ check_deployment_status() {
     fi
 }
 
-# Function: stop_and_remove_app
-stop_and_remove_app() {
-    docker ps --filter "name=^/${app_name}$" --format "{{.Names}}" &> /dev/null
-    if [[ $? -eq 0 ]]; then
-        echo "Stopping and removing the existing container for $app_name ..."
-        docker stop "$app_name" && docker rm "$app_name"
-    else
-        echo "Container $app_name is not running."
-    fi
-}
-
 # Function: redeploy_app
 redeploy_app() {
     echo "Deploying $app_name..."
@@ -102,7 +91,7 @@ apps_interface() {
                 while true; do
                     read -p "$(echo -e "Deploy/Redeploy $app_name?\nType [${RED}${deploy_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: ")" deploy_choice
                     if [[ "$deploy_choice" == "$deploy_code" ]]; then
-                        stop_and_remove_app
+                        bash /pg/scripts/apps_kill_remove.sh "$app_name"  # Stop and remove app
                         redeploy_app  # Deploy the container after stopping/removing
                         break
                     elif [[ "${deploy_choice,,}" == "no" ]]; then
@@ -114,7 +103,7 @@ apps_interface() {
                 done
                 ;;
             k)
-                stop_and_remove_app
+                bash /pg/scripts/apps_kill_remove.sh "$app_name"  # Stop and remove app
                 ;;
             c)
                 bash /pg/scripts/apps_config_menu.sh "$app_name"
@@ -132,11 +121,4 @@ apps_interface() {
                 ;;
             *)
                 echo "Invalid option, please try again."
-                read -p "Press Enter to continue..."
-                ;;
-        esac
-    done
-}
-
-# Run the interface with the provided app name
-apps_interface "$1"
+                read -
