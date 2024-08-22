@@ -11,7 +11,7 @@
 token() {
     clear
     echo "Current Token: $plex_token"
-    echo -e "Note: If the token is changed, the Docker container will be killed and requires manual deployment."
+    echo -e "Note: Changing the token will stop the Docker containers and require manual redeployment."
     echo -e "\nPlease enter your new Plex Token from https://plex.tv/claim"
     echo -e "Type [${GREEN}Z${NC}] to exit or to skip entering a token, type: ${RED}no-token${NC}"
     
