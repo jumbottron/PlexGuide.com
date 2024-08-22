@@ -24,6 +24,7 @@ execute_dynamic_menu() {
     local selected_option=$1
 
     # Source the app script to load the functions
+    echo "source /pg/apps/\"$app_name\""
     #source /pg/apps/"$app_name"
 
     read -p "stop 2"  # Pause to observe output
