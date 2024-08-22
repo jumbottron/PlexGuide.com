@@ -34,18 +34,24 @@ deploy_container() {
 
     # Check and update the Plex token if necessary
     if [[ "$plex_token" == "null" || ! "$plex_token" =~ ^claim || "$plex_token" == "no-token" ]]; then
-        echo "Current Plex Token is either null, invalid, or needs to be updated."
-        echo "Please enter your Plex Token (or type 'no-token' to skip):"
-        read -p "Plex Token: " new_token
+        while true; do
+            clear
+            echo "The Plex Token needs to be updated"
+            echo -e "A. Please enter your Plex Token from \033]8;;https://plex.tv/claim\033\\https://plex.tv/claim\033]8;;\033\\"
+            echo -e "B. To skip entering a token, type: ${RED}no-token${NC}"
+            echo ""
+            read -p "Plex Token: " new_token
 
-        if [[ "$new_token" == "no-token" || "$new_token" =~ ^claim ]]; then
-            plex_token="$new_token"
-            # Update the config file with the new token
-            sed -i "s|^plex_token=.*|plex_token=$plex_token|" "$config_path"
-        else
-            echo "Invalid token format. Please ensure the token starts with 'claim-' or type 'no-token'."
-            exit 1
-        fi
+            if [[ "$new_token" == "no-token" || "$new_token" =~ ^claim ]]; then
+                plex_token="$new_token"
+                # Update the config file with the new token
+                sed -i "s|^plex_token=.*|plex_token=$plex_token|" "$config_path"
+                break
+            else
+                echo -e "${RED}Invalid token format. Please ensure the token starts with 'claim-' or type 'no-token'.${NC}"
+                sleep 2
+            fi
+        done
     fi
 
     # Run the Plex Docker container with the specified settings
