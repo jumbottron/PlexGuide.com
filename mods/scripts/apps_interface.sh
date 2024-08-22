@@ -97,12 +97,7 @@ apps_interface() {
                 bash /pg/scripts/apps_config_menu.sh "$app_name"
                 ;;
             [0-9]*)
-                if [[ $choice -le ${#dynamic_menu_items[@]} ]]; then
-                    execute_dynamic_menu "$choice"
-                else
-                    echo "Invalid option, please try again."
-                    read -p "Press Enter to continue..."
-                fi
+                read -p "Press Enter to continue..."
                 ;;
             z)
                 break
