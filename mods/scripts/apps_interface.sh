@@ -6,8 +6,6 @@ GREEN="\033[0;32m"
 BLUE="\033[0;34m"
 NC="\033[0m" # No color
 
-source /pg/scripts/expose_check.sh
-
 # Function: check_deployment_status
 check_deployment_status() {
     local container_status=$(docker ps --filter "name=^/${app_name}$" --format "{{.Names}}")
