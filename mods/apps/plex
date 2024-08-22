@@ -6,16 +6,19 @@
 ##### AppData Path: /pg/appdata/plex
 
 #### Token
-### START TOKEN COMMANDS
-# Prompt the user for the Plex claim key
-read -p "Enter your Plex claim key: " CLAIM_KEY
-### END TOKEN COMMANDS
+token_command() {
+    # Prompt the user for the Plex claim key
+    read -p "Enter your Plex claim key: " CLAIM_KEY
+    echo "Plex claim key entered: $CLAIM_KEY"
+    read -p "Press Enter to continue..."
+}
 
 #### Example
-### START EXAMPLE COMMANDS
-echo "This is the Example command execution."
-# You can add more commands here related to Example.
-### END EXAMPLE COMMANDS
+example_command() {
+    echo "This is the Example command execution."
+    # You can add more commands here related to Example.
+    read -p "Press Enter to continue..."
+}
 
 # Specify the app name and config file path
 app_name=$1
