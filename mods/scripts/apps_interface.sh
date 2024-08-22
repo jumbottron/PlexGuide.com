@@ -36,12 +36,26 @@ redeploy_app() {
     read -p "Press Enter to continue..."
 }
 
-# Function to execute commands for dynamic menu items
+# Function to dynamically add menu items based on #### markers
+add_dynamic_menu_items() {
+    local app_script="$app_path"
+    local menu_number=1
+
+    while IFS= read -r line; do
+        if [[ "$line" =~ ^#### ]]; then
+            local command_name=$(echo "$line" | awk '{print $2}')
+            echo "$menu_number) $command_name"
+            dynamic_commands+=("$command_name")
+            ((menu_number++))
+        fi
+    done < "$app_script"
+}
+
+# Function to execute the corresponding command
 execute_dynamic_command() {
     local command_name=$1
     echo "Executing commands for $command_name..."
-    # Dynamically call the function defined in the $app_name script
-    bash -c "$command_name"_command
+    "$command_name"
 }
 
 # Main Menu Interface
@@ -49,6 +63,10 @@ apps_interface() {
     local app_name=$1
     local config_path="/pg/config/${app_name}.cfg"
     local app_path="/pg/apps/${app_name}"
+    dynamic_commands=()
+
+    # Source the app script to make functions available
+    source "$app_path"
 
     # Menu
     while true; do
@@ -63,9 +81,9 @@ apps_interface() {
         echo "K) Kill Docker Container"
         echo "C) Configuration Options"
 
-        # Dynamic menu items (token, example)
-        echo "1) Token"
-        echo "2) Example"
+        # Dynamic menu items (e.g., Token, Example)
+        add_dynamic_menu_items
+
         echo "Z) Exit"
         echo ""
 
@@ -95,18 +113,16 @@ apps_interface() {
             c)
                 bash /pg/scripts/apps_config_menu.sh "$app_name"
                 ;;
-            1)
-                execute_dynamic_command "token"
-                ;;
-            2)
-                execute_dynamic_command "example"
-                ;;
             z)
                 break
                 ;;
             *)
-                echo "Invalid option, please try again."
-                read -p "Press Enter to continue..."
+                if [[ "$choice" =~ ^[0-9]+$ ]] && ((choice > 0 && choice <= ${#dynamic_commands[@]})); then
+                    execute_dynamic_command "${dynamic_commands[$((choice-1))]}"
+                else
+                    echo "Invalid option, please try again."
+                    read -p "Press Enter to continue..."
+                fi
                 ;;
         esac
     done
