@@ -32,6 +32,8 @@ parse_additional_menu_items() {
                 item_number=$((item_number + 1))
             fi
         done < "$app_script"
+    else
+        echo "App script not found: $app_script"
     fi
 
     echo -e "$additional_menu"
@@ -107,7 +109,7 @@ apps_interface() {
             c)
                 bash /pg/scripts/apps_config_menu.sh "$app_name"
                 ;;
-            [0-9])
+            [1-9])
                 echo "Selected custom option $choice"
                 read -p "Press Enter to continue..."
                 ;;
@@ -121,3 +123,6 @@ apps_interface() {
         esac
     done
 }
+
+# Entry point: Call the main function with the app name
+apps_interface "$@"
