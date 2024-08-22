@@ -4,6 +4,7 @@
 ##### AppData Path: /pg/appdata/vaultwarden
 ##### Signups Enabled: false
 ##### WebSocket Enabled: false
+##### Verison Tag: lastest
 
 # Specify the app name and config file path
 app_name=$1
@@ -29,17 +30,19 @@ if [[ -z "$admin_token" ]]; then
     echo "admin_token=$admin_token" >> "$config_path"
 fi
 
-# Run the Vaultwarden container with the specified settings
-docker run -d \
-  --name="${app_name}" \
-  -e SIGNUPS_ALLOWED="${signups_allowed}" \
-  -e INVITATIONS_ALLOWED="${invitations_allowed}" \
-  -e WEBSOCKET_ENABLED="${websocket_enabled}" \
-  -e ADMIN_TOKEN="${admin_token}" \
-  -p "${port_number}:80/tcp" \
-  -v "${appdata_path}:/data:rw" \
-  --restart unless-stopped \
-  vaultwarden/server:latest
-
-# Verify the Docker container is running
-docker ps | grep "$app_name"
+deploy_container() {
+    # Run the Vaultwarden container with the specified settings
+    docker run -d \
+      --name="${app_name}" \
+      -e SIGNUPS_ALLOWED="${signups_allowed}" \
+      -e INVITATIONS_ALLOWED="${invitations_allowed}" \
+      -e WEBSOCKET_ENABLED="${websocket_enabled}" \
+      -e ADMIN_TOKEN="${admin_token}" \
+      -p "${port_number}:80/tcp" \
+      -v "${appdata_path}:/data:rw" \
+      --restart unless-stopped \
+      vaultwarden/server:"${version_tag}"
+    
+    # Verify the Docker container is running
+    docker ps | grep "$app_name"
+}
