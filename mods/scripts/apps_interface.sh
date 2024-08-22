@@ -36,6 +36,29 @@ redeploy_app() {
     read -p "Press Enter to continue..."
 }
 
+# Function: execute_dynamic_command
+execute_dynamic_command() {
+    local app_script="/pg/apps/${app_name}"
+    local start_delimiter="### START $1 COMMANDS"
+    local end_delimiter="### END $1 COMMANDS"
+    local inside_block=false
+
+    if [[ -f "$app_script" ]]; then
+        while IFS= read -r line; do
+            if [[ "$line" == "$start_delimiter" ]]; then
+                inside_block=true
+            elif [[ "$line" == "$end_delimiter" ]]; then
+                inside_block=false
+            elif [[ "$inside_block" == true ]]; then
+                eval "$line"
+            fi
+        done < "$app_script"
+    else
+        echo "Error: Script file for $app_name not found!"
+        read -p "Press Enter to continue..."
+    fi
+}
+
 # Function: generate_dynamic_menu_items
 generate_dynamic_menu_items() {
     local app_script="/pg/apps/${app_name}"
@@ -43,7 +66,6 @@ generate_dynamic_menu_items() {
     
     if [[ -f "$app_script" ]]; then
         while IFS= read -r line; do
-            # Capture lines that exactly start with '####' followed by a space and text
             if [[ "$line" =~ ^####[[:space:]]+(.*) ]]; then
                 menu_items+=("${BASH_REMATCH[1]}")
             fi
@@ -117,7 +139,8 @@ apps_interface() {
             *)
                 # Check if the choice corresponds to a dynamic menu item
                 if [[ $choice =~ ^[0-9]+$ ]] && (( choice >= 1 && choice <= ${#dynamic_menu_items[@]} )); then
-                    echo "You selected: ${dynamic_menu_items[$((choice-1))]}"
+                    # Execute the corresponding command block for the chosen item
+                    execute_dynamic_command "${dynamic_menu_items[$((choice-1))]}"
                     read -p "Press Enter to continue..."
                 else
                     echo "Invalid option, please try again."
