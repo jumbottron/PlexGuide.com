@@ -54,8 +54,12 @@ execute_dynamic_command() {
                 inside_block=false
                 echo "Found end of $1 commands..."
             elif [[ "$inside_block" == true ]]; then
-                echo "Executing command: $line"
-                $line  # Run the command directly
+                # Trim leading and trailing whitespace
+                line=$(echo "$line" | xargs)
+                if [[ -n "$line" && ! "$line" =~ ^# ]]; then  # Ignore empty lines and comments
+                    echo "Executing command: $line"
+                    eval "$line"  # Execute the line as a command
+                fi
             fi
         done < "$app_script"
     else
@@ -63,6 +67,7 @@ execute_dynamic_command() {
         read -p "Press Enter to continue..."
     fi
 }
+
 
 # Function: generate_dynamic_menu_items
 generate_dynamic_menu_items() {
