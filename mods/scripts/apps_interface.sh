@@ -25,19 +25,23 @@ execute_dynamic_menu() {
 
     # Source the app script to load the functions
     echo "source /pg/apps/\"$app_name\""
-    source /pg/apps/$app_name
+    source /pg/apps/"$app_name"
 
     read -p "stop 2"  # Pause to observe output
     # Get the selected option name (e.g., "token" or "example")
     local selected_name=$(echo "${dynamic_menu_items[$((selected_option-1))]}" | awk '{print $2}')
     read -p "stop 3"  # Pause to observe output
+    
+    # Convert the selected_name to lowercase (functions in bash are case-sensitive)
+    local function_name="${selected_name,,}"
+
     # Check if the function exists and execute it
-    if declare -f "$selected_name" > /dev/null; then
-        echo "Executing commands for ${selected_name}..."
+    if declare -f "$function_name" > /dev/null; then
+        echo "Executing commands for ${function_name}..."
         read -p "stop A"  # Pause to observe output
-        "$selected_name"  # Execute the function
+        "$function_name"  # Execute the function
     else
-        echo "Error: No corresponding function found for ${selected_name}."
+        echo "Error: No corresponding function found for ${function_name}."
         read -p "stop B"  # Pause to observe output
     fi
 
