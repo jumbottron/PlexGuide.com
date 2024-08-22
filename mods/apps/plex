@@ -7,16 +7,13 @@
 
 #### Token
 token_command() {
-    # Prompt the user for the Plex claim key
-    read -p "Enter your Plex claim key: " CLAIM_KEY
-    echo "Plex claim key entered: $CLAIM_KEY"
+    echo "This is the Token command execution."
     read -p "Press Enter to continue..."
 }
 
 #### Example
 example_command() {
     echo "This is the Example command execution."
-    # You can add more commands here related to Example.
     read -p "Press Enter to continue..."
 }
 
@@ -32,7 +29,7 @@ else
     exit 1
 fi
 
-# Run the Plex Docker container with the specified settings, including the Real-Debrid volume
+# Run the Plex Docker container with the specified settings
 docker run -d \
   --name="${app_name}" \
   --network=host \
