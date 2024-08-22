@@ -8,8 +8,38 @@
 
 #### Token
 token() {
-    echo "This is the Token command execution - 99."
-    read -p "Press Enter to continue..."
+#### Token
+token() {
+    while true; do
+        clear
+        echo "Current Plex Token: ${plex_token}"
+        echo ""
+        echo "You can update the Plex Token here."
+        echo -e "Please enter your new Plex Token from \033]8;;https://plex.tv/claim\033\\https://plex.tv/claim\033]8;;\033\\ or type ${GREEN}[Z]${NC} to exit."
+        echo -e "To skip entering a token, type: ${RED}no-token${NC}"
+        echo ""
+        read -p "Plex Token: " new_token
+
+        # Check if the user wants to exit
+        if [[ "${new_token,,}" == "z" ]]; then
+            break
+        fi
+
+        # Validate and update the token
+        if [[ "$new_token" == "no-token" || "$new_token" =~ ^claim ]]; then
+            plex_token="$new_token"
+            # Update the config file with the new token
+            sed -i "s|^plex_token=.*|plex_token=$plex_token|" "$config_path"
+            echo "Plex Token has been updated to: $plex_token"
+            sleep 2
+            break
+        else
+            echo -e "${RED}Invalid token format. Please ensure the token starts with 'claim-' or type 'no-token'.${NC}"
+            sleep 2
+        fi
+    done
+}
+
 }
 
 #### Example
