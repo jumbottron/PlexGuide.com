@@ -47,15 +47,21 @@ execute_dynamic_command() {
 
     if [[ -f "$app_script" ]]; then
         while IFS= read -r line; do
+            # Check for the start of the command block
             if [[ "$line" == "$start_delimiter" ]]; then
                 inside_block=true
-                echo "Found start of $1 commands..."
-            elif [[ "$line" == "$end_delimiter" ]]; then
+                continue
+            fi
+
+            # Check for the end of the command block
+            if [[ "$line" == "$end_delimiter" ]]; then
                 inside_block=false
-                echo "Found end of $1 commands..."
-            elif [[ "$inside_block" == true ]]; then
-                # Trim leading and trailing whitespace
-                line=$(echo "$line" | xargs)
+                continue
+            fi
+
+            # Execute the command if inside the block
+            if [[ "$inside_block" == true ]]; then
+                line=$(echo "$line" | xargs)  # Remove leading and trailing whitespace
                 if [[ -n "$line" && ! "$line" =~ ^# ]]; then  # Ignore empty lines and comments
                     echo "Executing command: $line"
                     eval "$line"  # Execute the line as a command
@@ -67,7 +73,6 @@ execute_dynamic_command() {
         read -p "Press Enter to continue..."
     fi
 }
-
 
 # Function: generate_dynamic_menu_items
 generate_dynamic_menu_items() {
