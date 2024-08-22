@@ -4,6 +4,7 @@
 ##### Port Number: 32400
 ##### Time Zone: America/New_York
 ##### AppData Path: /pg/appdata/plex
+##### Plex Token: null
 
 #### Token
 token() {
@@ -32,17 +33,19 @@ deploy_container() {
     fi
 
     # Run the Plex Docker container with the specified settings
-    docker run -d \
-        --name="${app_name}" \
-        --network=host \
-        -e PLEX_CLAIM="$CLAIM_KEY" \
-        -e TZ="${time_zone}" \
-        -v "${appdata_path}":/config \
-        -v "${media_path}":/media \
-        -v /etc/localtime:/etc/localtime:ro \
-        -v realdebrid:/torrents \
-        --restart unless-stopped \
-        plexinc/pms-docker:plexpass
+        docker run -d \
+          --name="${app_name}" \
+          --net=host \
+          -e PUID=1000 \
+          -e PGID=1000 \
+          -e TZ="${time_zone}" \
+          -e VERSION=docker \
+          -e PLEX_CLAIM="${plex_token}" \
+          -v "${appdata_path}":/config \
+          -v "${media_path}":/media \
+          -v realdebrid:/torrents \
+          --restart unless-stopped \
+          lscr.io/linuxserver/plex:latest
 
     # Verify the Docker container is running
     docker ps | grep "$app_name"
