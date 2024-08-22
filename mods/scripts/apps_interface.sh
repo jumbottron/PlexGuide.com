@@ -18,14 +18,19 @@ check_deployment_status() {
 }
 
 # Function: execute_dynamic_menu
+# Function: execute_dynamic_menu
 execute_dynamic_menu() {
     local selected_option=$1
 
+    echo "Selected option: $selected_option"  # Debugging: Check what option was selected
+
     # Source the app script to load the functions
+    echo "Sourcing script: $app_path"  # Debugging: Confirm which script is being sourced
     source "$app_path"
 
     # Get the selected option name (e.g., "Token" or "Example")
     local selected_name=$(echo "${dynamic_menu_items[$((selected_option-1))]}" | awk '{print $2}')
+    echo "Selected function name: $selected_name"  # Debugging: Check the function name extracted
 
     # Check if the function exists and execute it
     if declare -f "$selected_name" > /dev/null; then
