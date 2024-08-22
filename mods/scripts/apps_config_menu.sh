@@ -173,6 +173,11 @@ reset_config_file() {
     while true; do
         read -p "$(echo -e "Do you want to proceed? Type [${RED}${reset_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: ")" reset_choice
         if [[ "$reset_choice" == "$reset_code" ]]; then
+            # Stop and remove the Docker container
+            docker stop "$app_name" && docker rm "$app_name"
+            echo "Docker container $app_name has been stopped and removed."
+            
+            # Reset the config file
             rm -f "$config_path"
             echo "Config file has been reset to default."
             touch "$config_path"
