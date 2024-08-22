@@ -4,6 +4,7 @@
 ##### Config Path: /pg/appdata/syncthing
 ##### Data Path 1: /pg/data/syncthing/data1
 ##### Data Path 2: /pg/data/syncthing/data2
+##### Verison Tag: latest
 
 # Specify the app name and config file path
 app_name=$1
@@ -17,21 +18,23 @@ else
     exit 1
 fi
 
-docker run -d \
-  --name="${app_name}" \
-  --hostname="${app_name}" `#optional` \
-  -e PUID=1000 \
-  -e PGID=1000 \
-  -e TZ="${time_zone}" \
-  -p 8384:8384 \
-  -p 22000:22000/tcp \
-  -p 22000:22000/udp \
-  -p 21027:21027/udp \
-  -v "${config_path}":/config \
-  -v "${data_path1}":/data1 \
-  -v "${data_path2}":/data2 \
-  --restart unless-stopped \
-  lscr.io/linuxserver/syncthing:latest
-
-# Verify the Docker container is running
-docker ps | grep "$app_name"
+deploy_container() {
+    docker run -d \
+      --name="${app_name}" \
+      --hostname="${app_name}" `#optional` \
+      -e PUID=1000 \
+      -e PGID=1000 \
+      -e TZ="${time_zone}" \
+      -p 8384:8384 \
+      -p 22000:22000/tcp \
+      -p 22000:22000/udp \
+      -p 21027:21027/udp \
+      -v "${config_path}":/config \
+      -v "${data_path1}":/data1 \
+      -v "${data_path2}":/data2 \
+      --restart unless-stopped \
+      lscr.io/linuxserver/syncthing:"${version_tag}"
+    
+    # Verify the Docker container is running
+    docker ps | grep "$app_name"
+}
