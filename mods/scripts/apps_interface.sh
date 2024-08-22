@@ -18,20 +18,16 @@ check_deployment_status() {
 }
 
 # Function: execute_dynamic_menu
-# Function: execute_dynamic_menu
 execute_dynamic_menu() {
-    read -p "stop 1"  # Pause to observe output
-
     local selected_option=$1
 
     # Source the app script to load the functions
-    #echo "Sourcing script: /pg/apps/$app_name"  # Debugging: Confirm which script is being sourced
-    #source /pg/apps/"$app_name"
+    echo "source /pg/apps/\"$app_name\""
+    source /pg/apps/$app_name
 
-    read -p "stop 2"  # Pause to observe output
     # Get the selected option name (e.g., "token" or "example")
     local selected_name=$(echo "${dynamic_menu_items[$((selected_option-1))]}" | awk '{print $2}')
-    read -p "stop 3"  # Pause to observe output
+    echo "Selected function name: $selected_name"  # Debugging: Check the function name extracted
     
     # Convert the selected_name to lowercase (functions in bash are case-sensitive)
     local function_name="${selected_name,,}"
@@ -40,11 +36,9 @@ execute_dynamic_menu() {
     # Check if the function exists and execute it
     if declare -f "$function_name" > /dev/null; then
         echo "Executing commands for ${function_name}..."
-        read -p "stop A"  # Pause to observe output
         "$function_name"  # Execute the function
     else
         echo "Error: No corresponding function found for ${function_name}."
-        read -p "stop B"  # Pause to observe output
     fi
 
     read -p "Press Enter to continue..."  # Pause to observe output
@@ -58,6 +52,19 @@ apps_interface() {
     local app_path="/pg/apps/${app_name}"
     local dynamic_menu_items=()
     local dynamic_menu_count=1
+
+    # Check if the configuration file exists; if not, create a default one
+    if [[ ! -f "$config_path" ]]; then
+        echo "Configuration file not found. Creating a default configuration at $config_path."
+        cat <<EOL > "$config_path"
+app_name=$app_name
+media_path="/pg/media"
+port_number=32400
+time_zone="America/New_York"
+appdata_path="/pg/appdata/plex"
+plex_token="null"
+EOL
+    fi
 
     # Parse the app script for dynamic menu items
     while IFS= read -r line; do
