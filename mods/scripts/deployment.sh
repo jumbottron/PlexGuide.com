@@ -68,7 +68,6 @@ deploy_app() {
 
     # Ensure the app script exists before proceeding
     if [[ -f "$app_script" ]]; then
-        echo "Executing $app_script with $app_name..."
         # Execute the apps_interface.sh script with the app name as an argument
         bash "$app_script" "$app_name"
     else
