@@ -43,4 +43,4 @@ docker run -d \
   plexinc/pms-docker:plexpass
 
 # Verify the Docker container is running
-docker ps | grep "$app_name"
+docker ps | grep "$app_name
