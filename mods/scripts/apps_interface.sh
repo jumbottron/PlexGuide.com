@@ -19,24 +19,6 @@ check_deployment_status() {
     fi
 }
 
-# Function: parse_additional_menu_items
-parse_additional_menu_items() {
-    local app_script="/pg/scripts/${app_name}"
-    local item_number=1
-    local additional_menu=""
-
-    if [[ -f "$app_script" ]]; then
-        while IFS= read -r line; do
-            if [[ "$line" =~ ^####\ (.*)$ ]]; then
-                additional_menu+="${item_number}) ${BASH_REMATCH[1]}\n"
-                item_number=$((item_number + 1))
-            fi
-        done < "$app_script"
-    fi
-
-    echo -e "$additional_menu"
-}
-
 # Function: stop_and_remove_app
 stop_and_remove_app() {
     docker ps --filter "name=^/${app_name}$" --format "{{.Names}}" &> /dev/null
@@ -56,7 +38,7 @@ redeploy_app() {
     read -p "Press Enter to continue..."
 }
 
-# Main Menu
+# Initial setup: Create config file, store app_name, set default appdata path
 apps_interface() {
     local app_name=$1
     local config_path="/pg/config/${app_name}.cfg"
@@ -74,13 +56,6 @@ apps_interface() {
         echo "D) Deploy $app_name"
         echo "K) Kill Docker Container"
         echo "C) Configuration Options"
-
-        # Insert additional menu items
-        additional_menu_items=$(parse_additional_menu_items)
-        if [[ -n "$additional_menu_items" ]]; then
-            echo -e "$additional_menu_items"
-        fi
-
         echo "Z) Exit"
         echo ""
 
@@ -110,10 +85,6 @@ apps_interface() {
             c)
                 bash /pg/scripts/apps_config_menu.sh "$app_name"
                 ;;
-            [1-9])
-                echo "Selected custom option $choice"
-                read -p "Press Enter to continue..."
-                ;;
             z)
                 break
                 ;;
@@ -124,6 +95,3 @@ apps_interface() {
         esac
     done
 }
-
-# Entry point: Call the main function with the app name
-apps_interface "$@"
