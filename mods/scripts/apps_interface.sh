@@ -18,13 +18,14 @@ check_deployment_status() {
 }
 
 # Function: execute_dynamic_menu
+# Function: execute_dynamic_menu
 execute_dynamic_menu() {
     read -p "stop 1"  # Pause to observe output
 
     local selected_option=$1
 
     # Source the app script to load the functions
-    echo "source /pg/apps/\"$app_name\""
+    echo "Sourcing script: /pg/apps/$app_name"  # Debugging: Confirm which script is being sourced
     source /pg/apps/"$app_name"
 
     read -p "stop 2"  # Pause to observe output
@@ -34,6 +35,7 @@ execute_dynamic_menu() {
     
     # Convert the selected_name to lowercase (functions in bash are case-sensitive)
     local function_name="${selected_name,,}"
+    echo "Function name derived: $function_name"  # This will echo the function name
 
     # Check if the function exists and execute it
     if declare -f "$function_name" > /dev/null; then
@@ -47,6 +49,7 @@ execute_dynamic_menu() {
 
     read -p "Press Enter to continue..."  # Pause to observe output
 }
+
 
 # Main Interface
 apps_interface() {
