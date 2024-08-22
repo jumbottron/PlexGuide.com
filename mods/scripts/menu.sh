@@ -28,7 +28,7 @@ load_config() {
 
 # Function for Apps Management
 apps_management() {
-    /pg/scripts/apps.sh
+    /pg/scripts/apps_starter_menu.sh
 }
 
 # Function for HardDisk Management
