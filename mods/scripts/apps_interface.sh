@@ -36,7 +36,7 @@ redeploy_app() {
     read -p "Press Enter to continue..."
 }
 
-# Initial setup: Create config file, store app_name, set default appdata path
+# Main Function: apps_interface
 apps_interface() {
     local app_name=$1
     local config_path="/pg/config/${app_name}.cfg"
@@ -93,3 +93,12 @@ apps_interface() {
         esac
     done
 }
+
+# Ensure the apps_interface function is called
+if [[ -z "$1" ]]; then
+    echo "Error: No app name provided."
+    echo "Usage: $0 <app_name>"
+    exit 1
+else
+    apps_interface "$1"
+fi
