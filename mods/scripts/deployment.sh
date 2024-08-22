@@ -7,9 +7,6 @@ BLUE="\033[0;34m"
 ORANGE="\033[0;33m"
 NC="\033[0m" # No color
 
-# Source the apps_interface function from the external script
-source /pg/scripts/apps_interface
-
 # Clear the screen at the start
 clear
 
@@ -67,14 +64,14 @@ display_available_apps() {
 # Function to deploy the selected app
 deploy_app() {
     local app_name=$1
-    local app_path="/pg/apps/$app_name"
+    local app_script="/pg/scripts/apps_interface.sh"
 
-    # Ensure the app exists before deploying
-    if [[ -f "$app_path" ]]; then
-        # Call the apps_interface function
-        apps_interface "$app_name"
+    # Ensure the app script exists before proceeding
+    if [[ -f "$app_script" ]]; then
+        # Execute the apps_interface.sh script with the app name as an argument
+        bash "$app_script" "$app_name"
     else
-        echo "Error: App script for $app_name not found!"
+        echo "Error: Interface script $app_script not found!"
         read -p "Press Enter to continue..."
     fi
 }
