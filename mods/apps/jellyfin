@@ -6,6 +6,7 @@
 ##### Movies Path: /pg/media/movies
 ##### TV Path: /pg/media/tv
 ##### JF ServerUrl: 1.1.1.1
+##### Version Tag: lastest
 
 # Specify the app name and config file path
 app_name=$1
@@ -19,18 +20,20 @@ else
     exit 1
 fi
 
-docker run -d \
-  --name="${app_name}" \
-  -e PUID=1000 \
-  -e PGID=1000 \
-  -e TZ="${time_zone}" \
-  -e JELLYFIN_PublishedServerUrl="${jf_serverurl}" \
-  -p "${port_number}":8096 \
-  -v "${appdata_path}":/config \
-  -v "${tv_path}":/data/tvshows \
-  -v "${movies_path}":/data/movies \
-  --restart unless-stopped \
-  lscr.io/linuxserver/jellyfin:latest
+deploy_container() {
+    docker run -d \
+      --name="${app_name}" \
+      -e PUID=1000 \
+      -e PGID=1000 \
+      -e TZ="${time_zone}" \
+      -e JELLYFIN_PublishedServerUrl="${jf_serverurl}" \
+      -p "${port_number}":8096 \
+      -v "${appdata_path}":/config \
+      -v "${tv_path}":/data/tvshows \
+      -v "${movies_path}":/data/movies \
+      --restart unless-stopped \
+      lscr.io/linuxserver/jellyfin:${version_tag}
 
 # Verify the Docker container is running
 docker ps | grep "$app_name"
+}
