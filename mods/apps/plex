@@ -14,6 +14,7 @@ token() {
     echo -e "Note: Changing the token will stop the Docker containers and require manual redeployment."
     echo -e "\nPlease enter your new Plex Token from https://plex.tv/claim"
     echo -e "Type [${GREEN}Z${NC}] to exit or to skip entering a token, type: ${RED}no-token${NC}"
+    echo ""
     
     while true; do
         read -p "Plex Token: " new_token
