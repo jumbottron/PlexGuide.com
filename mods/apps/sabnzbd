@@ -5,6 +5,7 @@
 ##### AppData Path: /pg/appdata/sabnzbd
 ##### Download Path: /pg/downloads/nzbget/downloads/
 ##### Incomplete Downloads: /pg/downloads/nzbget/incomplete_downloads
+##### Version Tag: latest
 
 # Specify the app name and config file path
 app_name=$1
@@ -18,17 +19,19 @@ else
     exit 1
 fi
 
-docker run -d \
-  --name="${app_name}" \
-  -e PUID=1000 \
-  -e PGID=1000 \
-  -e TZ="${time_zone}" \
-  -p "${port_number}":8080 \
-  -v "${appdata_path}":/config \
-  -v "${download_path}":/downloads \
-  -v "${incomplete_downloads}":/incomplete-downloads \
-  --restart unless-stopped \
-  lscr.io/linuxserver/sabnzbd:latest
-
-# Verify the Docker container is running
-docker ps | grep "$app_name"
+deploy_container() {
+    docker run -d \
+      --name="${app_name}" \
+      -e PUID=1000 \
+      -e PGID=1000 \
+      -e TZ="${time_zone}" \
+      -p "${port_number}":8080 \
+      -v "${appdata_path}":/config \
+      -v "${download_path}":/downloads \
+      -v "${incomplete_downloads}":/incomplete-downloads \
+      --restart unless-stopped \
+      lscr.io/linuxserver/sabnzbd:"${version_tag}"
+    
+    # Verify the Docker container is running
+    docker ps | grep "$app_name"
+}
