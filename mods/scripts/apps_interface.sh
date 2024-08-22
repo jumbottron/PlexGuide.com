@@ -36,37 +36,43 @@ redeploy_app() {
     read -p "Press Enter to continue..."
 }
 
-# Function to dynamically add menu items based on #### markers
-add_dynamic_menu_items() {
-    local app_script="$app_path"
-    local menu_number=1
+# Function: execute_dynamic_menu
+execute_dynamic_menu() {
+    local selected_option=$1
+    local current_section=""
 
     while IFS= read -r line; do
-        if [[ "$line" =~ ^#### ]]; then
-            local command_name=$(echo "$line" | awk '{print $2}')
-            echo "$menu_number) $command_name"
-            dynamic_commands+=("$command_name")
-            ((menu_number++))
+        # Look for the start of the dynamic menu section
+        if [[ "$line" =~ ^####\  ]]; then
+            current_section=$(echo "$line" | awk '{print $2}')
+        elif [[ "$line" =~ ^###\ START\ ${current_section}_COMMANDS ]]; then
+            # If the selected option matches the section, start executing commands
+            while IFS= read -r command_line; do
+                if [[ "$command_line" =~ ^###\ END\ ${current_section}_COMMANDS ]]; then
+                    break
+                fi
+                eval "$command_line"
+            done < "$app_path"
+            break
         fi
-    done < "$app_script"
+    done < "$app_path"
 }
 
-# Function to execute the corresponding command
-execute_dynamic_command() {
-    local command_name=$1
-    echo "Executing commands for $command_name..."
-    "$command_name"
-}
-
-# Main Menu Interface
+# Main Interface
 apps_interface() {
     local app_name=$1
     local config_path="/pg/config/${app_name}.cfg"
     local app_path="/pg/apps/${app_name}"
-    dynamic_commands=()
+    local dynamic_menu_items=()
+    local dynamic_menu_count=1
 
-    # Source the app script to make functions available
-    source "$app_path"
+    # Parse the app script for dynamic menu items
+    while IFS= read -r line; do
+        if [[ "$line" =~ ^####\  ]]; then
+            dynamic_menu_items+=("${dynamic_menu_count}) $(echo "$line" | awk '{print $2}')")
+            ((dynamic_menu_count++))
+        fi
+    done < "$app_path"
 
     # Menu
     while true; do
@@ -80,10 +86,12 @@ apps_interface() {
         echo "D) Deploy $app_name"
         echo "K) Kill Docker Container"
         echo "C) Configuration Options"
-
-        # Dynamic menu items (e.g., Token, Example)
-        add_dynamic_menu_items
-
+        
+        # Print dynamic menu items if any
+        for item in "${dynamic_menu_items[@]}"; do
+            echo "$item"
+        done
+        
         echo "Z) Exit"
         echo ""
 
@@ -113,20 +121,19 @@ apps_interface() {
             c)
                 bash /pg/scripts/apps_config_menu.sh "$app_name"
                 ;;
+            [0-9]*)
+                execute_dynamic_menu "$choice"
+                ;;
             z)
                 break
                 ;;
             *)
-                if [[ "$choice" =~ ^[0-9]+$ ]] && ((choice > 0 && choice <= ${#dynamic_commands[@]})); then
-                    execute_dynamic_command "${dynamic_commands[$((choice-1))]}"
-                else
-                    echo "Invalid option, please try again."
-                    read -p "Press Enter to continue..."
-                fi
+                echo "Invalid option, please try again."
+                read -p "Press Enter to continue..."
                 ;;
         esac
     done
 }
 
-# Call the main function with the provided app name
+# Run the interface with the provided app name
 apps_interface "$1"
