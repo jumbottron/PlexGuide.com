@@ -3,6 +3,7 @@
 ##### AppData Path: /pg/appdata/plex_debrid
 ##### Port Number: 32400
 ##### Time Zone: America/New_York
+##### Version Tag: latest
 
 # Specify the app name and config file path
 app_name=$1
@@ -16,13 +17,15 @@ else
     exit 1
 fi
 
-# Run the Docker container with the specified settings
-docker run -d \
-  --name="${app_name}" \
-  --network=host \
-  -v "${config_path}:/config" \
-  --restart unless-stopped \
-  itstoggle/plex_debrid
-
-# Verify the Docker container is running
-docker ps | grep "$app_name"
+deploy_container() {
+    # Run the Docker container with the specified settings
+    docker run -d \
+      --name="${app_name}" \
+      --network=host \
+      -v "${config_path}:/config" \
+      --restart unless-stopped \
+      itstoggle/plex_debrid:"${version_tag}"
+    
+    # Verify the Docker container is running
+    docker ps | grep "$app_name"
+}
