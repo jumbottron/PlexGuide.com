@@ -72,8 +72,7 @@ deploy_container() {
                 break
             else
                 clear
-                echo -e "${RED}Invalid token format.${NC} Please ensure the token starts with 'claim-' or type ${RED}no-token${NC}."
-                echo -e "Plex Token: "
+                echo -e "${RED}Invalid token format.${NC} Ensure token starts with 'claim-' or type ${RED}no-token${NC}."
             fi
         done
     fi
