@@ -37,7 +37,7 @@ echo ""
 wrap_text "Do you want to proceed? Type [${RED}${edit_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: "
 
 while true; do
-    read -p "$(wrap_text "Do you want to proceed? Type [${RED}${edit_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: ")" edit_choice
+    read -p "" edit_choice
     if [[ "$edit_choice" == "$edit_code" ]]; then
         nano "$config_path"
 
