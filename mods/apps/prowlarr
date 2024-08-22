@@ -4,6 +4,7 @@
 ##### Port Number: 9696
 ##### Time Zone: America/New_York
 ##### AppData Path: /pg/appdata/prowlarr
+##### Version Tag: latest
 
 # Specify the app name and config file path
 app_name=$1
@@ -11,15 +12,17 @@ config_path="/pg/config/${app_name}.cfg"
 source "$config_path"
 
 # Run the Prowlarr Docker container with the specified settings
-docker run -d \
-  --name="${app_name}" \
-  -e PUID=1000 \
-  -e PGID=1000 \
-  -e TZ="${time_zone}" \
-  -p "${port_number}":9696 \
-  -v "${appdata_path}":/config \
-  --restart unless-stopped \
-  lscr.io/linuxserver/prowlarr:latest
-
-# Verify the Docker container is running
-docker ps | grep "$app_name"
+deploy_container() {
+  docker run -d \
+    --name="${app_name}" \
+    -e PUID=1000 \
+    -e PGID=1000 \
+    -e TZ="${time_zone}" \
+    -p "${port_number}":9696 \
+    -v "${appdata_path}":/config \
+    --restart unless-stopped \
+    lscr.io/linuxserver/prowlarr:"${version_tag}"
+  
+  # Verify the Docker container is running
+  docker ps | grep "$app_name"
+}
