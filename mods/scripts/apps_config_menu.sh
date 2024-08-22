@@ -207,7 +207,7 @@ while true; do
             nano "$config_path"
             ;;
         e)
-            bash /pg/scripts/expose.sh
+            bash /pg/scripts/expose.sh "$app_name"
             ;;
         y)
             reset_config_file
