@@ -91,10 +91,7 @@ apps_interface() {
     # Menu
     while true; do
         clear
-
-        # Re-source the config file to refresh values
-        source "$config_path"
-
+        
         check_deployment_status  # Display the initial status
         echo ""
         echo "D) Deploy $app_name"
