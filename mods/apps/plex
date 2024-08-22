@@ -32,20 +32,36 @@ deploy_container() {
         exit 1
     fi
 
+    # Check and update the Plex token if necessary
+    if [[ "$plex_token" == "null" || ! "$plex_token" =~ ^claim || "$plex_token" == "no-token" ]]; then
+        echo "Current Plex Token is either null, invalid, or needs to be updated."
+        echo "Please enter your Plex Token (or type 'no-token' to skip):"
+        read -p "Plex Token: " new_token
+
+        if [[ "$new_token" == "no-token" || "$new_token" =~ ^claim ]]; then
+            plex_token="$new_token"
+            # Update the config file with the new token
+            sed -i "s|^plex_token=.*|plex_token=$plex_token|" "$config_path"
+        else
+            echo "Invalid token format. Please ensure the token starts with 'claim-' or type 'no-token'."
+            exit 1
+        fi
+    fi
+
     # Run the Plex Docker container with the specified settings
-        docker run -d \
-          --name="${app_name}" \
-          --net=host \
-          -e PUID=1000 \
-          -e PGID=1000 \
-          -e TZ="${time_zone}" \
-          -e VERSION=docker \
-          -e PLEX_CLAIM="${plex_token}" \
-          -v "${appdata_path}":/config \
-          -v "${media_path}":/media \
-          -v realdebrid:/torrents \
-          --restart unless-stopped \
-          lscr.io/linuxserver/plex:latest
+    docker run -d \
+      --name="${app_name}" \
+      --net=host \
+      -e PUID=1000 \
+      -e PGID=1000 \
+      -e TZ="${time_zone}" \
+      -e VERSION=docker \
+      -e PLEX_CLAIM="${plex_token}" \
+      -v "${appdata_path}":/config \
+      -v "${media_path}":/media \
+      -v realdebrid:/torrents \
+      --restart unless-stopped \
+      lscr.io/linuxserver/plex:latest
 
     # Verify the Docker container is running
     docker ps | grep "$app_name"
