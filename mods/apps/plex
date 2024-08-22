@@ -8,8 +8,6 @@
 
 #### Token
 token() {
-#### Token
-token() {
     while true; do
         clear
         echo "Current Plex Token: ${plex_token}"
@@ -38,8 +36,6 @@ token() {
             sleep 2
         fi
     done
-}
-
 }
 
 #### Example
