@@ -5,6 +5,7 @@
 ##### Time Zone: America/New_York
 ##### AppData Path: /pg/appdata/qbittorrent
 ##### Download Path: /pg/downloads/qbittorrent
+##### Version Tag: latest
 
 # Specify the app name and config file path
 app_name=$1
@@ -18,20 +19,22 @@ else
     exit 1
 fi
 
-docker run -d \
-  --name="${app_name}" \
-  -e PUID=1000 \
-  -e PGID=1000 \
-  -e TZ="${time_zone}" \
-  -e WEBUI_PORT="${port_number}" \
-  -e TORRENTING_PORT="${torrenting_port}" \
-  -p "${port_number}":8080 \
-  -p "${torrenting_port}":6881 \
-  -p "${torrenting_port}":6881/udp \
-  -v "${appdata_path}":/config \
-  -v "${download_path}":/downloads `#optional` \
-  --restart unless-stopped \
-  lscr.io/linuxserver/qbittorrent:latest
-
-# Verify the Docker container is running
-docker ps | grep "$app_name"
+deploy_container() {
+    docker run -d \
+      --name="${app_name}" \
+      -e PUID=1000 \
+      -e PGID=1000 \
+      -e TZ="${time_zone}" \
+      -e WEBUI_PORT="${port_number}" \
+      -e TORRENTING_PORT="${torrenting_port}" \
+      -p "${port_number}":8080 \
+      -p "${torrenting_port}":6881 \
+      -p "${torrenting_port}":6881/udp \
+      -v "${appdata_path}":/config \
+      -v "${download_path}":/downloads `#optional` \
+      --restart unless-stopped \
+      lscr.io/linuxserver/qbittorrent:"${version_tag}
+    
+    # Verify the Docker container is running
+    docker ps | grep "$app_name"
+}
