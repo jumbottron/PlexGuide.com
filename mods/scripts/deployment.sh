@@ -68,6 +68,7 @@ deploy_app() {
 
     # Ensure the app script exists before proceeding
     if [[ -f "$app_script" ]]; then
+        echo "Executing $app_script with $app_name..."
         # Execute the apps_interface.sh script with the app name as an argument
         bash "$app_script" "$app_name"
     else
@@ -100,6 +101,10 @@ deployment_function() {
         read -p "$(echo -e "Type [${GREEN}App${NC}] to Deploy or [${RED}Exit${NC}]: ")" app_choice
 
         app_choice=$(echo "$app_choice" | tr '[:upper:]' '[:lower:]')
+
+        # Debugging: Print out the app_choice and available apps
+        echo "You selected: $app_choice"
+        echo "Available apps: ${APP_LIST[@]}"
 
         if [[ "$app_choice" == "exit" ]]; then
             exit 0
