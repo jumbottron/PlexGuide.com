@@ -4,7 +4,7 @@
 ##### AppData Path: /pg/appdata/vaultwarden
 ##### Signups Enabled: false
 ##### WebSocket Enabled: false
-##### Verison Tag: lastest
+##### Verison Tag: latest
 
 # Specify the app name and config file path
 app_name=$1
