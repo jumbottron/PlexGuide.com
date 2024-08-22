@@ -39,13 +39,12 @@ redeploy_app() {
 # Function: execute_dynamic_menu
 execute_dynamic_menu() {
     local selected_option=$1
-    local current_section=""
 
     # Source the app script to load the functions
     source "$app_path"
 
     # Get the selected option name (e.g., "Token" or "Example")
-    selected_name=$(echo "${dynamic_menu_items[$((selected_option-1))]}" | awk '{print $2}')
+    local selected_name=$(echo "${dynamic_menu_items[$((selected_option-1))]}" | awk '{print $2}')
 
     # Check if the function exists and execute it
     if declare -f "${selected_name,,}_command" > /dev/null; then
@@ -53,6 +52,7 @@ execute_dynamic_menu() {
         "${selected_name,,}_command"
     else
         echo "Error: No corresponding function found for ${selected_name}."
+        read -p "Press Enter to continue..."
     fi
 }
 
@@ -120,7 +120,12 @@ apps_interface() {
                 bash /pg/scripts/apps_config_menu.sh "$app_name"
                 ;;
             [0-9]*)
-                execute_dynamic_menu "$choice"
+                if [[ $choice -le ${#dynamic_menu_items[@]} ]]; then
+                    execute_dynamic_menu "$choice"
+                else
+                    echo "Invalid option, please try again."
+                    read -p "Press Enter to continue..."
+                fi
                 ;;
             z)
                 break
