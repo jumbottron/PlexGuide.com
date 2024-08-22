@@ -68,6 +68,7 @@ execute_dynamic_command() {
 }
 
 
+
 # Function: generate_dynamic_menu_items
 generate_dynamic_menu_items() {
     local app_script="/pg/apps/${app_name}"
