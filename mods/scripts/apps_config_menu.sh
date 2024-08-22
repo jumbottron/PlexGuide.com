@@ -28,6 +28,16 @@ validate_or_create_path() {
     return 0
 }
 
+# Function: check_deployment_status
+check_deployment_status() {
+    local container_status=$(docker ps --filter "name=^/${app_name}$" --format "{{.Names}}")
+    if [[ "$container_status" == "$app_name" ]]; then
+        echo -e "${GREEN}[Deployed]${NC}"
+    else
+        echo -e "${RED}[Not Deployed]${NC}"
+    fi
+}
+
 # Function: change_port_number
 change_port_number() {
     clear
@@ -181,10 +191,11 @@ while true; do
     # Re-source the config file to refresh values
     source "$config_path"
 
-    # Get expose status
+    # Get deployment status and expose status
+    deployment_status=$(check_deployment_status)
     expose_status=$(check_expose_status)
 
-    echo -e "${RED}${app_name} - Configuration Interface${NC}"
+    echo -e "Configuration Interface - ${app_name} ${deployment_status}"
     echo ""
     echo "A) Appdata Path: $appdata_path"
     echo "P) Port: $port_number"
@@ -207,7 +218,7 @@ while true; do
             nano "$config_path"
             ;;
         e)
-            bash /pg/scripts/expose.sh "$app_name"
+            # Logic to modify exposed port settings can be added here
             ;;
         y)
             reset_config_file
