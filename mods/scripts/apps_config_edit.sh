@@ -15,6 +15,9 @@ wrap_text() {
     local line=""
 
     while IFS= read -r word; do
+        # Trim any leading or trailing whitespace from the line
+        line=$(echo -n "$line" | sed 's/[[:space:]]*$//')
+
         if [[ $(( ${#line} + ${#word} + 1 )) -gt 80 ]]; then
             wrapped_text+="$line\n"
             line="$word "
