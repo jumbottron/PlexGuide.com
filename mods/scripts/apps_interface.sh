@@ -18,7 +18,6 @@ check_deployment_status() {
 }
 
 # Function: execute_dynamic_menu
-# Function: execute_dynamic_menu
 execute_dynamic_menu() {
     local selected_option=$1
 
@@ -26,7 +25,11 @@ execute_dynamic_menu() {
 
     # Source the app script to load the functions
     echo "Sourcing script: $app_path"  # Debugging: Confirm which script is being sourced
-    source "$app_path"
+    if ! source "$app_path"; then
+        echo "Error: Failed to source $app_path"
+        read -p "Press Enter to continue..."
+        return
+    fi
 
     # Get the selected option name (e.g., "Token" or "Example")
     local selected_name=$(echo "${dynamic_menu_items[$((selected_option-1))]}" | awk '{print $2}')
@@ -40,6 +43,8 @@ execute_dynamic_menu() {
         echo "Error: No corresponding function found for ${selected_name}."
         read -p "Press Enter to continue..."
     fi
+    echo "Debug: Finished executing function."
+    read -p "Press Enter to continue..."
 }
 
 # Main Interface
@@ -94,7 +99,6 @@ apps_interface() {
             [0-9]*)
                 if [[ $choice -le ${#dynamic_menu_items[@]} ]]; then
                     execute_dynamic_menu "$choice"
-                    read -p "Press Enter - DEBUG to continue..."
                 else
                     echo "Invalid option, please try again."
                     read -p "Press Enter to continue..."
