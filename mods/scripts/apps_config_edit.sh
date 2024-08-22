@@ -8,20 +8,21 @@ NC="\033[0m" # No color
 app_name=$1
 config_path=$2
 
-# Function to wrap text at 80 characters
+# Function to wrap text at 80 characters, preserving sentence flow
 wrap_text() {
     local text="$1"
     local wrapped_text=""
     local line=""
 
-    for word in $text; do
+    while IFS= read -r word; do
         if [[ $(( ${#line} + ${#word} + 1 )) -gt 80 ]]; then
             wrapped_text+="$line\n"
             line="$word "
         else
             line+="$word "
         fi
-    done
+    done <<< "$(echo "$text" | tr ' ' '\n')"
+
     wrapped_text+="$line"
     echo -e "$wrapped_text"
 }
@@ -31,10 +32,9 @@ edit_code=$(printf "%04d" $((RANDOM % 10000)))
 wrap_text "${RED}Warning: This is an advanced option.${NC}"
 wrap_text "Visit https://plexguide.com/wiki/not-generated-yet for more information."
 echo ""
-wrap_text "If the container is running, it will be stopped/killed and removed due to the changes made."
-wrap_text "You will need to redeploy the container manually."
-wrap_text "Once changes are made, press CTRL+X to save and exit."
+wrap_text "If the container is running, it will be stopped/killed and removed due to the changes made. You will need to redeploy the container manually. Once changes are made, press CTRL+X to save and exit."
 echo ""
+wrap_text "Do you want to proceed? Type [${RED}${edit_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: "
 
 while true; do
     read -p "$(wrap_text "Do you want to proceed? Type [${RED}${edit_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: ")" edit_choice
