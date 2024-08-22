@@ -94,6 +94,7 @@ apps_interface() {
             [0-9]*)
                 if [[ $choice -le ${#dynamic_menu_items[@]} ]]; then
                     execute_dynamic_menu "$choice"
+                    read -p "Press Enter - DEBUG to continue..."
                 else
                     echo "Invalid option, please try again."
                     read -p "Press Enter to continue..."
