@@ -55,7 +55,7 @@ deploy_container() {
     fi
 
     # Check and update the Plex token if necessary
-    if [[ "$plex_token" == "null" || ! "$plex_token" =~ ^claim || "$plex_token" != "no-token" ]]; then
+    if [[ "$plex_token" == "null" || ( ! "$plex_token" =~ ^claim && "$plex_token" != "no-token" ) ]]; then
         clear
         echo -e "The Plex Token needs to be updated"
         echo -e "A. Please enter your Plex Token from https://plex.tv/claim"
