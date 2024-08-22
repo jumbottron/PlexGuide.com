@@ -17,14 +17,6 @@ check_deployment_status() {
     fi
 }
 
-# Function: redeploy_app
-redeploy_app() {
-    echo "Deploying $app_name..."
-    bash "$app_path" "$app_name"
-    echo -e "${BLUE}${app_name}${NC} has been deployed."
-    read -p "Press Enter to continue..."
-}
-
 # Function: execute_dynamic_menu
 execute_dynamic_menu() {
     local selected_option=$1
@@ -86,21 +78,7 @@ apps_interface() {
 
         case ${choice,,} in  # Convert input to lowercase
             d)
-                clear
-                local deploy_code=$(printf "%04d" $((RANDOM % 10000)))
-                while true; do
-                    read -p "$(echo -e "Deploy/Redeploy $app_name?\nType [${RED}${deploy_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: ")" deploy_choice
-                    if [[ "$deploy_choice" == "$deploy_code" ]]; then
-                        bash /pg/scripts/apps_kill_remove.sh "$app_name"  # Stop and remove app
-                        redeploy_app  # Deploy the container after stopping/removing
-                        break
-                    elif [[ "${deploy_choice,,}" == "no" ]]; then
-                        echo "Operation cancelled."
-                        break
-                    else
-                        echo -e "${RED}Invalid response.${NC} Please type [${RED}${deploy_code}${NC}] or [${GREEN}no${NC}]."
-                    fi
-                done
+                bash /pg/scripts/apps_deploy.sh "$app_name" "$app_path"
                 ;;
             k)
                 bash /pg/scripts/apps_kill_remove.sh "$app_name"  # Stop and remove app
