@@ -19,6 +19,8 @@ check_deployment_status() {
 
 # Function: execute_dynamic_menu
 execute_dynamic_menu() {
+    read -p "stop 1"  # Pause to observe output
+
     local selected_option=$1
 
     # Source the app script to load the functions
