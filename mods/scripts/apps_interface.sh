@@ -1,115 +1,46 @@
 #!/bin/bash
 
-# ANSI color codes
-RED="\033[0;31m"
-GREEN="\033[0;32m"
-BLUE="\033[0;34m"
-NC="\033[0m" # No color
+##### Media Path: /pg/media
+##### Port Number: 32400
+##### Time Zone: America/New_York
+##### AppData Path: /pg/appdata/plex
 
-# Function: check_deployment_status
-check_deployment_status() {
-    local container_status=$(docker ps --filter "name=^/${app_name}$" --format "{{.Names}}")
-
-    if [[ "$container_status" == "$app_name" ]]; then
-        echo -e "${GREEN}[Deployed]${NC} $app_name"
-    else
-        echo -e "${RED}[Not Deployed]${NC} $app_name"
-    fi
-}
-
-# Function: stop_and_remove_app
-stop_and_remove_app() {
-    docker ps --filter "name=^/${app_name}$" --format "{{.Names}}" &> /dev/null
-    if [[ $? -eq 0 ]]; then
-        echo "Stopping and removing the existing container for $app_name ..."
-        docker stop "$app_name" && docker rm "$app_name"
-    else
-        echo "Container $app_name is not running."
-    fi
-}
-
-# Function: redeploy_app
-redeploy_app() {
-    echo "Deploying $app_name..."
-    bash "$app_path" "$app_name"
-    echo -e "${BLUE}${app_name}${NC} has been deployed."
+#### Token
+token_command() {
+    echo "This is the Token command execution."
     read -p "Press Enter to continue..."
 }
 
-# Function to execute commands for dynamic menu items
-execute_dynamic_command() {
-    local command_name=$1
-    echo "Executing commands for $command_name..."
-    bash -c "$command_name"_command
+#### Example
+example_command() {
+    echo "This is the Example command execution."
+    read -p "Press Enter to continue..."
 }
 
-# Initial setup: Create config file, store app_name, set default appdata path
-apps_interface() {
-    local app_name=$1
-    local config_path="/pg/config/${app_name}.cfg"
-    local app_path="/pg/apps/${app_name}"
+# Specify the app name and config file path
+app_name=$1
+config_path="/pg/config/${app_name}.cfg"
 
-    # Menu
-    while true; do
-        clear
+# Source the configuration file to get the appdata_path and app_name
+if [[ -f "$config_path" ]]; then
+    source "$config_path"
+else
+    echo "Error: Configuration file not found at $config_path."
+    exit 1
+fi
 
-        # Re-source the config file to refresh values
-        source "$config_path"
+# Run the Plex Docker container with the specified settings
+docker run -d \
+  --name="${app_name}" \
+  --network=host \
+  -e PLEX_CLAIM="$CLAIM_KEY" \
+  -e TZ="${time_zone}" \
+  -v "${appdata_path}":/config \
+  -v "${media_path}":/media \
+  -v /etc/localtime:/etc/localtime:ro \
+  -v realdebrid:/torrents \
+  --restart unless-stopped \
+  plexinc/pms-docker:plexpass
 
-        check_deployment_status  # Display the initial status
-        echo ""
-        echo "D) Deploy $app_name"
-        echo "K) Kill Docker Container"
-        echo "C) Configuration Options"
-        
-        # Dynamic menu items (token, example)
-        echo "1) Token"
-        echo "2) Example"
-        echo "Z) Exit"
-        echo ""
-
-        read -p "Choose an option: " choice
-
-        case ${choice,,} in  # Convert input to lowercase
-            d)
-                clear
-                local deploy_code=$(printf "%04d" $((RANDOM % 10000)))
-                while true; do
-                    read -p "$(echo -e "Deploy/Redeploy $app_name?\nType [${RED}${deploy_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: ")" deploy_choice
-                    if [[ "$deploy_choice" == "$deploy_code" ]]; then
-                        stop_and_remove_app
-                        redeploy_app  # Deploy the container after stopping/removing
-                        break
-                    elif [[ "${deploy_choice,,}" == "no" ]]; then
-                        echo "Operation cancelled."
-                        break
-                    else
-                        echo -e "${RED}Invalid response.${NC} Please type [${RED}${deploy_code}${NC}] or [${GREEN}no${NC}]."
-                    fi
-                done
-                ;;
-            k)
-                stop_and_remove_app
-                ;;
-            c)
-                bash /pg/scripts/apps_config_menu.sh "$app_name"
-                ;;
-            1)
-                execute_dynamic_command "token"
-                ;;
-            2)
-                execute_dynamic_command "example"
-                ;;
-            z)
-                break
-                ;;
-            *)
-                echo "Invalid option, please try again."
-                read -p "Press Enter to continue..."
-                ;;
-        esac
-    done
-}
-
-# Call the main function with the provided app name
-apps_interface "$1"
+# Verify the Docker container is running
+docker ps | grep "$app_name"
