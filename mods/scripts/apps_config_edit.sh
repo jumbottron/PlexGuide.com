@@ -8,33 +8,17 @@ NC="\033[0m" # No color
 app_name=$1
 config_path=$2
 
-# Function to wrap text at 80 characters, preserving sentence flow
-wrap_text() {
-    local text="$1"
-    local wrapped_text=""
-    local line=""
-
-    for word in $text; do
-        if [[ $(( ${#line} + ${#word} + 1 )) -gt 80 ]]; then
-            wrapped_text+="$line\n"
-            line="$word"
-        else
-            line+="$word "
-        fi
-    done
-
-    wrapped_text+="$line"
-    echo -e "$wrapped_text"
-}
-
 clear
 edit_code=$(printf "%04d" $((RANDOM % 10000)))
-wrap_text "${RED}Warning: This is an advanced option.${NC}"
-wrap_text "Visit https://plexguide.com/wiki/not-generated-yet for more information."
+
+echo -e "${RED}Warning: This is an advanced option.${NC}"
+echo "Visit https://plexguide.com/wiki/not-generated-yet for more information."
 echo ""
-wrap_text "If the container is running, it will be stopped/killed and removed due to the changes made. You will need to redeploy the container manually. Once changes are made, press CTRL+X to save and exit."
+echo "If the container is running, it will be stopped/killed and removed due to the"
+echo "changes made. You will need to redeploy the container manually. Once changes"
+echo "are made, press CTRL+X to save and exit."
 echo ""
-echo "Do you want to proceed? Type [${RED}${edit_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: "
+echo -e "Do you want to proceed? Type [${RED}${edit_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: "
 
 while true; do
     read -p "" edit_choice
@@ -44,17 +28,17 @@ while true; do
         # Stop and remove the Docker container if running
         docker ps --filter "name=^/${app_name}$" --format "{{.Names}}" &> /dev/null
         if [[ $? -eq 0 ]]; then
-            wrap_text "Stopping and removing the existing container for $app_name ..."
+            echo "Stopping and removing the existing container for $app_name ..."
             docker stop "$app_name" && docker rm "$app_name"
         else
-            wrap_text "Container $app_name is not running."
+            echo "Container $app_name is not running."
         fi
 
         break
     elif [[ "${edit_choice,,}" == "no" ]]; then
-        wrap_text "Operation cancelled."
+        echo "Operation cancelled."
         break
     else
-        wrap_text "${RED}Invalid response.${NC} Please type [${RED}${edit_code}${NC}] or [${GREEN}no${NC}]."
+        echo -e "${RED}Invalid response.${NC} Please type [${RED}${edit_code}${NC}] or [${GREEN}no${NC}]."
     fi
 done
