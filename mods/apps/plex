@@ -5,7 +5,6 @@
 ##### Time Zone: America/New_York
 ##### AppData Path: /pg/appdata/plex
 ##### Plex Token: null
-##### Version Number: latest
 
 #### Token
 token() {
@@ -90,7 +89,7 @@ deploy_container() {
       -v "${media_path}":/media \
       -v realdebrid:/torrents \
       --restart unless-stopped \
-      lscr.io/linuxserver/plex:"${version_number}"
+      lscr.io/linuxserver/plex:latest
 
     # Verify the Docker container is running
     docker ps | grep "$app_name"
