@@ -21,7 +21,7 @@ check_deployment_status() {
 
 # Function: parse_additional_menu_items
 parse_additional_menu_items() {
-    local app_script="/pg/scripts/${app_name}"
+    local app_script="/pg/apps/${app_name}"
     local item_number=1
     local additional_menu=""
 
