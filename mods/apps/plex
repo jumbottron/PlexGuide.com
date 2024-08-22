@@ -6,7 +6,16 @@
 ##### AppData Path: /pg/appdata/plex
 
 #### Token
+### START TOKEN COMMANDS
+echo "This is the Token command execution."
+# You can add more commands here related to Token.
+### END TOKEN COMMANDS
+
 #### Example
+### START EXAMPLE COMMANDS
+echo "This is the Example command execution."
+# You can add more commands here related to Example.
+### END EXAMPLE COMMANDS
 
 # Specify the app name and config file path
 app_name=$1
