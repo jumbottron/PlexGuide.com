@@ -31,21 +31,21 @@ execute_dynamic_menu() {
         return
     fi
 
-    # Get the selected option name (e.g., "Token" or "Example")
+    # Get the selected option name (e.g., "token" or "example")
     local selected_name=$(echo "${dynamic_menu_items[$((selected_option-1))]}" | awk '{print $2}')
     echo "Selected function name: $selected_name"  # Debugging: Check the function name extracted
 
     # Check if the function exists and execute it
-    if declare -f "$selected_name" > /dev/null; then
+    if declare -f "${selected_name,,}" > /dev/null; then
         echo "Executing commands for ${selected_name}..."
-        eval "$selected_name"  # Execute the function
+        "${selected_name,,}"
+        echo "Finished executing ${selected_name}."
     else
         echo "Error: No corresponding function found for ${selected_name}."
-        read -p "Press Enter to continue..."
     fi
-    echo "Debug: Finished executing function."
-    read -p "Press Enter to continue..."
+    read -p "Press Enter to continue..."  # Pause to observe output
 }
+
 
 # Main Interface
 apps_interface() {
