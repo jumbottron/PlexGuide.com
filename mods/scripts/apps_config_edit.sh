@@ -15,7 +15,7 @@ wrap_text() {
     local line=""
 
     for word in $text; do
-        if [[ ${#line} + ${#word} + 1 -gt 80 ]]; then
+        if [[ $(( ${#line} + ${#word} + 1 )) -gt 80 ]]; then
             wrapped_text+="$line\n"
             line="$word "
         else
