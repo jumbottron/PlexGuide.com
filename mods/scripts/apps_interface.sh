@@ -41,21 +41,19 @@ execute_dynamic_menu() {
     local selected_option=$1
     local current_section=""
 
-    while IFS= read -r line; do
-        # Look for the start of the dynamic menu section
-        if [[ "$line" =~ ^####\  ]]; then
-            current_section=$(echo "$line" | awk '{print $2}')
-        elif [[ "$line" =~ ^###\ START\ ${current_section}_COMMANDS ]]; then
-            # If the selected option matches the section, start executing commands
-            while IFS= read -r command_line; do
-                if [[ "$command_line" =~ ^###\ END\ ${current_section}_COMMANDS ]]; then
-                    break
-                fi
-                eval "$command_line"
-            done < "$app_path"
-            break
-        fi
-    done < "$app_path"
+    # Source the app script to load the functions
+    source "$app_path"
+
+    # Get the selected option name (e.g., "Token" or "Example")
+    selected_name=$(echo "${dynamic_menu_items[$((selected_option-1))]}" | awk '{print $2}')
+
+    # Check if the function exists and execute it
+    if declare -f "${selected_name,,}_command" > /dev/null; then
+        echo "Executing commands for ${selected_name}..."
+        "${selected_name,,}_command"
+    else
+        echo "Error: No corresponding function found for ${selected_name}."
+    fi
 }
 
 # Main Interface
