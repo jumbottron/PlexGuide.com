@@ -15,12 +15,14 @@ else
     exit 1
 fi
 
-docker run -d \
-  --name="${app_name}" \
-  -p "${expose}""${port_number}":3001 \
-  -v "${appdata_path}":/app/data \
-  --restart=unless-stopped \
-  louislam/uptime-kuma:1
-
-# Verify the Docker container is running
-docker ps | grep "$app_name"
+deploy_container() {
+    docker run -d \
+      --name="${app_name}" \
+      -p "${expose}""${port_number}":3001 \
+      -v "${appdata_path}":/app/data \
+      --restart=unless-stopped \
+      louislam/uptime-kuma:1
+    
+    # Verify the Docker container is running
+    docker ps | grep "$app_name"
+}
