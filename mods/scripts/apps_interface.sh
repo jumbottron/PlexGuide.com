@@ -43,8 +43,9 @@ generate_dynamic_menu_items() {
     
     if [[ -f "$app_script" ]]; then
         while IFS= read -r line; do
-            if [[ "$line" =~ ^#### ]]; then
-                menu_items+=("${line/#\#\#\#\#/}")
+            # Capture lines that exactly start with '####' followed by a space and text
+            if [[ "$line" =~ ^####[[:space:]]+(.*) ]]; then
+                menu_items+=("${BASH_REMATCH[1]}")
             fi
         done < "$app_script"
     fi
