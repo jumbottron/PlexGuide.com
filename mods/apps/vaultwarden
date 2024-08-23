@@ -77,7 +77,6 @@ deploy_container() {
         clear
         echo -e "${RED}The Vaultwarden Admin Token needs to be updated${NC}"
         echo -e "Please enter your Vaultwarden Admin Token (minimum 12 characters)"
-        echo -e "Type [${GREEN}Z${NC}] to exit.\n"
         while true; do
             read -p "Admin Token: " new_token
             if [[ ${#new_token} -ge 12 ]]; then
