@@ -66,3 +66,4 @@ FireFox, Jackett, JellyFin, Lidarr, NetData, NZBGET, Overseer, Ombi, Opera, Plex
 - [ ] Add More Applications  
 - [ ] Create Detailed Wiki
 - [ ] Deployment of PlexDebrid
+- [ ] VPN Server Capabilities
