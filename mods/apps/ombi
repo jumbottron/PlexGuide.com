@@ -3,7 +3,7 @@
 ##### Port Number: 3579
 ##### Time Zone: America/New_York
 ##### AppData Path: /pg/appdata/ombi
-##### Version Tag: lastest
+##### Version Tag: latest
 
 deploy_container() {
 
