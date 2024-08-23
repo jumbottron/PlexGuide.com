@@ -7,6 +7,7 @@
 ##### Time Zone: America/New_York
 ##### FirefoxCLI URL: https://www.linuxserver.io
 ##### Shm Size: 1gb
+##### Expose:
 
 deploy_container() {
 
