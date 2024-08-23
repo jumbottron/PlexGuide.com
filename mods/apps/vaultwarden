@@ -12,8 +12,8 @@ RED="\033[0;31m"
 GREEN="\033[0;32m"
 NC="\033[0m" # No color
 
-# Function to manage the Vaultwarden admin token
-vaultwarden_token() {
+#### Admin Token
+admin_token() {
     clear
     echo "Current Admin Token: $admin_token"
     echo -e "Note: Changing the admin token will stop the Docker container and require manual redeployment."
