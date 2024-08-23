@@ -3,19 +3,12 @@
 ##### Port Number: 3001
 ##### AppData Path: /pg/appdata/uptimekuma
 
-# Specify the app name and config file path
-app_name=$1
-config_path="/pg/config/${app_name}.cfg"
-
-# Source the configuration file to get the appdata_path and app_name
-if [[ -f "$config_path" ]]; then
-    source "$config_path"
-else
-    echo "Error: Configuration file not found at $config_path."
-    exit 1
-fi
-
 deploy_container() {
+
+    # Specify config file path and source information
+    config_path="/pg/config/${app_name}.cfg"
+    source "$config_path"
+
     docker run -d \
       --name="${app_name}" \
       -p "${expose}""${port_number}":3001 \
