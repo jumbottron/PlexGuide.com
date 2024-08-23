@@ -20,7 +20,7 @@ deploy_container() {
       -e PGID=1000 \
       -e TZ="${time_zone}" \
       -e JELLYFIN_PublishedServerUrl="${jf_serverurl}" \
-      -p "${port_number}":8096 \
+      -p "${expose}""${port_number}":8096 \
       -v "${appdata_path}":/config \
       -v "${tv_path}":/data/tvshows \
       -v "${movies_path}":/data/movies \
