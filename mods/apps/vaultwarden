@@ -34,6 +34,7 @@ admin_token() {
 
     echo -e "Note: Changing the admin token will stop the Docker container and require manual redeployment."
     echo -e "\nPlease enter your new Vaultwarden Admin Token"
+    echo -e "Type [${GREEN}Z${NC}] to exit.\n"
     echo ""
 
     while true; do
@@ -60,7 +61,6 @@ admin_token() {
         else
             clear
             echo -e "${RED}Invalid input.${NC} The token must be at least 12 characters long."
-            echo -e "Please enter a valid token or type [${GREEN}Z${NC}] to exit."
         fi
     done
 }
