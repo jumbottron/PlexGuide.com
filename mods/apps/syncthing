@@ -2,8 +2,8 @@
 
 ##### Time Zone: America/New_York
 ##### Config Path: /pg/appdata/syncthing
-##### Data Path1: /pg/data/syncthing/data1
-##### Data Path2: /pg/data/syncthing/data2
+##### DataPath 1: /pg/data/syncthing/data1
+##### DataPath 2: /pg/data/syncthing/data2
 ##### Verison Tag: latest
 
 deploy_container() {
@@ -22,8 +22,8 @@ deploy_container() {
       -p 22000:22000/udp \
       -p 21027:21027/udp \
       -v "${config_path}":/config \
-      -v "${data_path1}":/data1 \
-      -v "${data_path2}":/data2 \
+      -v "${datapath_1}":/data1 \
+      -v "${datapath_2}":/data2 \
       --restart unless-stopped \
       lscr.io/linuxserver/syncthing:"${version_tag}"
     
