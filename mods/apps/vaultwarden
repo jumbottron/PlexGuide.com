@@ -40,11 +40,11 @@ admin_token() {
     while true; do
         read -p "Admin Token (minimum 12 characters): " new_token
 
-        # Trim leading and trailing whitespace
-        new_token=$(echo "$new_token" | xargs)
+        # Convert to lowercase for comparison
+        local lowercase_token="${new_token,,}"
 
         # Check if the user wants to exit
-        if [[ "$new_token" == "z" || "$new_token" == "Z" ]]; then
+        if [[ "$lowercase_token" == "z" ]]; then
             echo "Operation cancelled."
             return 0  # Exit the function
         elif [[ ${#new_token} -ge 12 ]]; then
