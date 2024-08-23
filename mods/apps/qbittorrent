@@ -20,7 +20,7 @@ deploy_container() {
       -e TZ="${time_zone}" \
       -e WEBUI_PORT="${port_number}" \
       -e TORRENTING_PORT="${torrenting_port}" \
-      -p "${port_number}":8080 \
+      -p "${expose}""${port_number}":8080 \
       -p "${torrenting_port}":6881 \
       -p "${torrenting_port}":6881/udp \
       -v "${appdata_path}":/config \
