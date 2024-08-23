@@ -7,8 +7,8 @@
 ##### Admin Token: null
 ##### Version Tag: latest
 
-# Function to manage the Vaultwarden admin token
-vaultwarden_token() {
+#### Admin Token
+admin_token() {
     clear
     echo "Current Admin Token: $admin_token"
     echo -e "Note: Changing the admin token will stop the Docker container and require manual redeployment."
