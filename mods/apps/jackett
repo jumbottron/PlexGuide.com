@@ -6,6 +6,7 @@
 ##### PathTo Blackhole: /pg/downloads/
 ##### Auto Update: true 
 ##### Version Tag: latest
+##### Expose:
 
 deploy_container() {
 
