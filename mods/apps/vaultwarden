@@ -100,7 +100,7 @@ deploy_container() {
       -e SIGNUPS_ALLOWED="${signups_allowed}" \
       -e WEBSOCKET_ENABLED="${websocket_enabled}" \
       -e ADMIN_TOKEN="${admin_token}" \
-      -p "${$expose}""${port_number}":80/tcp \
+      -p "${expose}""${port_number}":80/tcp \
       -v "${appdata_path}:/data:rw" \
       --restart unless-stopped \
       vaultwarden/server:"${version_tag}"
