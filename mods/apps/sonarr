@@ -3,9 +3,9 @@
 ##### Port Number: 8989
 ##### Time Zone: America/New_York
 ##### AppData Path: /pg/appdata/sonarr
-##### TV Path: /pg/media/tv
+##### Movies Path: /pg/media/tv
 ##### ClientDownload Path: /pg/downloads
-##### Verison Tag: latest
+##### Version Tag: latest
 
 deploy_container() {
 
@@ -20,7 +20,7 @@ deploy_container() {
       -e TZ="${time_zone}" \
       -p "${port_number}":8989 \
       -v "${appdata_path}":/config \
-      -v "${tv_path}":/tv \
+      -v "${movies_path}":/movies \
       -v "${clientdownload_path}":/downloads \
       --restart unless-stopped \
       lscr.io/linuxserver/sonarr:"${version_tag}"
