@@ -6,6 +6,7 @@
 ##### Movies Path: /pg/media/tv
 ##### ClientDownload Path: /pg/downloads
 ##### Version Tag: latest
+##### Expose:
 
 deploy_container() {
 
