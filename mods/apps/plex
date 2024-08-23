@@ -42,17 +42,10 @@ token() {
 
 # Function to deploy the Docker container for the app
 deploy_container() {
-    # Specify the app name and config file path
-    app_name=$1
-    config_path="/pg/config/${app_name}.cfg"
 
-    # Source the configuration file to get the appdata_path and app_name
-    if [[ -f "$config_path" ]]; then
-        source "$config_path"
-    else
-        echo "Error: Configuration file not found at $config_path."
-        exit 1
-    fi
+    # Specify config file path and source information
+    config_path="/pg/config/${app_name}.cfg"
+    source "$config_path"
 
     # Check and update the Plex token if necessary
     if [[ "$plex_token" == "null" || ( ! "$plex_token" =~ ^claim && "$plex_token" != "no-token" ) ]]; then
