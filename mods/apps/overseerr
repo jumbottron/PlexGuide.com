@@ -16,7 +16,7 @@ deploy_container() {
       -e PUID=1000 \
       -e PGID=1000 \
       -e TZ="${time_zone}" \
-      -p "${port_number}":5055 \
+      -p "${expose}""${port_number}":5055 \
       -v "${appdata_path}":/config \
       --restart unless-stopped \
       lscr.io/linuxserver/overseerr:"${version_tag}"
