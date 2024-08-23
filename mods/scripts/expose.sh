@@ -40,11 +40,11 @@ while true; do
     read -p "Type [${yes_code}] [${no_code}] or [exit]: " user_input
     if [[ "$user_input" == "$yes_code" ]]; then
         echo "Port will be exposed."
-        sed -i 's|^expose=.*|expose=""|' "$config_path"
+        sed -i 's|^expose=.*|expose=|' "$config_path"
         break
     elif [[ "$user_input" == "$no_code" ]]; then
         echo "Port will remain private."
-        sed -i 's|^expose=.*|expose="127.0.0.1:"|' "$config_path"
+        sed -i 's|^expose=.*|expose=127.0.0.1:|' "$config_path"
         break
     elif [[ "$user_input" == "exit" ]]; then
         echo "Operation cancelled."
