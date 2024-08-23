@@ -90,7 +90,7 @@ deploy_container() {
             else
                 clear
                 echo -e "${RED}Invalid input.${NC} The token must be at least 12 characters long."
-                echo -e "Please enter a valid token or type [${GREEN}Z${NC}] to exit."
+                echo -e "Please enter a valid token."
             fi
         done
     fi
