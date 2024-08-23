@@ -4,7 +4,7 @@
 ##### Config Path: /pg/appdata/syncthing
 ##### DataPath 1: /pg/data/syncthing/data1
 ##### DataPath 2: /pg/data/syncthing/data2
-##### VersionTag: latest
+##### Version Tag: latest
 
 deploy_container() {
 
