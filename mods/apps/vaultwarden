@@ -1,3 +1,17 @@
+#!/bin/bash
+
+##### Port Number: 4748
+##### AppData Path: /pg/appdata/vaultwarden
+##### Signups Enabled: false
+##### WebSocket Enabled: false
+##### Admin Token: null
+##### Version Tag: latest
+
+# ANSI color codes
+RED="\033[0;31m"
+GREEN="\033[0;32m"
+NC="\033[0m" # No color
+
 #### Admin Token
 admin_token() {
     clear
@@ -18,10 +32,10 @@ admin_token() {
         echo "Current Admin Token: $admin_token"
     fi
 
-    echo -e "Note: Changing the admin token will stop the Docker container and require manual redeployment."
+    # Note about changing the token
+    echo -e "Note: Changing the admin token will stop the Docker container and require manual\nredeployment."
     echo -e "\nPlease enter your new Vaultwarden Admin Token"
     echo -e "Type [${GREEN}Z${NC}] to exit.\n"
-    echo ""
 
     while true; do
         read -p "Admin Token (minimum 12 characters): " new_token
@@ -42,12 +56,57 @@ admin_token() {
             # Stop and remove the Docker container
             docker stop "$app_name"
             docker rm "$app_name"
-            echo "Docker container killed due to admin token change. You will need to redeploy manually."
+            echo "Docker container killed. You will need to redeploy manually."
             break
         else
             clear
             echo -e "${RED}Invalid input.${NC} The token must be at least 12 characters long."
-            echo -e "Please enter a valid token or type [${GREEN}Z${NC}] to exit."
         fi
     done
 }
+
+# Function to deploy the Docker container for Vaultwarden
+deploy_container() {
+
+    # Specify config file path and source information
+    config_path="/pg/config/${app_name}.cfg"
+    source "$config_path"
+
+    # Check and update the Vaultwarden token if necessary
+    if [[ "$admin_token" == "null" || ${#admin_token} -lt 12 ]]; then
+        clear
+        echo -e "${RED}The Vaultwarden Admin Token needs to be updated${NC}"
+        echo -e "Please enter your Vaultwarden Admin Token (minimum 12 characters)"
+        while true; do
+            read -p "Admin Token: " new_token
+            if [[ ${#new_token} -ge 12 ]]; then
+                admin_token="$new_token"
+                # Update the config file with the new token
+                sed -i "s|^admin_token=.*|admin_token=$admin_token|" "$config_path"
+                docker stop "$app_name" && docker rm "$app_name"  # Kill the Docker container if the token changes
+                break
+            else
+                clear
+                echo -e "${RED}Invalid input.${NC} The token must be at least 12 characters long."
+                echo -e "Please enter a valid token."
+            fi
+        done
+    fi
+
+    # Run the Vaultwarden Docker container with the specified settings
+    docker run -d \
+      --name="${app_name}" \
+      -e SIGNUPS_ALLOWED="${signups_allowed}" \
+      -e WEBSOCKET_ENABLED="${websocket_enabled}" \
+      -e ADMIN_TOKEN="${admin_token}" \
+      -p "${port_number}:80/tcp" \
+      -v "${appdata_path}:/data:rw" \
+      --restart unless-stopped \
+      vaultwarden/server:"${version_tag}"
+
+    # Verify the Docker container is running
+    docker ps | grep "$app_name"
+}
+
+# Now you can call the function deploy_container when needed
+# Example: deploy_container "$app_name"
