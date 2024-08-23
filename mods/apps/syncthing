@@ -2,8 +2,8 @@
 
 ##### Time Zone: America/New_York
 ##### Config Path: /pg/appdata/syncthing
-##### DataPath 1: /pg/data/syncthing/data1
-##### DataPath 2: /pg/data/syncthing/data2
+##### DataPath 1: /pg/downloads/syncthing/data1
+##### DataPath 2: /pg/downloads/syncthing/data2
 ##### Version Tag: latest
 
 deploy_container() {
