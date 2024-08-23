@@ -22,7 +22,7 @@ deploy_container() {
       -e TZ="${time_zone}" \
       -e OPERA_CLI="${operacli_url}" \
       -p "${expose}""${port_number}":3000 \
-      -p "${port_two}":3001 \
+      -p -p "${expose}""${port_two}":3001 \
       -v "${appdata_path}":/config \
       --shm-size="${shm_size}" \
       --restart unless-stopped \
