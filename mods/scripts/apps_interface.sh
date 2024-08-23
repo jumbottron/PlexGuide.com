@@ -51,17 +51,12 @@ execute_dynamic_menu() {
     source /pg/apps/$app_name
 
     # Get the selected option name (e.g., "Admin Token" or "Token")
-    local selected_name=$(echo "${dynamic_menu_items[$((selected_option-1))]}" | awk '{print $2, $3}')  # Capture full menu item name
+    local selected_name=$(echo "${dynamic_menu_items[$((selected_option-1))]}" | awk '{$1=""; print $0}' | xargs)  # Trim spaces and get full menu item name
     echo "Selected function name: $selected_name"  # Debugging: Check the function name extracted
 
-    # Determine if the selected name has multiple words
-    if [[ "$selected_name" =~ [[:space:]] ]]; then
-        # If it has spaces, replace them with underscores
-        local function_name=$(echo "$selected_name" | tr '[:upper:]' '[:lower:]' | tr ' ' '_')
-    else
-        # If it's a single word, just convert to lowercase
-        local function_name=$(echo "$selected_name" | tr '[:upper:]' '[:lower:]')
-    fi
+    # Convert the selected_name to lowercase and replace spaces with underscores
+    local function_name=$(echo "$selected_name" | tr '[:upper:]' '[:lower:]' | tr -s ' ' '_')
+    function_name=$(echo "$function_name" | sed 's/_$//')  # Remove trailing underscore
     echo "Function name derived: $function_name"  # This will echo the function name
 
     # Check if the function exists and execute it
