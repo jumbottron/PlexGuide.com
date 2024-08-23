@@ -7,8 +7,13 @@
 ##### Admin Token: null
 ##### Version Tag: latest
 
-#### Admin Token
-admin_token() {
+# ANSI color codes
+RED="\033[0;31m"
+GREEN="\033[0;32m"
+NC="\033[0m" # No color
+
+# Function to manage the Vaultwarden admin token
+vaultwarden_token() {
     clear
     echo "Current Admin Token: $admin_token"
     echo -e "Note: Changing the admin token will stop the Docker container and require manual redeployment."
@@ -51,7 +56,7 @@ deploy_container() {
     # Check and update the Vaultwarden token if necessary
     if [[ "$admin_token" == "null" || ${#admin_token} -lt 12 ]]; then
         clear
-        echo -e "The Vaultwarden Admin Token needs to be updated"
+        echo -e "${RED}The Vaultwarden Admin Token needs to be updated${NC}"
         echo -e "Please enter your Vaultwarden Admin Token (minimum 12 characters)"
         echo -e "Type [${GREEN}Z${NC}] to exit.\n"
         while true; do
@@ -63,11 +68,9 @@ deploy_container() {
                 docker stop "$app_name" && docker rm "$app_name"  # Kill the Docker container if the token changes
                 break
             else
-                echo "Invalid token format. The token must be at least 12 characters long."
                 clear
-                echo -e "The Vaultwarden Admin Token needs to be updated"
-                echo -e "Please enter your Vaultwarden Admin Token (minimum 12 characters)"
-                echo -e "Type [${GREEN}Z${NC}] to exit.\n"
+                echo -e "${RED}Invalid input.${NC} The token must be at least 12 characters long."
+                echo -e "Please enter a valid token or type [${GREEN}Z${NC}] to exit."
             fi
         done
     fi
