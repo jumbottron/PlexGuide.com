@@ -5,6 +5,7 @@
 ##### Time Zone: America/New_York
 ##### AppData Path: /pg/appdata/prowlarr
 ##### Version Tag: latest
+##### Expose:
 
 # Specify the app name and config file path
 deploy_container() {
