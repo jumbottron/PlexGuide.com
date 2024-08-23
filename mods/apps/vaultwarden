@@ -15,7 +15,23 @@ NC="\033[0m" # No color
 #### Admin Token
 admin_token() {
     clear
-    echo "Current Admin Token: $admin_token"
+
+    # Source the config file to get the current admin token
+    config_path="/pg/config/${app_name}.cfg"
+    if [[ -f "$config_path" ]]; then
+        source "$config_path"
+    else
+        echo "Error: Configuration file not found at $config_path."
+        return
+    fi
+
+    # Display current token, handle if it's null
+    if [[ "$admin_token" == "null" || -z "$admin_token" ]]; then
+        echo "Current Admin Token: Not set"
+    else
+        echo "Current Admin Token: $admin_token"
+    fi
+
     echo -e "Note: Changing the admin token will stop the Docker container and require manual redeployment."
     echo -e "\nPlease enter your new Vaultwarden Admin Token"
     echo -e "Type [${GREEN}Z${NC}] to exit."
