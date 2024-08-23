@@ -6,6 +6,7 @@
 ##### AppData Path: /pg/appdata/qbittorrent
 ##### Download Path: /pg/downloads/qbittorrent
 ##### Version Tag: latest
+##### Expose:
 
 deploy_container() {
 
