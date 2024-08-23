@@ -1,0 +1,35 @@
+#!/bin/bash
+
+##### Port Number: 4500
+##### AppData Path: /pg/appdata/ungoogled-chromium
+##### Version Tag: latest
+##### Time Zone: Etc/UTC
+##### ChromeCLI URL: https://www.linuxserver.io/
+##### Shm Size: 1gb # Optional
+
+deploy_container() {
+
+    # Specify config file path and source information
+    config_path="/pg/config/${app_name}.cfg"
+    source "$config_path"
+
+    docker run -d \
+      --name="${app_name}" \
+      --security-opt seccomp=unconfined \
+      -e PUID=1000 \
+      -e PGID=1000 \
+      -e TZ="${time_zone}" \
+      -e CHROME_CLI="${chromecli_url}" \
+      -p "${port_number}":3000 \
+      -p 3001:3001 \
+      -v "${appdata_path}":/config \
+      --shm-size="${shm_size}" \
+      --restart unless-stopped \
+      lscr.io/linuxserver/ungoogled-chromium:"${version_tag}"
+    
+    # Verify the Docker container is running
+    docker ps | grep "$app_name"
+}
+
+# Function usage example:
+# deploy_container
