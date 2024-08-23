@@ -71,6 +71,7 @@ execute_dynamic_menu() {
 
 
 # Main Interface
+# Function: apps_interface
 apps_interface() {
     local app_name=$1
     local config_path="/pg/config/${app_name}.cfg"
@@ -84,7 +85,9 @@ apps_interface() {
     # Parse the app script for dynamic menu items
     while IFS= read -r line; do
         if [[ "$line" =~ ^####\  ]]; then
-            dynamic_menu_items+=("${dynamic_menu_count}) $(echo "$line" | awk '{print $2}')")
+            # Extract everything after the first four characters to account for multi-word titles
+            local menu_item=$(echo "$line" | cut -d' ' -f2-)
+            dynamic_menu_items+=("${dynamic_menu_count}) $menu_item")
             ((dynamic_menu_count++))
         fi
     done < "$app_path"
@@ -92,18 +95,18 @@ apps_interface() {
     # Menu
     while true; do
         clear
-        
+
         check_deployment_status  # Display the initial status
         echo ""
         echo "D) Deploy $app_name"
         echo "K) Kill Docker Container"
         echo "C) Configuration Options"
-        
+
         # Print dynamic menu items if any
         for item in "${dynamic_menu_items[@]}"; do
             echo "$item"
         done
-        
+
         echo "Z) Exit"
         echo ""
 
@@ -137,6 +140,7 @@ apps_interface() {
         esac
     done
 }
+
 
 # Run the interface with the provided app name
 apps_interface "$1"
