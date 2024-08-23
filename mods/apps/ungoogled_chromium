@@ -1,6 +1,7 @@
 #!/bin/bash
 
 ##### Port Number: 4500
+##### Port Two: 4499
 ##### AppData Path: /pg/appdata/ungoogled-chromium
 ##### Version Tag: latest
 ##### Time Zone: Etc/UTC
@@ -21,7 +22,7 @@ deploy_container() {
       -e TZ="${time_zone}" \
       -e CHROME_CLI="${chromecli_url}" \
       -p "${port_number}":3000 \
-      -p 3001:3001 \
+      -p "${port_two}:3001 \
       -v "${appdata_path}":/config \
       --shm-size="${shm_size}" \
       --restart unless-stopped \
