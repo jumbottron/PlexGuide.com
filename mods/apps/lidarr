@@ -6,6 +6,7 @@
 ##### Music Path: /pg/media/music
 ##### ClientDownload Path: /pg/downloads
 ##### Version Tag: latest
+##### Expose:
 
 deploy_container() {
 
