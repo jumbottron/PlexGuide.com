@@ -14,7 +14,6 @@ deploy_container() {
 
     docker run -d \
       --name="${app_name}" \
-      --hostname="${app_name}" `#optional` \
       -e PUID=1000 \
       -e PGID=1000 \
       -e TZ="${time_zone}" \
