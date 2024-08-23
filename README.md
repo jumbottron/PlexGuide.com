@@ -42,7 +42,7 @@ sudo apt-get update -y && sudo apt-get install -y curl git && curl -o /tmp/insta
 ----
 
 **<span style="color:green">Deployable Apps:</span>**  
-Jacket, JellyFin, Lidarr, NetData, NZBGET, Overseer, Ombi, SABNZBD, Plex, Prowlarr, Radarr, Sonarr, UpTimeKuma
+FireFox, Jackett, JellyFin, Lidarr, NetData, NZBGET, Overseer, Ombi, Opera, Plex, Prowlarr, QBittorent, Radarr, SABNZBD, Sonarr, Ungoogled Chromium, UpTimeKuma, VaultWarden
 
 ### **Current Functionality**
 
@@ -54,6 +54,7 @@ Jacket, JellyFin, Lidarr, NetData, NZBGET, Overseer, Ombi, SABNZBD, Plex, Prowla
 - **SSH Installer/Manager**: Added for easy SSH management.
 - **Intel/NVIDIA GPU Manager**: Install / Uninstall GPU Drivers easily.
 - **Firewall Port Security**: View open ports; close and open additional ports
+- **Dynamic Menu Intergration**: Enables custom options for docker containers
 
 ### **In Progress**
 
