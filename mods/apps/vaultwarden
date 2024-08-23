@@ -44,7 +44,7 @@ admin_token() {
         new_token=$(echo "$new_token" | xargs)
 
         # Check if the user wants to exit
-        if [[ "${new_token,,}" == "z" ]]; then
+        if [[ "$new_token" == "z" || "$new_token" == "Z" ]]; then
             echo "Operation cancelled."
             return 0  # Exit the function
         elif [[ ${#new_token} -ge 12 ]]; then
