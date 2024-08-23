@@ -1,0 +1,32 @@
+#!/bin/bash
+
+##### Port Number: 4900
+##### Port Two: 4899
+##### AppData Path: /pg/appdata/freecad
+##### Version Tag: latest
+##### Time Zone: America/New_York
+
+deploy_container() {
+
+    # Specify config file path and source information
+    config_path="/pg/config/${app_name}.cfg"
+    source "$config_path"
+
+    docker run -d \
+      --name="${app_name}" \
+      --security-opt seccomp=unconfined \
+      -e PUID=1000 \
+      -e PGID=1000 \
+      -e TZ="${time_zone}" \
+      -p "${port_number}":4900 \
+      -p "${port_two}":4899 \
+      -v "${appdata_path}":/config \
+      --restart unless-stopped \
+      lscr.io/linuxserver/freecad:"${version_tag}"
+    
+    # Verify the Docker container is running
+    docker ps | grep "$app_name"
+}
+
+# Function usage example:
+# deploy_container
