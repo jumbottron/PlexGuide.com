@@ -10,6 +10,7 @@
 
 deploy_container() {
 config_path="/pg/config/${app_name}.cfg"
+source "$config_path"
 
     docker run -d \
       --name="${app_name}" \
