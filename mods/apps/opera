@@ -21,7 +21,7 @@ deploy_container() {
       -e PGID=1000 \
       -e TZ="${time_zone}" \
       -e OPERA_CLI="${operacli_url}" \
-      -p "${port_number}":3000 \
+      -p "${expose}""${port_number}":3000 \
       -p "${port_two}":3001 \
       -v "${appdata_path}":/config \
       --shm-size="${shm_size}" \
