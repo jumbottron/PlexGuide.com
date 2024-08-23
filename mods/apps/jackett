@@ -8,6 +8,7 @@
 ##### Version Tag: latest
 
 deploy_container() {
+
     # Specify config file path and source information
     config_path="/pg/config/${app_name}.cfg"
     source "$config_path"
