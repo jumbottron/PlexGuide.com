@@ -18,7 +18,7 @@ deploy_container() {
       -e PUID=1000 \
       -e PGID=1000 \
       -e TZ="${time_zone}" \
-      -p "${port_number}":8686 \
+      -p "${expose}""${port_number}":8686 \
       -v "${appdata_path}":/config \
       -v "${music_path}":/music \
       -v "${clientdownload_path}":/downloads \
