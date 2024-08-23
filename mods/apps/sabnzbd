@@ -6,6 +6,7 @@
 ##### Download Path: /pg/downloads/nzbget/downloads/
 ##### Incomplete Downloads: /pg/downloads/nzbget/incomplete_downloads
 ##### Version Tag: latest
+##### Expose:
 
 deploy_container() {
 
