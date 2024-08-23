@@ -4,6 +4,7 @@
 ##### Port Number: 32400
 ##### Time Zone: America/New_York
 ##### Version Tag: latest
+##### Expose:
 
 deploy_container() {
 
