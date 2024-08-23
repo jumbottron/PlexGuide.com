@@ -6,6 +6,7 @@
 ##### AppData Path: /pg/appdata/plex
 ##### Plex Token: null
 ##### Version Tag: latest
+##### Expose:
 
 # ANSI color codes
 RED="\033[0;31m"
