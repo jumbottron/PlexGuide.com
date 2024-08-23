@@ -40,9 +40,10 @@ admin_token() {
     while true; do
         read -p "Admin Token (minimum 12 characters): " new_token
 
+        # Check if the user wants to exit
         if [[ "${new_token,,}" == "z" ]]; then
             echo "Operation cancelled."
-            return
+            return  # Exit the function
         elif [[ ${#new_token} -ge 12 ]]; then
             admin_token="$new_token"
             # Update the config file with the new token
