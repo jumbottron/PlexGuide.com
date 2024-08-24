@@ -47,7 +47,7 @@ execute_dynamic_menu() {
     local selected_option=$1
 
     # Source the app script to load the functions
-    echo "source /pg/apps/\"$app_name\""
+    echo "source /pg/apps/\"$app_name\""  # Debugging: Echo the source command
     source /pg/apps/$app_name
 
     # Get the selected option name (e.g., "Admin Token" or "Token")
@@ -75,14 +75,14 @@ execute_dynamic_menu() {
 apps_interface() {
     local app_name=$1
     local config_path="/pg/config/${app_name}.cfg"
-    local app_path="/pg/apps/${app_name}"
+    local app_menu_path="/pg/apps/${app_name}.menu"  # Change: Reference the .menu file
     local dynamic_menu_items=()
     local dynamic_menu_count=1
 
     # Call parse_and_store_defaults to populate the config file
     parse_and_store_defaults "$app_name"
 
-    # Parse the app script for dynamic menu items
+    # Parse the .menu file for dynamic menu items
     while IFS= read -r line; do
         if [[ "$line" =~ ^####\  ]]; then
             # Extract everything after the first four characters to account for multi-word titles
@@ -90,7 +90,7 @@ apps_interface() {
             dynamic_menu_items+=("${dynamic_menu_count}) $menu_item")
             ((dynamic_menu_count++))
         fi
-    done < "$app_path"
+    done < "$app_menu_path"  # Change: Read from the .menu file
 
     # Menu
     while true; do
@@ -114,7 +114,7 @@ apps_interface() {
 
         case ${choice,,} in  # Convert input to lowercase
             d)
-                bash /pg/scripts/apps_deploy.sh "$app_name" "$app_path"
+                bash /pg/scripts/apps_deploy.sh "$app_name" "$app_menu_path"
                 ;;
             k)
                 bash /pg/scripts/apps_kill_remove.sh "$app_name"  # Stop and remove app
@@ -140,7 +140,6 @@ apps_interface() {
         esac
     done
 }
-
 
 # Run the interface with the provided app name
 apps_interface "$1"
