@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# ANSI color codes for formatting
+RED="\033[0;31m"
+GREEN="\033[0;32m"
+NC="\033[0m" # No color
+
 # Function to check and install unzip if not present
 check_and_install_unzip() {
     if ! command -v unzip &> /dev/null; then
@@ -12,8 +17,7 @@ check_and_install_unzip() {
 
 # Function to fetch all releases from GitHub and filter them
 fetch_releases() {
-    echo "Fetching releases starting with '11' and containing 'B' in the third octet..."
-    curl -s https://api.github.com/repos/plexguide/PlexGuide.com/releases | jq -r '.[].tag_name' | grep -E '^11\.[0-9]\.B[0-9]+' | sort -r
+    curl -s https://api.github.com/repos/plexguide/PlexGuide.com/releases | jq -r '.[].tag_name' | grep -E '^11\.[0-9]\.B[0-9]+' | sort -r | head -n 50
 }
 
 # Function to prepare directories
@@ -123,6 +127,23 @@ update_config_version() {
     echo "VERSION has been set to $selected_version in $config_file"
 }
 
+# Function to display releases
+display_releases() {
+    releases="$1"
+    echo -e "${RED}PG Beta Releases:${NC}"
+    echo ""
+    line_length=0
+    for release in $releases; do
+        if (( line_length + ${#release} + 2 > 80 )); then
+            echo ""
+            line_length=0
+        fi
+        echo -n "$release, "
+        line_length=$((line_length + ${#release} + 2))
+    done
+    echo "" # New line after displaying all releases
+}
+
 # Main logic
 while true; do
     clear
@@ -133,17 +154,25 @@ while true; do
         exit 1
     fi
 
-    echo "Available Releases:"
-    echo "$releases"
+    display_releases "$releases"
     echo ""
     read -p "Which version do you want to install? " selected_version
 
     if echo "$releases" | grep -q "^${selected_version}$"; then
-        check_and_install_unzip
-        prepare_directories
-        download_and_extract "$selected_version"
-        update_config_version "$selected_version"
-        break
+        echo ""
+        read -p "$(echo -e "Type [${RED}1234${NC}] to accept or [${GREEN}Z${NC}] to cancel: ")" response
+        if [[ "$response" == "1234" ]]; then
+            check_and_install_unzip
+            prepare_directories
+            download_and_extract "$selected_version"
+            update_config_version "$selected_version"
+            break
+        elif [[ "${response,,}" == "z" ]]; then
+            echo "Installation canceled."
+            exit 0
+        else
+            clear
+        fi
     else
         clear
         echo "Invalid version. Please select a valid version from the list."
