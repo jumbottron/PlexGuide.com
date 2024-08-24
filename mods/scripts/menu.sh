@@ -63,7 +63,7 @@ reinstall_plexguide() {
             echo "Operation cancelled."
             break
         else
-            echo -e "${RED}Invalid response.${NC} Please type [${RED}${reinstall_code}${NC}] or [${RED}no${NC}]."
+            clear
         fi
     done
 }
@@ -84,36 +84,35 @@ exit_script() {
 
 # Function for the main menu
 main_menu() {
-  while true; do
-    clear
-    echo -e "${RED}Welcome to PlexGuide: $VERSION${NC}"
-    echo ""  # Blank line for separation
-    # Display the main menu options
-    echo "A) Apps Management"
-    echo "H) HardDisk Management"
-    echo "C) CloudFlare Tunnel (Domains)"
-    echo "O) Options"
-    echo "R) Reinstall PlexGuide"
-    echo "Z) Exit"
-    echo ""  # Space between options and input prompt
+    while true; do
+        clear
+        echo -e "${RED}Welcome to PlexGuide: $VERSION${NC}"
+        echo ""  # Blank line for separation
+        # Display the main menu options
+        echo "A) Apps Management"
+        echo "H) HardDisk Management"
+        echo "C) CloudFlare Tunnel (Domains)"
+        echo "O) Options"
+        echo "R) Reinstall PlexGuide"
+        echo "Z) Exit"
+        echo ""  # Space between options and input prompt
 
-    # Prompt the user for input
-    read -p "Enter your choice [A/H/C/R/O/Z]: " choice
+        # Prompt the user for input
+        read -p "Enter your choice: " choice
 
-    case ${choice,,} in  # Convert input to lowercase for a/A, c/C, r/R, o/O, z/Z handling
-      a) apps_management ;;
-      h) harddisk_management ;; 
-      c) cloudflare_tunnel ;;
-      r) reinstall_plexguide ;;
-      o) options_menu ;;
-      z) exit_script ;;
-      *)
-        echo "Invalid option, please try again."
-        read -p "Press Enter to continue..."
-        ;;
-    esac
+        case ${choice,,} in  # Convert input to lowercase for a/A, c/C, r/R, o/O, z/Z handling
+            a) apps_management ;;
+            h) harddisk_management ;; 
+            c) cloudflare_tunnel ;;
+            r) reinstall_plexguide ;;
+            o) options_menu ;;
+            z) exit_script ;;
+            *)
+                clear  # Clear the screen for an invalid option and repeat the menu
+                ;;
+        esac
 
-  done
+    done
 }
 
 # Run the script
