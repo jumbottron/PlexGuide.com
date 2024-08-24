@@ -130,7 +130,6 @@ if [[ -f "$CONFIG_FILE" ]]; then
 
     while true; do
         clear
-        echo ""  # Space before the message
         echo "An existing PlexGuide installation has been detected."
         echo "Do you want to move forward with reinstallation?"
         echo ""
