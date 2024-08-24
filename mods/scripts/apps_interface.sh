@@ -114,10 +114,10 @@ apps_interface() {
 
         case ${choice,,} in  # Convert input to lowercase
             d)
-                bash /pg/scripts/apps_deploy.sh "$app_name" "$app_menu_path"
+                bash /pg/scripts/apps_deploy.sh "$app_name"
                 ;;
             k)
-                bash /pg/scripts/apps_kill_remove.sh "$app_name"  # Stop and remove app
+                bash /pg/scripts/apps_kill_remove.sh "$app_name"
                 ;;
             c)
                 bash /pg/scripts/apps_config_menu.sh "$app_name"
