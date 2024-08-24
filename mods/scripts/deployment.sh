@@ -20,13 +20,15 @@ create_apps_directory() {
 }
 
 # Function to list all available apps in /pg/apps, excluding those already running in Docker
+# and excluding any apps containing ".functions"
 list_available_apps() {
     local all_apps=$(ls -1 /pg/apps | sort)
     local running_apps=$(docker ps --format '{{.Names}}' | sort)
 
     local available_apps=()
     for app in $all_apps; do
-        if ! echo "$running_apps" | grep -i -w "$app" >/dev/null; then
+        # Exclude apps containing ".functions" and those that are already running
+        if [[ "$app" != *".functions"* ]] && ! echo "$running_apps" | grep -i -w "$app" >/dev/null; then
             available_apps+=("$app")
         fi
     done
@@ -101,12 +103,16 @@ deployment_function() {
 
         app_choice=$(echo "$app_choice" | tr '[:upper:]' '[:lower:]')
 
+        # Check if the user input is "exit" or if it contains ".functions"
         if [[ "$app_choice" == "exit" ]]; then
             exit 0
+        elif [[ "$app_choice" == *".functions"* ]]; then
+            echo -e "${RED}Invalid choice. App names containing '.functions' are not allowed.${NC}"
+            read -p "Press Enter to continue..."
         elif [[ " ${APP_LIST[@]} " =~ " $app_choice " ]]; then
             deploy_app "$app_choice"
         else
-            echo "Invalid choice. Please try again."
+            echo -e "${RED}Invalid choice. Please try again.${NC}"
             read -p "Press Enter to continue..."
         fi
     done
