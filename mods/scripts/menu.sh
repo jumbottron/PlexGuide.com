@@ -10,12 +10,6 @@ NC="\033[0m" # No color
 # Clear the screen at the start
 clear
 
-## Ensure /pg/scripts/basics.sh is executable, then run it in the background
-#menu_commands() {
-#    chmod +x /pg/scripts/basics.sh
-#    /pg/scripts/basics.sh &
-#}
-
 # Function to source the configuration file
 load_config() {
     if [[ -f "$CONFIG_FILE" ]]; then
@@ -32,7 +26,7 @@ apps_management() {
 }
 
 reinstall_plexguide() {
-    /pg/scripts/menu_reinstall.sh
+    pgalpha
 }
 
 # Function for HardDisk Management
@@ -91,5 +85,4 @@ main_menu() {
 
 # Run the script
 load_config
-#run_basics
 main_menu
