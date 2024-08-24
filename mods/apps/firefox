@@ -13,8 +13,9 @@ deploy_container() {
     # Source functions
     source /pg/scripts/apps_support.sh "$app_name"
 
-    # calls the config file for the app
-    configsource
+    # Specify config file path and source information
+    config_path="/pg/config/${app_name}.cfg"
+    source "$config_path"
 
     docker run -d \
       --name="${app_name}" \
