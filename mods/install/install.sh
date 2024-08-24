@@ -76,7 +76,7 @@ move_scripts() {
         fi
     else
         echo "Source directory /pg/stage/mods/scripts does not exist. No files to move."
-        bash /pg/scripts/basics.sh
+        menu_commands
         exit 1
     fi
 }
@@ -107,7 +107,7 @@ move_apps() {
         fi
     else
         echo "Source directory /pg/stage/mods/apps does not exist. No files to move."
-        bash /pg/scripts/basics.sh
+        menu_commands
         exit 1
     fi
 }
@@ -120,6 +120,10 @@ check_and_install_docker() {
         chmod +x /pg/scripts/docker.sh
         bash /pg/scripts/docker.sh
     fi
+}
+
+menu_commands() {
+    bash /pg/scripts/menu_commands.sh
 }
 
 # Check if the configuration file exists
@@ -161,6 +165,7 @@ else
     move_scripts
     move_apps
     check_and_install_docker
+    menu_commands
 fi
 
 # Continue with the installation process

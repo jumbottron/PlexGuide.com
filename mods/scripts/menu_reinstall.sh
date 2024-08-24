@@ -97,6 +97,11 @@ check_and_install_docker() {
     fi
 }
 
+# Installs Menu Commands and Applies Proper Permissions
+menu_commands() {
+    bash /pg/scripts/menu_commands.sh
+}
+
 # Main Reinstall Logic
 if [[ -f "$CONFIG_FILE" ]]; then
     yes_code=$(printf "%04d" $((RANDOM % 10000)))
@@ -117,9 +122,11 @@ if [[ -f "$CONFIG_FILE" ]]; then
             move_scripts
             move_apps
             check_and_install_docker
+            menu_commands
             exit 0  # Exit after reinstall to avoid returning control
         elif [[ "$response" == "$no_code" ]]; then
             echo "Installation aborted."
+            menu_commands
             exit 0  # Exit after cancellation to avoid returning control
         else
             clear
@@ -132,5 +139,6 @@ else
     move_scripts
     move_apps
     check_and_install_docker
+    menu_commands
     exit 0  # Exit after new installation
 fi
