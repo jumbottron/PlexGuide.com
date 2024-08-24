@@ -161,6 +161,19 @@ display_releases() {
     echo "" # New line after displaying all releases
 }
 
+# Function to restore symbolic links
+restore_symlinks() {
+    if [[ -f /pg/scripts/menu.sh ]]; then
+        sudo ln -sf /pg/scripts/menu.sh /usr/local/bin/plexguide
+        echo "The plexguide command has been restored."
+    else
+        echo "Error: /pg/scripts/menu.sh does not exist. Cannot restore plexguide command."
+    fi
+}
+
+# Trap to handle exit and restore symbolic links
+trap 'restore_symlinks' EXIT
+
 # Main logic
 while true; do
     clear
@@ -183,7 +196,7 @@ while true; do
             if [[ "$response" == "$random_pin" ]]; then
                 check_and_install_unzip
                 check_and_install_docker
-                prepare_directories  # Moved here
+                prepare_directories
                 download_and_extract "$selected_version"
                 update_config_version "$selected_version"
                 break 2
