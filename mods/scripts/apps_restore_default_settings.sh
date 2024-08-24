@@ -10,17 +10,18 @@ reset_config_file() {
     local app_name="$1"
     local config_path="/pg/config/${app_name}.cfg"
 
-    clear
-    local reset_code=$(printf "%04d" $((RANDOM % 10000)))
-    echo -e "${RED}Warning: This is an advanced option.${NC}"
-    echo "Visit https://plexguide.com/wiki/link-not-set for more information."
-    echo ""
-    echo "This will erase the current config file and restore a default config file."
-    echo "The Docker container will be stopped and removed if running."
-    echo "This will not erase any data; your data will remain in its original location."
-    echo ""
     while true; do
-        read -p "$(echo -e "Do you want to proceed? Type [${RED}${reset_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: ")" reset_choice
+        clear
+        local reset_code=$(printf "%04d" $((RANDOM % 10000)))
+        echo -e "${RED}Warning: This is an advanced option.${NC}"
+        echo "Visit https://plexguide.com/wiki/link-not-set for more information."
+        echo ""
+        echo "This will erase the current config file and restore a default config file."
+        echo "The Docker container will be stopped and removed if running."
+        echo "This will not erase any data; your data will remain in its original location."
+        echo ""
+        read -p "$(echo -e "Do you want to proceed? Type [${RED}${reset_code}${NC}] to proceed or [${GREEN}Z${NC}] to cancel: ")" reset_choice
+        
         if [[ "$reset_choice" == "$reset_code" ]]; then
             # Stop and remove the Docker container
             docker stop "$app_name" && docker rm "$app_name"
@@ -34,11 +35,15 @@ reset_config_file() {
             echo "The config file has been regenerated."
             read -p "Press Enter to continue..."
             return
-        elif [[ "${reset_choice,,}" == "no" ]]; then
+        elif [[ "${reset_choice,,}" == "z" ]]; then
             echo "Operation Cancelled."
             return
         else
-            echo -e "${RED}Invalid response.${NC} Please type [${RED}${reset_code}${NC}] or [${GREEN}no${NC}]."
+            # Invalid response: clear the screen and repeat the prompt
+            clear
         fi
     done
 }
+
+# Example usage:
+# reset_config_file "app_name"
