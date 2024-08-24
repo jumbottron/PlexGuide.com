@@ -15,7 +15,7 @@ load_config() {
     if [[ -f "$CONFIG_FILE" ]]; then
         source "$CONFIG_FILE"
     else
-        echo "VERSION=\"11.0 Beta\"" > "$CONFIG_FILE"
+        echo "VERSION=\"PG Alpha\"" > "$CONFIG_FILE"
         source "$CONFIG_FILE"
     fi
 }

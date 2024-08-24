@@ -8,6 +8,7 @@ check_and_create_commands() {
         "/usr/local/bin/plexguide"
         "/usr/local/bin/pg"
         "/usr/local/bin/pgalpha"
+        "/usr/local/bin/pgbeta"
     )
 
     # Loop through each file and remove it
@@ -29,6 +30,12 @@ check_and_create_commands() {
     if [[ ! -f "/usr/local/bin/pgalpha" ]]; then
         sudo ln -s /pg/scripts/menu_reinstall.sh /usr/local/bin/pgalpha        
         sudo chmod +x /usr/local/bin/pgalpha
+        plexguide
+    fi
+
+    if [[ ! -f "/usr/local/bin/pgbeta" ]]; then
+        sudo ln -s /pg/scripts/menu_reinstall.sh /usr/local/bin/pgalpha        
+        sudo chmod +x /usr/local/bin/pgbeta
         plexguide
     fi
 
