@@ -51,14 +51,14 @@ change_port_number() {
     echo "Current Port: $port_number - Do you want to change the port number?"
     echo ""
     while true; do
-        read -p "$(echo -e "Type [${RED}${port_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: ")" port_choice
+        read -p "$(echo -e "Type [${RED}${port_code}${NC}] to proceed or [${GREEN}Z${NC}] to cancel: ")" port_choice
         if [[ "$port_choice" == "$port_code" ]]; then
             break
-        elif [[ "${port_choice,,}" == "no" ]]; then
+        elif [[ "${port_choice,,}" == "z" ]]; then
             echo "Operation cancelled."
             return
         else
-            echo -e "${RED}Invalid response.${NC} Please type [${RED}${port_code}${NC}] or [${GREEN}no${NC}]."
+            echo -e "${RED}Invalid response.${NC} Please type [${RED}${port_code}${NC}] or [${GREEN}Z${NC}]."
         fi
     done
     read -p "Enter the new Port for $app_name (1-65000) or type [exit] to cancel: " new_port_number
@@ -112,14 +112,14 @@ change_appdata_path() {
     echo "Do you want to change the appdata path?"
     echo ""
     while true; do
-        read -p "$(echo -e "Type [${RED}${path_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: ")" change_choice
+        read -p "$(echo -e "Type [${RED}${path_code}${NC}] to proceed or [${GREEN}Z${NC}] to cancel: ")" change_choice
         if [[ "$change_choice" == "$path_code" ]]; then
             break
-        elif [[ "${change_choice,,}" == "no" ]]; then
+        elif [[ "${change_choice,,}" == "z" ]]; then
             echo "Operation cancelled."
             return
         else
-            echo -e "${RED}Invalid response.${NC} Please type [${RED}${path_code}${NC}] or [${GREEN}no${NC}]."
+            echo -e "${RED}Invalid response.${NC} Please type [${RED}${path_code}${NC}] or [${GREEN}Z${NC}]."
         fi
     done
     while true; do
