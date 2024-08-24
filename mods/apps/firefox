@@ -10,10 +10,11 @@
 ##### Expose:
 
 deploy_container() {
+    # Source functions
+    source /pg/scripts/apps_support.sh
 
-    # Specify config file path and source information
-    config_path="/pg/config/${app_name}.cfg"
-    source "$config_path"
+    # calls the config file for the app
+    configsource
 
     docker run -d \
       --name="${app_name}" \
@@ -29,9 +30,6 @@ deploy_container() {
       --restart unless-stopped \
       lscr.io/linuxserver/firefox:"${version_tag}"
     
-    # Verify the Docker container is running
-    docker ps | grep "$app_name"
+    # handles app deployment information
+    appverify
 }
-
-# Function usage example:
-# deploy_container
