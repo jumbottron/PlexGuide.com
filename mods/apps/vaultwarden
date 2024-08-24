@@ -8,13 +8,13 @@
 ##### Version Tag: latest
 ##### Expose: 
 
-# ANSI color codes
-RED="\033[0;31m"
-GREEN="\033[0;32m"
-NC="\033[0m" # No color
-
 #### Admin Token
 admin_token() {
+    # ANSI color codes
+    RED="\033[0;31m"
+    GREEN="\033[0;32m"
+    NC="\033[0m" # No color
+
     clear
 
     # Source the config file to get the current admin token
