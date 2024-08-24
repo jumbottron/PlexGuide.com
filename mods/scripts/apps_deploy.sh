@@ -11,7 +11,7 @@ app_name=$1
 # Function: redeploy_app
 redeploy_app() {
     echo "Deploying $app_name..."
-    source "/pg/apps/$appname/$app_name.app"  # Source the app script to load functions
+    source "/pg/apps/$app_name/$app_name.app"  # Source the app script to load functions
     deploy_container "$app_name"  # Call the deploy_container function
     echo -e "${GREEN}${app_name}${NC} has been deployed."
     read -p "Press Enter to continue..."
