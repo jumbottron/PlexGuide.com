@@ -1,18 +1,6 @@
 #!/bin/bash
 
-##### Port Number: 6789
-##### Time Zone: America/New_York
-##### AppData Path: /pg/appdata/nzbget
-##### Download Path: /pg/downloads/nzbget
-##### User Name: nzbget 
-##### User Password: tegbzn6789
-##### Version Tag: latest
-##### Expose:
-
 deploy_container() {
-
-    # Sourcing App Info - Required
-    source /pg/scripts/apps_support.sh "$app_name" && appsourcing
 
     docker run -d \
           --name="${app_name}" \

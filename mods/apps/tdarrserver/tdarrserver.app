@@ -11,10 +11,7 @@
 ##### Version Tag: latest
 
 deploy_container() {
-    
-    # Sourcing App Info - Required
-    source /pg/scripts/apps_support.sh "$app_name" && appsourcing
-    
+        
     docker run -ti \
         --name="tdarr_server" \
         -v "${appdata_path}/server":/app/server \

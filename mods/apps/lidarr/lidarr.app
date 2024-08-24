@@ -1,17 +1,6 @@
 #!/bin/bash
 
-##### Port Number: 8686
-##### Time Zone: America/New_York
-##### AppData Path: /pg/appdata/lidarr
-##### Music Path: /pg/media/music
-##### ClientDownload Path: /pg/downloads
-##### Version Tag: latest
-##### Expose:
-
 deploy_container() {
-
-    # Sourcing App Info - Required
-    source /pg/scripts/apps_support.sh "$app_name" && appsourcing
 
     docker run -d \
       --name="${app_name}" \

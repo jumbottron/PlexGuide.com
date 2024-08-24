@@ -1,17 +1,6 @@
 #!/bin/bash
 
-##### Port Number: 8080
-##### Torrenting Port: 6881
-##### Time Zone: America/New_York
-##### AppData Path: /pg/appdata/qbittorrent
-##### Download Path: /pg/downloads/qbittorrent
-##### Version Tag: latest
-##### Expose:
-
 deploy_container() {
-
-    # Sourcing App Info - Required
-    source /pg/scripts/apps_support.sh "$app_name" && appsourcing
 
     docker run -d \
       --name="${app_name}" \

@@ -16,9 +16,6 @@ NC="\033[0m" # No color
 # Function to deploy the Docker container for Vaultwarden
 deploy_container() {
 
-    # Sourcing App Info - Required
-    source /pg/scripts/apps_support.sh "$app_name" && appsourcing
-
     # Creates admin token if one does not exist
     check_and_update_vaultwarden_token
 

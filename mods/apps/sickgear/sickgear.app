@@ -9,9 +9,6 @@
 ##### Expose:
 
 deploy_container() {
-
-    # Sourcing App Info - Required
-    source /pg/scripts/apps_support.sh "$app_name" && appsourcing
  
     docker run -d \
       --name="${app_name}" \

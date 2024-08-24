@@ -1,18 +1,6 @@
 #!/bin/bash
 
-##### Port Number: 4600
-##### Port Two: 4599
-##### AppData Path: /pg/appdata/opera
-##### Version Tag: latest
-##### Time Zone: America/New_York
-##### OperaCLI URL: https://www.linuxserver.io
-##### Shm Size: 1gb 
-##### Expose:
-
 deploy_container() {
-
-    # Sourcing App Info - Required
-    source /pg/scripts/apps_support.sh "$app_name" && appsourcing
 
     docker run -d \
       --name="${app_name}" \
