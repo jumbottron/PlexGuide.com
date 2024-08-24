@@ -25,6 +25,7 @@ apps_management() {
     bash /pg/scripts/apps_starter_menu.sh
 }
 
+# Function to reinstall PlexGuide
 reinstall_plexguide() {
     # Check if the config file exists
     if [[ -f "$CONFIG_FILE" ]]; then
@@ -40,8 +41,10 @@ reinstall_plexguide() {
     exit 0
 }
 
+# Function to exit the script
 menu_exit() {
     bash /pg/scripts/menu_exit.sh
+    exit 0  # Ensure the script exits after executing the menu_exit.sh
 }
 
 # Function for HardDisk Management
@@ -81,7 +84,7 @@ main_menu() {
             c) cloudflare_tunnel ;;
             r) reinstall_plexguide ;;
             o) options_menu ;;
-            z) menu_exit ;;  # Call the new exit script
+            z) menu_exit ;;  # Call the updated menu_exit function
             *)
                 clear
                 ;;
