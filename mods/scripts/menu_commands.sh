@@ -12,6 +12,11 @@ check_and_create_commands() {
         sudo chmod +x /usr/local/bin/pg
     fi
 
+    if [[ ! -f "/usr/local/bin/pg" ]]; then
+        sudo ln -s /pg/scripts/menu_reinstall.sh /usr/local/bin/pgalpha
+        sudo chmod +x /usr/local/bin/pgalpha
+    fi
+
     # Apply chmod +x to every file in /pg/scripts/ and /pg/apps/
     sudo chmod +x /pg/scripts/*
     sudo chmod +x /pg/apps/*
