@@ -45,16 +45,7 @@ options_menu() {
     /pg/scripts/options.sh
 }
 
-# Function to Exit the script
-exit_script() {
-    clear
-    echo "Visit https://plexguide.com"
-    echo -e "To Start Again - Type: [${RED}pg${NC}] or [${RED}plexguide${NC}]"
-    echo ""  # Space before exiting
-    exit 0
-}
-
-# Function for the main menu
+# Main menu loop
 main_menu() {
     while true; do
         clear
@@ -76,7 +67,7 @@ main_menu() {
             c) cloudflare_tunnel ;;
             r) reinstall_plexguide ;;
             o) options_menu ;;
-            z) exit_script ;;
+            z) /pg/scripts/menu_exit.sh ;;  # Call the new exit script
             *)
                 clear
                 ;;
