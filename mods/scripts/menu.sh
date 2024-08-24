@@ -31,6 +31,10 @@ apps_management() {
     /pg/scripts/apps_starter_menu.sh
 }
 
+reinstall_plexguide() {
+    /pg/scripts/menu_reinstall.sh
+}
+
 # Function for HardDisk Management
 harddisk_management() {
     /pg/scripts/drivemenu.sh
@@ -75,7 +79,7 @@ main_menu() {
             a) apps_management ;;
             h) harddisk_management ;;
             c) cloudflare_tunnel ;;
-            r) bash /pg/scripts/menu_reinstall.sh && exit 0 ;;  # Call the separate script for reinstalling PlexGuide
+            r) reinstall_plexguide ;;
             o) options_menu ;;
             z) exit_script ;;
             *)
