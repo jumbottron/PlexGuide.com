@@ -1,18 +1,6 @@
 #!/bin/bash
 
-##### Port Number: 8095
-##### Time Zone: America/New_York
-##### AppData Path: /pg/appdata/jellyfin
-##### Movies Path: /pg/media/movies
-##### TV Path: /pg/media/tv
-##### JF ServerUrl: 1.1.1.1
-##### Version Tag: latest
-##### Expose:
-
 deploy_container() {
-
-    # Sourcing App Info - Required
-    source /pg/scripts/apps_support.sh "$app_name" && appsourcing
 
     docker run -d \
       --name="${app_name}" \
