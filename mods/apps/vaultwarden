@@ -106,9 +106,6 @@ deploy_container() {
       --restart unless-stopped \
       vaultwarden/server:"${version_tag}"
 
-    # Verify the Docker container is running
-    docker ps | grep "$app_name"
+    # display app deployment information
+    appverify
 }
-
-# Now you can call the function deploy_container when needed
-# Example: deploy_container "$app_name"
