@@ -14,10 +14,6 @@ redeploy_app() {
     source /pg/scripts/apps_support.sh "$app_name" && appsourcing
     source "/pg/apps/$app_name/$app_name.app"  # Source the app script to load functions
     deploy_container "$app_name"  # Call the deploy_container function
-    echo ""
-    echo -e "${GREEN}${app_name}${NC} has been deployed."
-    echo ""
-    read -p "Press Enter to continue"
 }
 
 # Deployment logic
