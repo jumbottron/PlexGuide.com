@@ -27,6 +27,7 @@ apps_management() {
 
 reinstall_plexguide() {
     pgalpha
+    exit 0
 }
 
 # Function for HardDisk Management
