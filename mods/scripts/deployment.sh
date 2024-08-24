@@ -107,6 +107,7 @@ deployment_function() {
             exit 0
         elif [[ " ${APP_LIST[@]} " =~ " $app_choice " ]]; then
             deploy_app "$app_choice"
+            exit 0
         else
             echo -e "${RED}Invalid choice. Please try again.${NC}"
             read -p "Press Enter to continue..."

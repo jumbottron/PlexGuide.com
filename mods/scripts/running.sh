@@ -99,6 +99,7 @@ running_function() {
         if echo "${APP_LIST[@]}" | grep -i -w "$app_choice" >/dev/null; then
             # Manage the selected app by calling the apps_interface script
             manage_app "$app_choice"
+            exit 0
         else
             echo "Invalid choice. Please try again."
             read -p "Press Enter to continue..."
