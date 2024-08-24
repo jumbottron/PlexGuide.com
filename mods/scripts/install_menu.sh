@@ -37,26 +37,10 @@ validate_choice() {
             exit 0
             ;;
         *)
-            clear
-            display_interface
+            # Instead of clearing and re-displaying the interface, we call it again
+            echo "Invalid input. Please try again."
             ;;
     esac
-}
-
-# Function to prepare the /pg/tmp directory
-prepare_tmp_directory() {
-    local tmp_dir="/pg/tmp"
-    
-    # Create the /pg/tmp directory if it doesn't exist
-    if [[ ! -d "$tmp_dir" ]]; then
-        mkdir -p "$tmp_dir"
-        echo "Created $tmp_dir directory."
-        echo ""
-    fi
-    
-    # Set ownership and permissions
-    chown -R 1000:1000 "$tmp_dir"
-    chmod -R +x "$tmp_dir"
 }
 
 # Function to download and run the selected installation script
@@ -80,6 +64,20 @@ run_install_script() {
                 rm -rf /pg/scripts/* /pg/apps/* 2>/dev/null
                 echo "Executing the installation script..."
                 bash "$script_file"
+                
+                # Set correct permissions after script execution
+                chown -R 1000:1000 /pg/scripts /pg/apps
+                chmod -R +x /pg/scripts /pg/apps
+                
+                # Make sure 'plexguide' and other commands have the correct permissions
+                ln -sf /pg/scripts/menu.sh /usr/local/bin/plexguide
+                ln -sf /pg/scripts/menu.sh /usr/local/bin/pg
+                ln -sf /pg/scripts/menu.sh /usr/local/bin/pgalpha
+                chmod +x /usr/local/bin/plexguide /usr/local/bin/pg /usr/local/bin/pgalpha
+
+                # Run plexguide automatically after the installation
+                echo "Starting PlexGuide..."
+                exec plexguide
                 exit 0
             else
                 echo "Failed to download the installation script. Please check your internet connection and try again."
@@ -89,7 +87,6 @@ run_install_script() {
             echo "Installation canceled."
             exit 0
         else
-            clear
             echo "Invalid input. Please try again."
         fi
     done
@@ -100,4 +97,9 @@ while true; do
     display_interface
     read -p "Enter your choice: " user_choice
     validate_choice "$user_choice"
+    
+    # Direct exit if 'z' or 'Z' is chosen
+    if [[ "${user_choice,,}" == "z" ]]; then
+        exit 0
+    fi
 done
