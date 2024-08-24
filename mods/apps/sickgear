@@ -27,17 +27,6 @@ deploy_container() {
       --restart unless-stopped \
       lscr.io/linuxserver/sickgear:"${version_tag}"
     
-    # Verify the Docker container is running
-    docker ps | grep "$app_name"
+    # display app deployment information
+    appverify
 }
-
-# Example usage to deploy SickGear
-app_name="sickgear"
-port_number=8081
-time_zone="America/New_York"
-appdata_path="/pg/appdata/sickgear"
-tv_path="/pg/media/tv"
-download_path="/pg/downloads"
-version_tag="latest"
-
-deploy_container
