@@ -48,7 +48,7 @@ execute_dynamic_menu() {
 
     # Source the app script to load the functions
     echo "source /pg/apps/\"$app_name\""  # Debugging: Echo the source command
-    source /pg/apps/$app_name/$app_name.app
+    source /pg/apps/$app_name/$app_name.functions
 
     # Get the selected option name (e.g., "Admin Token" or "Token")
     local selected_name=$(echo "${dynamic_menu_items[$((selected_option-1))]}" | awk '{$1=""; print $0}' | xargs)  # Trim spaces and get full menu item name
