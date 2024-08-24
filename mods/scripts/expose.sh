@@ -6,6 +6,7 @@
 RED="\033[0;31m"
 GREEN="\033[0;32m"
 BLUE="\033[0;34m"
+ORANGE="\033[0;33m"
 NC="\033[0m" # No color
 
 app_name="$1"
@@ -15,7 +16,7 @@ clear
 
 # Default to expose="" if not set in config
 if ! grep -q '^expose=' "$config_path"; then
-    echo "expose=\"\"" >> "$config_path"
+    echo 'expose=""' >> "$config_path"
 fi
 
 # Source the config to get the current expose setting
@@ -37,7 +38,7 @@ echo ""
 
 # Prompt the user for input and validate
 while true; do
-    read -p "Type [${yes_code}] [${no_code}] or [exit]: " user_input
+    read -p "Type [${GREEN}${yes_code}${NC}] [${RED}${no_code}${NC}] or [${ORANGE}Z${NC}]: " user_input
     if [[ "$user_input" == "$yes_code" ]]; then
         echo "Port will be exposed."
         sed -i 's|^expose=.*|expose=|' "$config_path"
@@ -46,11 +47,12 @@ while true; do
         echo "Port will remain private."
         sed -i 's|^expose=.*|expose=127.0.0.1:|' "$config_path"
         break
-    elif [[ "$user_input" == "exit" ]]; then
+    elif [[ "${user_input,,}" == "z" ]]; then
         echo "Operation cancelled."
         exit 0
     else
-        echo "Invalid input. Please try again."
+        clear
+        # Invalid input; clear screen and repeat
     fi
 done
 
