@@ -8,6 +8,7 @@ appsourcing() {
 
 # Function to verify if the Docker container is running
 appverify() {
+    echo ""
     docker ps | grep "$app_name"
 }
  
