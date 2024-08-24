@@ -22,9 +22,6 @@ deploy_container() {
         -e "TZ=${time_zone}" \
         -e PUID=1000 \
         -e PGID=1000 \
-        -e "NVIDIA_DRIVER_CAPABILITIES=all" \
-        -e "NVIDIA_VISIBLE_DEVICES=all" \
-        --gpus=all \
         --device=/dev/dri:/dev/dri \
         --log-opt max-size=10m \
         --log-opt max-file=5 \
