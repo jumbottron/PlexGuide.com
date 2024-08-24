@@ -28,16 +28,7 @@ apps_management() {
 # Function to reinstall PlexGuide
 reinstall_plexguide() {
     # Check if the config file exists
-    if [[ -f "$CONFIG_FILE" ]]; then
-        # Use sed to replace the value of VERSION with "PG Alpha"
-        sed -i 's/^VERSION=.*/VERSION="PG Alpha"/' "$CONFIG_FILE"
-        echo "VERSION has been set to PG Alpha in $CONFIG_FILE"
-    else
-        echo "Config file $CONFIG_FILE not found."
-    fi
-
-    # Execute the pgalpha command
-    pgalpha
+    bash /pg/scripts/install_menu.sh
     exit 0
 }
 
