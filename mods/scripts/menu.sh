@@ -10,11 +10,11 @@ NC="\033[0m" # No color
 # Clear the screen at the start
 clear
 
-# Ensure /pg/scripts/basics.sh is executable, then run it in the background
-run_basics() {
-    chmod +x /pg/scripts/basics.sh
-    /pg/scripts/basics.sh &
-}
+## Ensure /pg/scripts/basics.sh is executable, then run it in the background
+#menu_commands() {
+#    chmod +x /pg/scripts/basics.sh
+#    /pg/scripts/basics.sh &
+#}
 
 # Function to source the configuration file
 load_config() {
@@ -91,5 +91,5 @@ main_menu() {
 
 # Run the script
 load_config
-run_basics
+#run_basics
 main_menu
