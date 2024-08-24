@@ -15,6 +15,7 @@ deploy_container() {
       -v /etc/os-release:/host/etc/os-release:ro \
       --cap-add SYS_PTRACE \
       --security-opt apparmor=unconfined \
+      --restart unless-stopped \
       netdata/netdata:"${version_tag}"
     
     # display app deployment information

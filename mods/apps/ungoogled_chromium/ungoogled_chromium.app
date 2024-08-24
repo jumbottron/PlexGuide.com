@@ -1,14 +1,5 @@
 #!/bin/bash
 
-##### Port Number: 4500
-##### Port Two: 4499
-##### AppData Path: /pg/appdata/ungoogled-chromium
-##### Version Tag: latest
-##### Time Zone: Etc/UTC
-##### ChromeCLI URL: https://www.linuxserver.io/
-##### Shm Size: 1gb # Optional
-##### Expose:
-
 deploy_container() {
     
     docker run -d \

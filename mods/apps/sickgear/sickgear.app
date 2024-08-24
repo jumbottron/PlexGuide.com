@@ -1,13 +1,5 @@
 #!/bin/bash
 
-##### Port Number: 8081
-##### Time Zone: America/New_York
-##### AppData Path: /pg/appdata/sickgear
-##### TV Path: /pg/media/tv
-##### Download Path: /pg/downloads
-##### Version Tag: latest
-##### Expose:
-
 deploy_container() {
  
     docker run -d \

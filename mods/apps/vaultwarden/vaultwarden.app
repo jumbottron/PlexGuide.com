@@ -1,13 +1,5 @@
 #!/bin/bash
 
-##### Port Number: 4748
-##### AppData Path: /pg/appdata/vaultwarden
-##### Signups Enabled: false
-##### WebSocket Enabled: false
-##### Admin Token: null
-##### Version Tag: latest
-##### Expose: 
-
 # ANSI color codes
 RED="\033[0;31m"
 GREEN="\033[0;32m"

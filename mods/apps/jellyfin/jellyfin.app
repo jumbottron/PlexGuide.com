@@ -12,6 +12,10 @@ deploy_container() {
       -v "${appdata_path}":/config \
       -v "${tv_path}":/data/tvshows \
       -v "${movies_path}":/data/movies \
+      -e "NVIDIA_DRIVER_CAPABILITIES=all" \
+      -e "NVIDIA_VISIBLE_DEVICES=all" \
+      --gpus=all \
+      --device=/dev/dri:/dev/dri \
       --restart unless-stopped \
       lscr.io/linuxserver/jellyfin:"${version_tag}"
 

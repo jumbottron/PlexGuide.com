@@ -24,6 +24,11 @@ deploy_container() {
       -v "${media_path}":/media \
       -v realdebrid:/torrents \
       --restart unless-stopped \
+      -e "NVIDIA_DRIVER_CAPABILITIES=all" \
+      -e "NVIDIA_VISIBLE_DEVICES=all" \
+      --gpus=all \
+      --device=/dev/dri:/dev/dri \
+      --restart unless-stopped \
       lscr.io/linuxserver/plex:"${version_tag}"
 
     # display app deployment information

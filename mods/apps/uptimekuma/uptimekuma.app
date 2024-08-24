@@ -1,9 +1,5 @@
 #!/bin/bash
 
-##### Port Number: 3001
-##### AppData Path: /pg/appdata/uptimekuma
-##### Expose: 
-
 deploy_container() {
 
     docker run -d \

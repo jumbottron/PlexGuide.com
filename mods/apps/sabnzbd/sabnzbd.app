@@ -1,13 +1,5 @@
 #!/bin/bash
 
-##### Port Number: 9000
-##### Time Zone: America/New_York
-##### AppData Path: /pg/appdata/sabnzbd
-##### Download Path: /pg/downloads/nzbget/downloads/
-##### Incomplete Downloads: /pg/downloads/nzbget/incomplete_downloads
-##### Version Tag: latest
-##### Expose:
-
 deploy_container() {
 
     docker run -d \

@@ -1,13 +1,5 @@
 #!/bin/bash
 
-##### Port Number: 8989
-##### Time Zone: America/New_York
-##### AppData Path: /pg/appdata/sonarr
-##### Movies Path: /pg/media/tv
-##### ClientDownload Path: /pg/downloads
-##### Version Tag: latest
-##### Expose:
-
 deploy_container() {
 
     docker run -d \
