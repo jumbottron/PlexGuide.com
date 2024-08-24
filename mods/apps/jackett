@@ -10,10 +10,6 @@
 
 deploy_container() {
 
-    # Specify config file path and source information
-    config_path="/pg/config/${app_name}.cfg"
-    source "$config_path"
-
     docker run -d \
       --name="${app_name}" \
       -e PUID=1000 \
