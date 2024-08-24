@@ -39,9 +39,13 @@ check_and_create_commands() {
         plexguide
     fi
 
-    # Apply chmod +x to every file in /pg/scripts/ and /pg/apps/
+    # Apply chmod +x and set ownership to user with UID and GID 1000 for every file in /pg/scripts/ and /pg/apps/
     sudo chmod +x /pg/scripts/*
+    sudo chown 1000:1000 /pg/scripts/*
+
     sudo chmod +x /pg/apps/*
+    sudo chown 1000:1000 /pg/apps/*
+
 }
 
 # Run the check and create commands if necessary
