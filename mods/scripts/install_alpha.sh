@@ -149,6 +149,9 @@ if [[ -f "$CONFIG_FILE" ]]; then
             move_scripts
             move_apps
             check_and_install_docker
+            menu_commands
+            plexguide
+            exit
             break
         elif [[ "$response" == "$no_code" ]]; then
             echo "Installation aborted."
@@ -166,6 +169,8 @@ else
     move_apps
     check_and_install_docker
     menu_commands
+    plexguide
+    exit
 fi
 
 # Continue with the installation process

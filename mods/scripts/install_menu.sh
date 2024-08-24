@@ -26,15 +26,11 @@ validate_choice() {
             echo ""
             echo "Selected PG Alpha."
             run_install_script "https://raw.githubusercontent.com/plexguide/PlexGuide.com/v11/mods/scripts/install_alpha.sh"
-            bash /pg/scripts/menu_commands.sh
-            plexguide
             ;;
         b)
             echo ""
             echo "Selected PG Beta."
             run_install_script "https://raw.githubusercontent.com/plexguide/PlexGuide.com/v11/mods/scripts/install_beta.sh"
-            bash /pg/scripts/menu_commands.sh
-            plexguide
             ;;
         z)
             echo "Exiting the selection interface."
@@ -54,7 +50,6 @@ prepare_tmp_directory() {
     # Create the /pg/tmp directory if it doesn't exist
     if [[ ! -d "$tmp_dir" ]]; then
         mkdir -p "$tmp_dir"
-        echo ""
         echo "Created $tmp_dir directory."
         echo ""
     fi
@@ -82,6 +77,7 @@ run_install_script() {
             
             # Check if the script was downloaded successfully
             if [[ -f "$script_file" ]]; then
+                rm -rf /pg/scripts/* /pg/apps/* 2>/dev/null
                 echo "Executing the installation script..."
                 bash "$script_file"
                 exit 0
