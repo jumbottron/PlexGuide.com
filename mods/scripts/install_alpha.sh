@@ -122,6 +122,22 @@ check_and_install_docker() {
     fi
 }
 
+# Function to set or update the VERSION in the config file
+set_config_version() {
+    if [[ ! -f "$CONFIG_FILE" ]]; then
+        echo "Creating config file at $CONFIG_FILE"
+        touch "$CONFIG_FILE"
+    fi
+
+    if grep -q "^VERSION=" "$CONFIG_FILE"; then
+        sed -i 's/^VERSION=.*/VERSION="PG Alpha"/' "$CONFIG_FILE"
+    else
+        echo 'VERSION="PG Alpha"' >> "$CONFIG_FILE"
+    fi
+
+    echo "VERSION has been set to PG Alpha in $CONFIG_FILE"
+}
+
 menu_commands() {
     bash /pg/scripts/menu_commands.sh
 }
@@ -149,6 +165,7 @@ if [[ -f "$CONFIG_FILE" ]]; then
             move_scripts
             move_apps
             check_and_install_docker
+            set_config_version
             break
         elif [[ "$response" == "$no_code" ]]; then
             echo "Installation aborted."
@@ -165,6 +182,7 @@ else
     move_scripts
     move_apps
     check_and_install_docker
+    set_config_version
     menu_commands
 fi
 
