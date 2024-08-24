@@ -18,7 +18,7 @@ echo "This will allow you to modify the current config file."
 echo "The Docker container will be stopped and removed if running."
 echo "You must deploy the Docker container again to accept your changes."
 echo ""
-echo -e "Do you want to proceed? Type [${RED}${edit_code}${NC}] to proceed or [${GREEN}no${NC}] to cancel: "
+echo -e "Do you want to proceed? Type [${RED}${edit_code}${NC}] to proceed or [${GREEN}Z${NC}] to cancel: "
 
 while true; do
     read -p "" edit_choice
@@ -47,10 +47,10 @@ while true; do
         fi
 
         break
-    elif [[ "${edit_choice,,}" == "no" ]]; then
+    elif [[ "${edit_choice,,}" == "z" ]]; then
         echo "Operation cancelled."
         break
     else
-        echo -e "${RED}Invalid response.${NC} Please type [${RED}${edit_code}${NC}] or [${GREEN}no${NC}]."
+        echo -e "${RED}Invalid response.${NC} Please type [${RED}${edit_code}${NC}] or [${GREEN}Z${NC}]."
     fi
 done
