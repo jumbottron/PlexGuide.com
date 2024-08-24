@@ -5,6 +5,7 @@ RED="\033[0;31m"
 GREEN="\033[0;32m"
 NC="\033[0m" # No color
 
+app_name=$1
 config_path="/pg/config/$app_name.cfg"
 
 clear
