@@ -36,6 +36,7 @@ while true; do
             # Stop and remove the Docker container if running
             docker ps --filter "name=^/${app_name}$" --format "{{.Names}}" &> /dev/null
             if [[ $? -eq 0 ]]; then
+                echo ""
                 echo "Stopping and removing the existing container for $app_name ..."
                 docker stop "$app_name" && docker rm "$app_name"
             else
