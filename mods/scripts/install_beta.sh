@@ -16,6 +16,16 @@ check_and_install_unzip() {
     fi
 }
 
+# Function to check and install Docker if not installed
+check_and_install_docker() {
+    if ! command -v docker &> /dev/null; then
+        echo -e "\e[38;5;196mD\e[38;5;202mO\e[38;5;214mC\e[38;5;226mK\e[38;5;118mE\e[38;5;51mR \e[38;5;201mI\e[38;5;141mS \e[38;5;93mI\e[38;5;87mN\e[38;5;129mS\e[38;5;166mT\e[38;5;208mA\e[38;5;226mL\e[38;5;190mL\e[38;5;82mI\e[38;5;40mN\e[38;5;32mG\e[0m"
+        sleep 0.5
+        chmod +x /pg/scripts/docker.sh
+        bash /pg/scripts/docker.sh
+    fi
+}
+
 # Function to fetch all releases from GitHub and filter them
 fetch_releases() {
     curl -s https://api.github.com/repos/plexguide/PlexGuide.com/releases | jq -r '.[].tag_name' | grep -E '^11\.[0-9]\.B[0-9]+' | sort -r | head -n 50
@@ -172,6 +182,7 @@ while true; do
             read -p "$(echo -e "Type [${RED}${random_pin}${NC}] to accept or [${GREEN}Z${NC}] to cancel: ")" response
             if [[ "$response" == "$random_pin" ]]; then
                 check_and_install_unzip
+                check_and_install_docker
                 prepare_directories
                 download_and_extract "$selected_version"
                 update_config_version "$selected_version"
