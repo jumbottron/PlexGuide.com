@@ -31,14 +31,15 @@ echo -e "${BLUE}Expose Port Configuration for ${app_name}${NC}"
 echo ""
 echo "Current Setting: ${expose:-"Port Exposed"}"
 echo ""
-printf "Would you like to expose the port?\n"
-printf " - Type [${GREEN}${yes_code}${NC}] to expose the port. (access remotely)\n"
-printf " - Type [${RED}${no_code}${NC}] to keep it private (127.0.0.1; localhost only).\n"
+echo -e "Would you like to expose the port?"
+echo -e " - Type [${GREEN}${yes_code}${NC}] to expose the port. (access remotely)"
+echo -e " - Type [${RED}${no_code}${NC}] to keep it private (127.0.0.1; localhost only)."
 echo ""
 
 # Prompt the user for input and validate
 while true; do
-    read -p "Type [${GREEN}${yes_code}${NC}] [${RED}${no_code}${NC}] or [${ORANGE}Z${NC}]: " user_input
+    echo -e "Type [${GREEN}${yes_code}${NC}] [${RED}${no_code}${NC}] or [${ORANGE}Z${NC}]: "
+    read -p "" user_input
     if [[ "$user_input" == "$yes_code" ]]; then
         echo "Port will be exposed."
         sed -i 's|^expose=.*|expose=|' "$config_path"

@@ -194,7 +194,7 @@ while true; do
             bash /pg/scripts/apps_config_edit.sh "$app_name"
             ;;
         e)
-            bash /pg/scripts/expose.sh "$app_name"
+            bash /pg/scripts/apps_expose.sh "$app_name"
             ;;
         r)
             reset_config_file "$app_name"
