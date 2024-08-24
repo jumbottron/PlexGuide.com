@@ -13,10 +13,10 @@
 deploy_container() {
     
     # Sourcing and configuration file - required
-    config_path="/pg/config/${app_name}.cfg"
+    source "/pg/config/${app_name}.cfg"
     source /pg/scripts/apps_support.sh "$app_name"
-    source "$config_path"
-
+    source /pg/apps/${app_name}/${app_name}.functions
+    
     docker run -ti \
         --name="tdarr_server" \
         -v "${appdata_path}/server":/app/server \

@@ -13,84 +13,16 @@ RED="\033[0;31m"
 GREEN="\033[0;32m"
 NC="\033[0m" # No color
 
-#### Token
-token() {
-    clear
-    
-    # Source the configuration file to get the current plex_token value
-    if [[ -f "$config_path" ]]; then
-        source "$config_path"
-    fi
-
-    echo "Current Token: $plex_token"
-    echo -e "Note: Changing the token will stop the Docker containers and require manual redeployment."
-    echo -e "\nPlease enter your new Plex Token from https://plex.tv/claim"
-    echo -e "Type [${GREEN}Z${NC}] to exit or to skip entering a token, type: ${RED}no-token${NC}"
-    echo ""
-    
-    while true; do
-        read -p "Plex Token: " new_token
-        
-        if [[ "${new_token,,}" == "z" ]]; then
-            echo "Operation cancelled."
-            return
-        elif [[ "$new_token" =~ "no-token" || "$new_token" =~ ^claim ]]; then
-            plex_token="$new_token"
-            # Update the config file with the new token
-            sed -i "s|^plex_token=.*|plex_token=$plex_token|" "$config_path"
-            echo "Plex token updated successfully."
-            
-            # Stop and remove the Docker container
-            docker stop "$app_name"
-            docker rm "$app_name"
-            echo "Docker container killed. You will need to redeploy manually."
-            break
-        else
-            clear
-            echo -e "${RED}Invalid input.${NC} Please enter a valid token, type ${RED}no-token${NC}, or type [${GREEN}Z${NC}] to exit."
-        fi
-    done
-}
-
 # Function to deploy the Docker container for the app
 deploy_container() {
 
     # Sourcing and configuration file - required
-    config_path="/pg/config/${app_name}.cfg"
+    source "/pg/config/${app_name}.cfg"
     source /pg/scripts/apps_support.sh "$app_name"
-    source "$config_path"
+    source /pg/apps/${app_name}/${app_name}.functions
 
-    # Source the configuration file to get the appdata_path and plex_token
-    if [[ -f "$config_path" ]]; then
-        source "$config_path"
-    else
-        echo "Error: Configuration file not found at $config_path."
-        exit 1
-    fi
-
-    # Check and update the Plex token if necessary
-    if [[ "$plex_token" == "null" || ( ! "$plex_token" =~ ^claim && "$plex_token" != "no-token" ) ]]; then
-        clear
-        echo -e "${RED}The Plex Token needs to be updated${NC}"
-        echo -e "A. Please enter your Plex Token from https://plex.tv/claim"
-        echo -e "B. To skip entering a token, type: ${RED}no-token${NC}\n"
-        while true; do
-            read -p "Plex Token: " new_token
-            if [[ "$new_token" == "no-token" || "$new_token" =~ ^claim ]]; then
-                plex_token="$new_token"
-                # Update the config file with the new token
-                sed -i "s|^plex_token=.*|plex_token=$plex_token|" "$config_path"
-                docker stop "$app_name" && docker rm "$app_name"  # Kill the Docker container if token changes
-                break
-            else
-                echo "Invalid token format. Please ensure the token starts with 'claim-' or type 'no-token'."
-                clear
-                echo -e "${RED}The Plex Token needs to be updated${NC}"
-                echo -e "A. Please enter your Plex Token from https://plex.tv/claim"
-                echo -e "B. To skip entering a token, type: ${RED}no-token${NC}\n"
-            fi
-        done
-    fi
+    # If no token exists, prompts user to create one for the claim
+    check_plex_token_default
 
     # Run the Plex Docker container with the specified settings
     docker run -d \
