@@ -41,33 +41,6 @@ cloudflare_tunnel() {
     /pg/scripts/cf_tunnel.sh
 }
 
-# Function to Reinstall PlexGuide
-reinstall_plexguide() {
-    clear
-    local reinstall_code=$(printf "%04d" $((RANDOM % 10000)))  # Generate a 4-digit code
-    while true; do
-        read -p "$(echo -e "To reinstall PlexGuide, type [${RED}${reinstall_code}${NC}] to proceed or [${RED}no${NC}] to cancel: ")" input_code
-        if [[ "$input_code" == "$reinstall_code" ]]; then
-            clear
-            echo "Downloading and executing the install script..."
-            curl -o /tmp/install.sh https://raw.githubusercontent.com/plexguide/PlexGuide.com/v11/mods/install/install.sh
-            chmod +x /tmp/install.sh
-            /tmp/install.sh
-            rm -f /tmp/install.sh
-            bash /pg/scripts/basics.sh
-            echo "Reloading PlexGuide..."
-            sleep 2
-            exec plexguide
-            break
-        elif [[ "${input_code,,}" == "no" ]]; then
-            echo "Operation cancelled."
-            break
-        else
-            clear
-        fi
-    done
-}
-
 # Function for Options Menu
 options_menu() {
     /pg/scripts/options.sh
@@ -104,7 +77,7 @@ main_menu() {
             a) apps_management ;;
             h) harddisk_management ;; 
             c) cloudflare_tunnel ;;
-            r) reinstall_plexguide ;;
+            r) bash /pg/scripts/reinstall.sh ;;  # Call the separate script for reinstalling PlexGuide
             o) options_menu ;;
             z) exit_script ;;
             *)
