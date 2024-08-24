@@ -53,7 +53,7 @@ execute_dynamic_menu() {
 apps_interface() {
     local app_name=$1
     local config_path="/pg/config/${app_name}.cfg"
-    local app_menu_path="/pg/apps/${app_name}/${app_name}.menu"  # Change: Reference the .menu file
+    local app_menu_path="/pg/apps/${app_name}/${app_name}.menu" 2>/dev/null
     local dynamic_menu_items=()
     local dynamic_menu_count=1
 
