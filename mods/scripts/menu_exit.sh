@@ -2,25 +2,20 @@
 
 # ANSI color codes
 RED="\033[0;31m"
-ORANGE="\033[0;33m"
 NC="\033[0m" # No color
 
 # Clear the screen at the start
 clear
 
-# Display the visit message
+# Display information and commands
 echo "Visit github.com/plexguide/PlexGuide.com or plexguide.com"
-
-# Display a space for separation
-echo ""
-
-# Display the commands
+echo ""  # Space for separation
 echo "Commands:"
-echo -e "[${ORANGE}1${NC}] plexguide   |  Deploy PlexGuide"
-echo -e "[${ORANGE}2${NC}] pg          |  Deploy PlexGuide"
-echo -e "[${RED}3${NC}] pgalpha     |  Install Latest Alpha Build"
+echo -e "[1] plexguide   |  Deploy PlexGuide"
+echo -e "[2] pg          |  Deploy PlexGuide"
+echo -e "[3] pgalpha     |  Install Latest Alpha Build"
+echo -e "[4] pgbeta      |  Install Latest Beta Build"  # New command for Beta Build
 echo ""  # Space before exiting
 
 # Exit the script
 exit 0
-
