@@ -20,7 +20,7 @@ reinstall_plexguide() {
             rm -f /tmp/install.sh
             bash /pg/scripts/basics.sh
             echo "Reloading PlexGuide..."
-            sleep 2
+            sleep 1
             exec plexguide
             break
         elif [[ "${input_code,,}" == "z" ]]; then
