@@ -191,7 +191,7 @@ while true; do
             change_port_number
             ;;
         c)
-            nano "$config_path"
+            bash /pg/scripts/apps_config_edit.sh "$app_name"
             ;;
         e)
             bash /pg/scripts/expose.sh "$app_name"
