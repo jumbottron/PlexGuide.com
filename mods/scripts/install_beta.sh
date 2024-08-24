@@ -3,6 +3,7 @@
 # ANSI color codes for formatting
 RED="\033[0;31m"
 GREEN="\033[0;32m"
+ORANGE="\033[0;33m"
 NC="\033[0m" # No color
 
 # Function to check and install unzip if not present
@@ -133,13 +134,19 @@ display_releases() {
     echo -e "${RED}PG Beta Releases:${NC}"
     echo ""
     line_length=0
+    first_release=true
     for release in $releases; do
-        if (( line_length + ${#release} + 2 > 80 )); then
+        if (( line_length + ${#release} + 1 > 80 )); then
             echo ""
             line_length=0
         fi
-        echo -n "$release, "
-        line_length=$((line_length + ${#release} + 2))
+        if $first_release; then
+            echo -n -e "${ORANGE}$release${NC} "
+            first_release=false
+        else
+            echo -n "$release "
+        fi
+        line_length=$((line_length + ${#release} + 1))
     done
     echo "" # New line after displaying all releases
 }
@@ -159,20 +166,23 @@ while true; do
     read -p "Which version do you want to install? " selected_version
 
     if echo "$releases" | grep -q "^${selected_version}$"; then
-        echo ""
-        read -p "$(echo -e "Type [${RED}1234${NC}] to accept or [${GREEN}Z${NC}] to cancel: ")" response
-        if [[ "$response" == "1234" ]]; then
-            check_and_install_unzip
-            prepare_directories
-            download_and_extract "$selected_version"
-            update_config_version "$selected_version"
-            break
-        elif [[ "${response,,}" == "z" ]]; then
-            echo "Installation canceled."
-            exit 0
-        else
-            clear
-        fi
+        clear
+        random_pin=$(printf "%04d" $((RANDOM % 10000)))
+        while true; do
+            read -p "$(echo -e "Type [${RED}${random_pin}${NC}] to accept or [${GREEN}Z${NC}] to cancel: ")" response
+            if [[ "$response" == "$random_pin" ]]; then
+                check_and_install_unzip
+                prepare_directories
+                download_and_extract "$selected_version"
+                update_config_version "$selected_version"
+                break 2
+            elif [[ "${response,,}" == "z" ]]; then
+                echo "Installation canceled."
+                exit 0
+            else
+                clear
+            fi
+        done
     else
         clear
         echo "Invalid version. Please select a valid version from the list."
