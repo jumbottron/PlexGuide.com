@@ -28,7 +28,8 @@ while true; do
     read -p "" deploy_choice
     
     if [[ "$deploy_choice" == "$deploy_code" ]]; then
-        bash /pg/scripts/apps_kill_remove.sh "$app_name"  # Stop and remove app
+        echo ""
+        docker stop "$app_name" && docker rm "$app_name"
         redeploy_app  # Deploy the container after stopping/removing
         break
     elif [[ "${deploy_choice,,}" == "z" ]]; then
