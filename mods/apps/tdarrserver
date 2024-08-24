@@ -13,7 +13,7 @@
 deploy_tdarr_server() {
     
     # Specify config file path and source information
-    config_path="/pg/config/tdarr.cfg"
+    config_path="/pg/config/${app_name}.cfg"
     source "$config_path"
 
     docker run -ti \
