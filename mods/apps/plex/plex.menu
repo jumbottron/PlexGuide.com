@@ -1,7 +1,7 @@
 #!/bin/bash
 
-#### Token
-token() {
+#### Plex Token
+plex_token() {
     clear
     
     # Source the configuration file to get the current plex_token value
