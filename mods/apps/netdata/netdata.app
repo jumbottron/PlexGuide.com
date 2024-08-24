@@ -1,11 +1,5 @@
 #!/bin/bash
 
-##### Port Number: 19999
-##### Time Zone: America/New_York
-##### AppData Path: /pg/appdata/netdata
-##### Version Tag: latest
-##### Expose:
-
 deploy_container() {
 
     # Sourcing and configuration file - required
