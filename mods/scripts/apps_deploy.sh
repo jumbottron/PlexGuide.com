@@ -9,6 +9,8 @@ NC="\033[0m" # No color
 app_name=$1
 app_path=$2
 
+source /pg/apps/$app_name
+
 # Function: redeploy_app
 redeploy_app() {
     echo "Deploying $app_name..."
