@@ -18,6 +18,6 @@ deploy_container() {
       --restart=unless-stopped \
       louislam/uptime-kuma:1
     
-    # Verify the Docker container is running
-    docker ps | grep "$app_name"
+    # display app deployment information
+    appverify
 }
