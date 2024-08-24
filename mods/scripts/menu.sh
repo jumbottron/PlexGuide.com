@@ -22,27 +22,41 @@ load_config() {
 
 # Function for Apps Management
 apps_management() {
-    /pg/scripts/apps_starter_menu.sh
+    bash /pg/scripts/apps_starter_menu.sh
 }
 
 reinstall_plexguide() {
+    # Check if the config file exists
+    if [[ -f "$CONFIG_FILE" ]]; then
+        # Use sed to replace the value of VERSION with "PG Alpha"
+        sed -i 's/^VERSION=.*/VERSION="PG Alpha"/' "$CONFIG_FILE"
+        echo "VERSION has been set to PG Alpha in $CONFIG_FILE"
+    else
+        echo "Config file $CONFIG_FILE not found."
+    fi
+
+    # Execute the pgalpha command
     pgalpha
     exit 0
 }
 
+menu_exit() {
+    bash /pg/scripts/menu_exit.sh
+}
+
 # Function for HardDisk Management
 harddisk_management() {
-    /pg/scripts/drivemenu.sh
+    bash /pg/scripts/drivemenu.sh
 }
 
 # Function for CloudFlare Tunnel Management
 cloudflare_tunnel() {
-    /pg/scripts/cf_tunnel.sh
+    bash /pg/scripts/cf_tunnel.sh
 }
 
 # Function for Options Menu
 options_menu() {
-    /pg/scripts/options.sh
+    bash /pg/scripts/options.sh
 }
 
 # Main menu loop
@@ -67,7 +81,7 @@ main_menu() {
             c) cloudflare_tunnel ;;
             r) reinstall_plexguide ;;
             o) options_menu ;;
-            z) /pg/scripts/menu_exit.sh ;;  # Call the new exit script
+            z) menu_exit ;;  # Call the new exit script
             *)
                 clear
                 ;;
