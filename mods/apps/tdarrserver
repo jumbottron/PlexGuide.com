@@ -10,7 +10,7 @@
 ##### FFMPEG Version: 6
 ##### Version Tag: latest
 
-deploy_tdarr_server() {
+deploy_container() {
     
     # Sourcing and configuration file - required
     config_path="/pg/config/${app_name}.cfg"
