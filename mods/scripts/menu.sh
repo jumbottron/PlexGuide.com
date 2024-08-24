@@ -61,7 +61,6 @@ main_menu() {
         clear
         echo -e "${RED}Welcome to PlexGuide: $VERSION${NC}"
         echo ""  # Blank line for separation
-        # Display the main menu options
         echo "A) Apps Management"
         echo "H) HardDisk Management"
         echo "C) CloudFlare Tunnel (Domains)"
@@ -70,21 +69,19 @@ main_menu() {
         echo "Z) Exit"
         echo ""  # Space between options and input prompt
 
-        # Prompt the user for input
         read -p "Enter your choice: " choice
 
-        case ${choice,,} in  # Convert input to lowercase for a/A, c/C, r/R, o/O, z/Z handling
+        case ${choice,,} in
             a) apps_management ;;
-            h) harddisk_management ;; 
+            h) harddisk_management ;;
             c) cloudflare_tunnel ;;
             r) bash /pg/scripts/menu_reinstall.sh ;;  # Call the separate script for reinstalling PlexGuide
             o) options_menu ;;
             z) exit_script ;;
             *)
-                clear  # Clear the screen for an invalid option and repeat the menu
+                clear
                 ;;
         esac
-
     done
 }
 
