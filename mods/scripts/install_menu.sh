@@ -13,9 +13,6 @@ prepare_tmp_directory() {
     # Create the /pg/tmp directory if it doesn't exist
     if [[ ! -d "$tmp_dir" ]]; then
         mkdir -p "$tmp_dir"
-        echo "Created $tmp_dir directory."
-    else
-        echo "$tmp_dir already exists"
     fi
     
     # Set ownership to user with UID and GID 1000
