@@ -32,6 +32,3 @@ deploy_container() {
     # Verify the Docker container is running
     docker ps | grep "$app_name"
 }
-
-# Function usage example:
-# deploy_container
