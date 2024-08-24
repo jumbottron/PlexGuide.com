@@ -29,6 +29,6 @@ deploy_container() {
       --restart unless-stopped \
       lscr.io/linuxserver/jellyfin:"${version_tag}"
 
-# Verify the Docker container is running
-docker ps | grep "$app_name"
+    # display app deployment information
+    appverify
 }
