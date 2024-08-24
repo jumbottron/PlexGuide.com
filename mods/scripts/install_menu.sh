@@ -7,6 +7,24 @@ PURPLE="\033[0;35m"
 CYAN="\033[0;36m"
 NC="\033[0m" # No color
 
+prepare_tmp_directory() {
+    local tmp_dir="/pg/tmp"
+    
+    # Create the /pg/tmp directory if it doesn't exist
+    if [[ ! -d "$tmp_dir" ]]; then
+        mkdir -p "$tmp_dir"
+        echo "Created $tmp_dir directory."
+    else
+        echo "$tmp_dir already exists"
+    fi
+    
+    # Set ownership to user with UID and GID 1000
+    chown -R 1000:1000 "$tmp_dir"
+    
+    # Set the directory as executable
+    chmod -R +x "$tmp_dir"
+}
+
 # Function to display the interface
 display_interface() {
     clear
