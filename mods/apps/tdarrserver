@@ -47,6 +47,3 @@ deploy_tdarr_server() {
     # Verify the Docker container is running
     docker ps | grep "tdarr_server"
 }
-
-# Call the function to deploy the Tdarr server
-deploy_tdarr_server
