@@ -8,13 +8,13 @@
 ##### Version Tag: latest
 ##### Expose: 
 
+# ANSI color codes
+RED="\033[0;31m"
+GREEN="\033[0;32m"
+NC="\033[0m" # No color
+
 #### Admin Token
 admin_token() {
-    # ANSI color codes
-    RED="\033[0;31m"
-    GREEN="\033[0;32m"
-    NC="\033[0m" # No color
-
     clear
 
     # Source the config file to get the current admin token
@@ -69,9 +69,10 @@ admin_token() {
 # Function to deploy the Docker container for Vaultwarden
 deploy_container() {
 
-    # Specify config file path and source information
-    config_path="/pg/config/${app_name}.cfg"
+    # Sourcing and configuration file - required
+    source /pg/scripts/apps_support.sh "$app_name"
     source "$config_path"
+    config_path="/pg/config/${app_name}.cfg"
 
     # Check and update the Vaultwarden token if necessary
     if [[ "$admin_token" == "null" || ${#admin_token} -lt 12 ]]; then
