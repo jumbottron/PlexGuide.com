@@ -183,7 +183,7 @@ while true; do
             if [[ "$response" == "$random_pin" ]]; then
                 check_and_install_unzip
                 check_and_install_docker
-                prepare_directories
+                prepare_directories  # Moved here
                 download_and_extract "$selected_version"
                 update_config_version "$selected_version"
                 break 2
