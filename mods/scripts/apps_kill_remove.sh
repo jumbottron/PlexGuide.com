@@ -25,6 +25,7 @@ stop_and_remove_app() {
         
         if [[ "$user_input" == "$pin_code" ]]; then
             # If the user enters the correct pin code, proceed to stop and remove the container
+            echo ""
             echo "Stopping and removing the existing container for $app_name ..."
             docker stop "$app_name" && docker rm "$app_name"
             break
