@@ -3,6 +3,11 @@
 # Path to the configuration file
 CONFIG_FILE="/pg/config/config.cfg"
 
+# ANSI color codes
+RED="\033[0;31m"
+GREEN="\033[0;32m"
+NC="\033[0m" # No color
+
 # Function to create directories with the correct permissions
 create_directories() {
     echo "Creating necessary directories..."
@@ -61,7 +66,7 @@ move_scripts() {
     # Check if the source directory exists
     if [[ -d "/pg/stage/mods/scripts" ]]; then
         mv /pg/stage/mods/scripts/* /pg/scripts/
-        
+
         # Verify move success
         if [[ $? -eq 0 ]]; then
             echo "Scripts successfully moved to /pg/scripts/."
@@ -79,7 +84,7 @@ move_scripts() {
 # Function to move apps from /pg/stage/mods/apps to /pg/apps/
 move_apps() {
     echo "Clearing the /pg/apps/ directory..."
-    
+
     # Clear the /pg/apps/ directory, including hidden files
     if [[ -d "/pg/apps/" ]]; then
         rm -rf /pg/apps/*
@@ -92,7 +97,7 @@ move_apps() {
     # Check if the source directory exists
     if [[ -d "/pg/stage/mods/apps" ]]; then
         mv /pg/stage/mods/apps/* /pg/apps/
-        
+
         # Verify move success
         if [[ $? -eq 0 ]]; then
             echo "Apps successfully moved to /pg/apps/."
@@ -111,7 +116,7 @@ move_apps() {
 check_and_install_docker() {
     if ! command -v docker &> /dev/null; then
         echo -e "\e[38;5;196mD\e[38;5;202mO\e[38;5;214mC\e[38;5;226mK\e[38;5;118mE\e[38;5;51mR \e[38;5;201mI\e[38;5;141mS \e[38;5;93mI\e[38;5;87mN\e[38;5;129mS\e[38;5;166mT\e[38;5;208mA\e[38;5;226mL\e[38;5;190mL\e[38;5;82mI\e[38;5;40mN\e[38;5;32mG\e[0m"
-        sleep 2
+        sleep .5
         chmod +x /pg/scripts/docker.sh
         bash /pg/scripts/docker.sh
     fi
@@ -119,12 +124,21 @@ check_and_install_docker() {
 
 # Check if the configuration file exists
 if [[ -f "$CONFIG_FILE" ]]; then
-    # Prompt the user for reinstallation
-    echo "An existing PlexGuide installation has been detected."
-    read -p "Do you want to reinstall PlexGuide? (Y/N): " response
+    # Generate random 4-digit PIN codes for "yes" and "no"
+    yes_code=$(printf "%04d" $((RANDOM % 10000)))
+    no_code=$(printf "%04d" $((RANDOM % 10000)))
 
-    case "$response" in
-        Y|y)
+    while true; do
+        clear
+        echo ""  # Space before the message
+        echo "An existing PlexGuide installation has been detected."
+        echo "Do you want to move forward with reinstallation?"
+        echo ""
+        echo -e "Type [${RED}${yes_code}${NC}] to proceed or [${GREEN}${no_code}${NC}] to cancel: "
+
+        read -p "" response
+
+        if [[ "$response" == "$yes_code" ]]; then
             echo "Reinstalling PlexGuide..."
             # Reinstallation process
             create_directories
@@ -132,16 +146,14 @@ if [[ -f "$CONFIG_FILE" ]]; then
             move_scripts
             move_apps
             check_and_install_docker
-            ;;
-        N|n)
+            break
+        elif [[ "$response" == "$no_code" ]]; then
             echo "Installation aborted."
             exit 0
-            ;;
-        *)
-            echo "Invalid input. Please run the script again and choose Y or N."
-            exit 1
-            ;;
-    esac
+        else
+            clear  # Clear the screen for invalid input and repeat
+        fi
+    done
 else
     echo "No existing installation detected. Proceeding with a new installation..."
     # New installation process
