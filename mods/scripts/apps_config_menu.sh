@@ -7,12 +7,12 @@ NC="\033[0m" # No color
 
 app_name=$1
 config_path="/pg/config/${app_name}.cfg"
-app_path="/pg/apps/${app_name}"
+app_path="/pg/apps/${app_name}"/${app_name}.app
 
 # Function: parse_and_store_defaults
 parse_and_store_defaults() {
     local app_name=$1
-    local app_path="/pg/apps/${app_name}"
+    local app_path="/pg/apps/${app_name}/${app_name}.app"
     local config_path="/pg/config/${app_name}.cfg"
 
     # Check if the config file exists, create it if not

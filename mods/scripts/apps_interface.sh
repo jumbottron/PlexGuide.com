@@ -20,7 +20,7 @@ check_deployment_status() {
 # Function: parse_and_store_defaults
 parse_and_store_defaults() {
     local app_name=$1
-    local app_path="/pg/apps/${app_name}"
+    local app_path="/pg/apps/${app_name}/${app_name}.app"
     local config_path="/pg/config/${app_name}.cfg"
 
     # Check if the config file exists, create it if not
@@ -48,7 +48,7 @@ execute_dynamic_menu() {
 
     # Source the app script to load the functions
     echo "source /pg/apps/\"$app_name\""  # Debugging: Echo the source command
-    source /pg/apps/$app_name
+    source /pg/apps/$app_name/$app_name.app
 
     # Get the selected option name (e.g., "Admin Token" or "Token")
     local selected_name=$(echo "${dynamic_menu_items[$((selected_option-1))]}" | awk '{$1=""; print $0}' | xargs)  # Trim spaces and get full menu item name
@@ -75,7 +75,7 @@ execute_dynamic_menu() {
 apps_interface() {
     local app_name=$1
     local config_path="/pg/config/${app_name}.cfg"
-    local app_menu_path="/pg/apps/${app_name}.menu"  # Change: Reference the .menu file
+    local app_menu_path="/pg/apps/${app_name}/${app_name}.menu"  # Change: Reference the .menu file
     local dynamic_menu_items=()
     local dynamic_menu_count=1
 
