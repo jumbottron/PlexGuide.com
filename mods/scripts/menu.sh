@@ -75,7 +75,7 @@ main_menu() {
             a) apps_management ;;
             h) harddisk_management ;;
             c) cloudflare_tunnel ;;
-            r) bash /pg/scripts/menu_reinstall.sh ;;  # Call the separate script for reinstalling PlexGuide
+            r) bash /pg/scripts/menu_reinstall.sh && exit 0 ;;  # Call the separate script for reinstalling PlexGuide
             o) options_menu ;;
             z) exit_script ;;
             *)
