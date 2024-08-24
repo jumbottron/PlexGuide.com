@@ -29,5 +29,5 @@ deploy_container() {
         ghcr.io/haveagitgat/tdarr:"${version_tag}"
 
     # display app deployment information
-    appverify
+    appverify "$app_name"
 }

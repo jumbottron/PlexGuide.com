@@ -15,5 +15,5 @@ deploy_container() {
       lscr.io/linuxserver/radarr:"${version_tag}"
     
     # display app deployment information
-    appverify
+    appverify "$app_name"
 }

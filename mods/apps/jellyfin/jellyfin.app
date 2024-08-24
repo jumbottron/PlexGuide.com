@@ -20,5 +20,5 @@ deploy_container() {
       lscr.io/linuxserver/jellyfin:"${version_tag}"
 
     # display app deployment information
-    appverify
+    appverify "$app_name"
 }

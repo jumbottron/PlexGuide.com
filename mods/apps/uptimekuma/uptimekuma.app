@@ -10,5 +10,5 @@ deploy_container() {
       louislam/uptime-kuma:1
     
     # display app deployment information
-    appverify
+    appverify "$app_name"
 }

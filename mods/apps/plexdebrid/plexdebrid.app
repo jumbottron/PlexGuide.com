@@ -11,5 +11,5 @@ deploy_container() {
       itstoggle/plex_debrid:"${version_tag}"
     
     # display app deployment information
-    appverify
+    appverify "$app_name"
 }

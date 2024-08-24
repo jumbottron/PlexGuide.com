@@ -19,5 +19,5 @@ deploy_container() {
       netdata/netdata:"${version_tag}"
     
     # display app deployment information
-    appverify
+    appverify "$app_name"
 }

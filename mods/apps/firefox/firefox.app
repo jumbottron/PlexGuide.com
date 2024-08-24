@@ -17,5 +17,5 @@ deploy_container() {
       lscr.io/linuxserver/firefox:"${version_tag}"
     
     # display app deployment information
-    appverify
+    appverify "$app_name"
 }

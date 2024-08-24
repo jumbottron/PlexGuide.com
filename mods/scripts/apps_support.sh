@@ -2,13 +2,12 @@
 
 # Function to verify if the Docker container is running
 appsourcing() {
-     source "/pg/config/${app_name}.cfg"
+    source "/pg/config/${app_name}.cfg"
     source /pg/apps/${app_name}/${app_name}.functions 2>/dev/null
 }
 
 # Function to verify if the Docker container is running
 appverify() {
-    local app_name="$1"
     docker ps | grep "$app_name"
 }
  

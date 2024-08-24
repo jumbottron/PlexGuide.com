@@ -13,5 +13,5 @@ deploy_container() {
       lscr.io/linuxserver/ombi:"${version_tag}"
     
     # display app deployment information
-    appverify
+    appverify "$app_name"
 }
