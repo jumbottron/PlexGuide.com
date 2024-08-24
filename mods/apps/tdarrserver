@@ -45,6 +45,6 @@ deploy_tdarr_server() {
         --log-opt max-file=5 \
         ghcr.io/haveagitgat/tdarr:"${version_tag}"
 
-    # Verify the Docker container is running
-    docker ps | grep "tdarr_server"
+    # display app deployment information
+    appverify
 }
