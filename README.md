@@ -29,7 +29,7 @@ sudo apt-get update && sudo apt-get install -y curl && bash <(curl -s https://ra
 <p align="center">
   <table align="center">
     <tr>
-      <td align="center"><img src="https://i.imgur.com/tuJpsTR.jpeg" alt="Menu Example" width="500"></td>
+      <td align="center"><img src="https://i.imgur.com/HzCKvO5.jpeg" alt="Menu Example" width="500"></td>
       <td align="center"><img src="https://i.imgur.com/pu1D9Cc.jpeg" alt="Plex Example" width="500"></td>
     </tr>
     <tr>
