@@ -3,7 +3,7 @@
 deploy_container() {
         
     docker run -ti \
-        --name="tdarrserver" \
+        --name="tdarrnode1" \
         -v "${appdata_path}/server":/app/server \
         -v "${appdata_path}/configs":/app/configs \
         -v "${appdata_path}/logs":/app/logs \
@@ -12,12 +12,12 @@ deploy_container() {
         -e "serverIP=${server_ip}" \
         -e "serverPort=${port_number}" \
         -e "webUIPort=${expose}${port_number}" \
+        -e "internalNode=${internal_node}" \
         -e "inContainer=true" \
         -e "ffmpegVersion=${ffmpeg_version}" \
         -e "nodeName=${node_name}" \
         --network bridge \
-        -p "${expose}""${port_number}":8265 \
-        -p "${expose}""${port_two}":8266 \
+        -p "${expose}""${port_number}":8268 \
         -e "TZ=${time_zone}" \
         -e PUID=1000 \
         -e PGID=1000 \
