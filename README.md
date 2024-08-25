@@ -55,6 +55,7 @@ FireFox, Jackett, JellyFin, Lidarr, NetData, NZBGET, Overseer, Ombi, Opera, Plex
 - **Intel/NVIDIA GPU Manager**: Install / Uninstall GPU Drivers easily.
 - **Firewall Port Security**: View open ports; close and open additional ports
 - **Dynamic Menu Intergration**: Enables custom options for docker containers
+- **Streamlined Updating**: PG Alpha and Beta Builds Intergrated. Stable will be added later
 
 ### **In Progress**
 
@@ -62,8 +63,7 @@ FireFox, Jackett, JellyFin, Lidarr, NetData, NZBGET, Overseer, Ombi, Opera, Plex
 - [ ] Incorporate MergerFS to Merge Multiple Local Drives (Main Focus)  
 - [ ] Incorporate CloudDrives (Secondary Focus)  
 - [ ] AppData Backup & Restore  
-- [ ] Enable Updates to Provide Alpha, Beta, and Stable Builds  
 - [ ] Add More Applications  
 - [ ] Create Detailed Wiki
-- [ ] Deployment of PlexDebrid
+- [ ] Deployment of PlexDebrid/Zurg
 - [ ] VPN Server Capabilities
