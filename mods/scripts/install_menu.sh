@@ -15,12 +15,6 @@ prepare_tmp_directory() {
     if [[ ! -d "$tmp_dir" ]]; then
         mkdir -p "$tmp_dir"
     fi
-    
-    # Set ownership to user with UID and GID 1000
-    chown -R 1000:1000 "$tmp_dir"
-    
-    # Set the directory as executable
-    chmod -R +x "$tmp_dir"
 }
 
 # Function to display the interface
@@ -40,17 +34,14 @@ validate_choice() {
     local choice="$1"
     case ${choice,,} in
         a)
-            echo ""
             echo "Selected PG Alpha."
             run_install_script "https://raw.githubusercontent.com/plexguide/PlexGuide.com/v11/mods/scripts/install_alpha.sh"
             ;;
         b)
-            echo ""
             echo "Selected PG Beta."
             run_install_script "https://raw.githubusercontent.com/plexguide/PlexGuide.com/v11/mods/scripts/install_beta.sh"
             ;;
         f)
-            echo ""
             echo "Selected PG Fork."
             run_install_script "https://raw.githubusercontent.com/plexguide/PlexGuide.com/v11/mods/scripts/install_fork.sh"
             ;;
@@ -59,7 +50,6 @@ validate_choice() {
             exit 0
             ;;
         *)
-            # Instead of clearing and re-displaying the interface, we call it again
             echo "Invalid input. Please try again."
             ;;
     esac
@@ -83,24 +73,9 @@ run_install_script() {
             
             # Check if the script was downloaded successfully
             if [[ -f "$script_file" ]]; then
-                rm -rf /pg/scripts/* /pg/apps/* 2>/dev/null
-                echo "Executing the installation script..."
+                echo "Setting execute permissions and running the installation script..."
+                chmod +x "$script_file"
                 bash "$script_file"
-                
-                # Set correct permissions after script execution
-                chown -R 1000:1000 /pg/scripts /pg/apps
-                chmod -R +x /pg/scripts /pg/apps
-                
-                # Make sure 'plexguide', 'pg', 'pgalpha', and 'pgfork' commands have the correct permissions
-                ln -sf /pg/scripts/menu.sh /usr/local/bin/plexguide
-                ln -sf /pg/scripts/menu.sh /usr/local/bin/pg
-                ln -sf /pg/scripts/menu.sh /usr/local/bin/pgalpha
-                ln -sf /pg/scripts/install_fork.sh /usr/local/bin/pgfork
-                chmod +x /usr/local/bin/plexguide /usr/local/bin/pg /usr/local/bin/pgalpha /usr/local/bin/pgfork
-
-                # Run plexguide automatically after the installation
-                echo "Starting PlexGuide..."
-                exec plexguide
                 exit 0
             else
                 echo "Failed to download the installation script. Please check your internet connection and try again."
