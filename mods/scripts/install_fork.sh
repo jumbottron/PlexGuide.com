@@ -9,15 +9,15 @@ GREEN="\033[0;32m"
 PURPLE="\033[0;35m"
 NC="\033[0m" # No color
 
-# Default user and branch
-user="Admin9705"
+# Default repo (user) and branch
+repo="Admin9705"
 branch="v11"
 
 # Check if the configuration file exists, if not, create it
 if [[ ! -f "$CONFIG_FILE" ]]; then
     echo "Creating config file at $CONFIG_FILE"
     touch "$CONFIG_FILE"
-    echo "user=\"$user\"" > "$CONFIG_FILE"
+    echo "repo=\"$repo\"" > "$CONFIG_FILE"
     echo "branch=\"$branch\"" >> "$CONFIG_FILE"
 else
     # Source the configuration file to load existing values
@@ -57,9 +57,9 @@ download_repository() {
         echo "Cleared /pg/stage/ directory."
     fi
 
-    # Download the repository using the user and branch variables
-    echo "Downloading repository from ${user}'s fork on branch ${branch}..."
-    git clone -b "$branch" https://github.com/"$user"/PlexGuide.com.git /pg/stage/
+    # Download the repository using the repo and branch variables
+    echo "Downloading repository from ${repo}'s fork on branch ${branch}..."
+    git clone -b "$branch" https://github.com/"$repo"/PlexGuide.com.git /pg/stage/
 
     if [[ $? -eq 0 ]]; then
         echo "Repository successfully downloaded to /pg/stage/."
@@ -148,9 +148,11 @@ display_pgfork_menu() {
     while true; do
         clear
         echo -e "${PURPLE}PG Fork - OG Style${NC}"
-        echo "User: $user | Branch: $branch"
+        echo "Repo: $repo | Branch: $branch"
         echo ""
         echo -e "[${RED}D${NC}] Deploy PG Fork"
+        echo -e "[${RED}U${NC}] Update Repo Name"
+        echo -e "[${RED}B${NC}] Update Branch Name"
         echo -e "[${GREEN}Z${NC}] Exit"
         echo ""
         read -p "Enter a choice: " choice
@@ -158,6 +160,12 @@ display_pgfork_menu() {
         case ${choice,,} in
             d)
                 deploy_pg_fork
+                ;;
+            u)
+                update_repo_name
+                ;;
+            b)
+                update_branch_name
                 ;;
             z)
                 echo "Exiting..."
@@ -201,6 +209,32 @@ deploy_pg_fork() {
             echo "Invalid input. Please try again."
         fi
     done
+}
+
+# Function to update the repo name
+update_repo_name() {
+    read -p "Enter the new repo name (username): " new_repo
+    if [[ -n "$new_repo" ]]; then
+        repo="$new_repo"
+        echo "repo=\"$repo\"" > "$CONFIG_FILE"
+        echo "branch=\"$branch\"" >> "$CONFIG_FILE"
+        echo "Repo name updated to: $repo"
+    else
+        echo "Invalid repo name. No changes made."
+    fi
+}
+
+# Function to update the branch name
+update_branch_name() {
+    read -p "Enter the new branch name: " new_branch
+    if [[ -n "$new_branch" ]]; then
+        branch="$new_branch"
+        echo "repo=\"$repo\"" > "$CONFIG_FILE"
+        echo "branch=\"$branch\"" >> "$CONFIG_FILE"
+        echo "Branch name updated to: $branch"
+    else
+        echo "Invalid branch name. No changes made."
+    fi
 }
 
 menu_commands() {
