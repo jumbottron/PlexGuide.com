@@ -48,6 +48,7 @@ validate_choice() {
             ;;
         z)
             echo "Exiting the selection interface."
+            echo ""
             exit 0
             ;;
         *)
