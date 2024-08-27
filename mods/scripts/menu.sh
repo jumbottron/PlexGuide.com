@@ -29,7 +29,6 @@ apps_management() {
 reinstall_plexguide() {
     # Check if the config file exists
     bash /pg/scripts/install_menu.sh
-    exit 0
 }
 
 # Function to exit the script
