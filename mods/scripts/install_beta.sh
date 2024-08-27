@@ -136,6 +136,7 @@ update_config_version() {
     fi
 
     echo "VERSION has been set to $selected_version in $config_file"
+    bash /pg/scripts/menu_exit.sh
 }
 
 # Function to display releases
