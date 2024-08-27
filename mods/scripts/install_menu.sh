@@ -26,6 +26,7 @@ display_interface() {
     echo -e "[${RED}A${NC}] PG Alpha"
     echo -e "[${PURPLE}B${NC}] PG Beta"
     echo -e "[${LIGHT_BLUE}F${NC}] PG Fork"
+    echo -e "[Z] Exit"
     echo ""
 }
 
