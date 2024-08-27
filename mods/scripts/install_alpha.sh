@@ -142,7 +142,6 @@ menu_commands() {
     bash /pg/scripts/menu_commands.sh
 }
 
-
 # New installation process
 create_directories
 download_repository
