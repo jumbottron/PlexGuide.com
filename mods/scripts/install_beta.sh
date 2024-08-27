@@ -212,8 +212,3 @@ while true; do
         echo "Invalid version. Please select a valid version from the list."
     fi
 done
-
-# Execute plexguide
-echo "Starting PlexGuide..."
-plexguide
-exit 0
