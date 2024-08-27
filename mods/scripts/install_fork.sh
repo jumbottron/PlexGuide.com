@@ -1,18 +1,33 @@
 #!/bin/bash
 
 # Path to the configuration file
-CONFIG_FILE="/pg/config/config.cfg"
+CONFIG_FILE="/pg/config/pgfork.cfg"
 
 # ANSI color codes
 RED="\033[0;31m"
 GREEN="\033[0;32m"
+PURPLE="\033[0;35m"
 NC="\033[0m" # No color
+
+# Default user and branch
+user="Admin9705"
+branch="v11"
+
+# Check if the configuration file exists, if not, create it
+if [[ ! -f "$CONFIG_FILE" ]]; then
+    echo "Creating config file at $CONFIG_FILE"
+    touch "$CONFIG_FILE"
+    echo "user=\"$user\"" > "$CONFIG_FILE"
+    echo "branch=\"$branch\"" >> "$CONFIG_FILE"
+else
+    # Source the configuration file to load existing values
+    source "$CONFIG_FILE"
+fi
 
 # Function to create directories with the correct permissions
 create_directories() {
     echo "Creating necessary directories..."
 
-    # Define directories to create
     directories=(
         "/pg/config"
         "/pg/scripts"
@@ -20,7 +35,6 @@ create_directories() {
         "/pg/stage"
     )
 
-    # Loop through the directories and create them with the correct permissions
     for dir in "${directories[@]}"; do
         if [[ ! -d "$dir" ]]; then
             mkdir -p "$dir"
@@ -28,9 +42,7 @@ create_directories() {
         else
             echo "$dir already exists"
         fi
-        # Set ownership to user with UID and GID 1000
         chown -R 1000:1000 "$dir"
-        # Set the directories as executable
         chmod -R +x "$dir"
     done
 }
@@ -39,18 +51,16 @@ create_directories() {
 download_repository() {
     echo "Preparing /pg/stage/ directory..."
 
-    # Ensure /pg/stage/ is completely empty, including hidden files
     if [[ -d "/pg/stage/" ]]; then
         rm -rf /pg/stage/*
         rm -rf /pg/stage/.* 2>/dev/null || true
         echo "Cleared /pg/stage/ directory."
     fi
 
-    # Download the repository
-    echo "Downloading PlexGuide repository..."
-    git clone https://github.com/plexguide/PlexGuide.com.git /pg/stage/
+    # Download the repository using the user and branch variables
+    echo "Downloading repository from ${user}'s fork on branch ${branch}..."
+    git clone -b "$branch" https://github.com/"$user"/PlexGuide.com.git /pg/stage/
 
-    # Verify download success
     if [[ $? -eq 0 ]]; then
         echo "Repository successfully downloaded to /pg/stage/."
     else
@@ -63,11 +73,9 @@ download_repository() {
 move_scripts() {
     echo "Moving scripts from /pg/stage/mods/scripts to /pg/scripts/..."
 
-    # Check if the source directory exists
     if [[ -d "/pg/stage/mods/scripts" ]]; then
         mv /pg/stage/mods/scripts/* /pg/scripts/
 
-        # Verify move success
         if [[ $? -eq 0 ]]; then
             echo "Scripts successfully moved to /pg/scripts/."
         else
@@ -85,7 +93,6 @@ move_scripts() {
 move_apps() {
     echo "Clearing the /pg/apps/ directory..."
 
-    # Clear the /pg/apps/ directory, including hidden files
     if [[ -d "/pg/apps/" ]]; then
         rm -rf /pg/apps/*
         rm -rf /pg/apps/.* 2>/dev/null || true
@@ -94,11 +101,9 @@ move_apps() {
 
     echo "Moving apps from /pg/stage/mods/apps to /pg/apps/..."
 
-    # Check if the source directory exists
     if [[ -d "/pg/stage/mods/apps" ]]; then
         mv /pg/stage/mods/apps/* /pg/apps/
 
-        # Verify move success
         if [[ $? -eq 0 ]]; then
             echo "Apps successfully moved to /pg/apps/."
         else
@@ -130,61 +135,78 @@ set_config_version() {
     fi
 
     if grep -q "^VERSION=" "$CONFIG_FILE"; then
-        sed -i 's/^VERSION=.*/VERSION="PG Alpha"/' "$CONFIG_FILE"
+        sed -i 's/^VERSION=.*/VERSION="PG Fork"/' "$CONFIG_FILE"
     else
-        echo 'VERSION="PG Alpha"' >> "$CONFIG_FILE"
+        echo 'VERSION="PG Fork"' >> "$CONFIG_FILE"
     fi
 
-    echo "VERSION has been set to PG Alpha in $CONFIG_FILE"
+    echo "VERSION has been set to PG Fork in $CONFIG_FILE"
 }
 
-menu_commands() {
-    bash /pg/scripts/menu_commands.sh
+# Display the PG Fork menu
+display_pgfork_menu() {
+    while true; do
+        clear
+        echo -e "${PURPLE}PG Fork - OG Style${NC}"
+        echo "User: $user | Branch: $branch"
+        echo ""
+        echo -e "[${RED}D${NC}] Deploy PG Fork"
+        echo -e "[${GREEN}Z${NC}] Exit"
+        echo ""
+        read -p "Enter a choice: " choice
+
+        case ${choice,,} in
+            d)
+                deploy_pg_fork
+                ;;
+            z)
+                echo "Exiting..."
+                exit 0
+                ;;
+            *)
+                echo "Invalid input. Please try again."
+                ;;
+        esac
+    done
 }
 
-# Check if the configuration file exists
-if [[ -f "$CONFIG_FILE" ]]; then
+# Function to deploy the PG Fork
+deploy_pg_fork() {
     # Generate random 4-digit PIN codes for "yes" and "no"
     yes_code=$(printf "%04d" $((RANDOM % 10000)))
     no_code=$(printf "%04d" $((RANDOM % 10000)))
 
     while true; do
         clear
-        echo "An existing PlexGuide installation has been detected."
-        echo "Do you want to move forward with reinstallation?"
+        echo "You have chosen to deploy the PG Fork."
         echo ""
         echo -e "Type [${RED}${yes_code}${NC}] to proceed or [${GREEN}${no_code}${NC}] to cancel: "
 
         read -p "" response
 
         if [[ "$response" == "$yes_code" ]]; then
-            echo "Reinstalling PlexGuide..."
-            # Reinstallation process
+            echo "Deploying PG Fork..."
             create_directories
             download_repository
             move_scripts
             move_apps
             check_and_install_docker
             set_config_version
+            menu_commands
             break
         elif [[ "$response" == "$no_code" ]]; then
-            echo "Installation aborted."
-            exit 0
+            echo "Deployment canceled."
+            break
         else
-            clear  # Clear the screen for invalid input and repeat
+            echo "Invalid input. Please try again."
         fi
     done
-else
-    echo "No existing installation detected. Proceeding with a new installation..."
-    # New installation process
-    create_directories
-    download_repository
-    move_scripts
-    move_apps
-    check_and_install_docker
-    set_config_version
-    menu_commands
-fi
+}
 
-# Continue with the installation process
-# Add the necessary commands below to complete the installation
+menu_commands() {
+    echo "Returning to the main menu..."
+    bash /pg/scripts/menu_commands.sh
+}
+
+# Start the PG Fork menu
+display_pgfork_menu
