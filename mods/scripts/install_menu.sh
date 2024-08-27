@@ -38,7 +38,6 @@ validate_choice() {
             echo "Selected PG Alpha." && echo ""
             run_install_script "https://raw.githubusercontent.com/plexguide/PlexGuide.com/v11/mods/scripts/install_alpha.sh"
             bash /pg/scripts/menu_commands.sh 
-            echo "test"
             ;;
         b)
             echo "Selected PG Beta." && echo ""
