@@ -34,15 +34,15 @@ validate_choice() {
     local choice="$1"
     case ${choice,,} in
         a)
-            echo "Selected PG Alpha."
+            echo "" && echo "Selected PG Alpha." && echo ""
             run_install_script "https://raw.githubusercontent.com/plexguide/PlexGuide.com/v11/mods/scripts/install_alpha.sh"
             ;;
         b)
-            echo "Selected PG Beta."
+            echo "" && echo "Selected PG Beta." && echo ""
             run_install_script "https://raw.githubusercontent.com/plexguide/PlexGuide.com/v11/mods/scripts/install_beta.sh"
             ;;
         f)
-            echo "Selected PG Fork."
+            echo "" && echo "Selected PG Fork." && echo ""
             run_install_script "https://raw.githubusercontent.com/plexguide/PlexGuide.com/v11/mods/scripts/install_fork.sh"
             ;;
         z)
