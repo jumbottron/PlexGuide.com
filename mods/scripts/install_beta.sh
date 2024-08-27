@@ -136,7 +136,6 @@ update_config_version() {
     fi
 
     echo "VERSION has been set to $selected_version in $config_file"
-    bash /pg/scripts/menu_exit.sh
 }
 
 # Function to display releases
@@ -200,7 +199,8 @@ while true; do
                 prepare_directories
                 download_and_extract "$selected_version"
                 update_config_version "$selected_version"
-                break 2
+                bash /pg/scripts/menu_exit.sh
+                exit 0
             elif [[ "${response,,}" == "z" ]]; then
                 echo "Installation canceled."
                 exit 0
