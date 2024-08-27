@@ -30,13 +30,11 @@ check_and_create_commands() {
     if [[ ! -f "/usr/local/bin/pgalpha" ]]; then
         sudo ln -s /pg/scripts/menu_reinstall.sh /usr/local/bin/pgalpha        
         sudo chmod +x /usr/local/bin/pgalpha
-        plexguide
     fi
 
     if [[ ! -f "/usr/local/bin/pgbeta" ]]; then
         sudo ln -s /pg/scripts/install_beta.sh /usr/local/bin/pgbeta       
         sudo chmod +x /usr/local/bin/pgbeta
-        plexguide
     fi
 
     # Apply chmod +x and set ownership to user with UID and GID 1000 for every file in /pg/scripts/ and /pg/apps/

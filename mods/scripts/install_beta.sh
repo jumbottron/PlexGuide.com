@@ -216,3 +216,4 @@ done
 # Execute plexguide
 echo "Starting PlexGuide..."
 plexguide
+exit 0
