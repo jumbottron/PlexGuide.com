@@ -142,49 +142,12 @@ menu_commands() {
     bash /pg/scripts/menu_commands.sh
 }
 
-# Check if the configuration file exists
-if [[ -f "$CONFIG_FILE" ]]; then
-    # Generate random 4-digit PIN codes for "yes" and "no"
-    yes_code=$(printf "%04d" $((RANDOM % 10000)))
-    no_code=$(printf "%04d" $((RANDOM % 10000)))
 
-    while true; do
-        clear
-        echo "An existing PlexGuide installation has been detected."
-        echo "Do you want to move forward with reinstallation?"
-        echo ""
-        echo -e "Type [${RED}${yes_code}${NC}] to proceed or [${GREEN}${no_code}${NC}] to cancel: "
-
-        read -p "" response
-
-        if [[ "$response" == "$yes_code" ]]; then
-            echo "Reinstalling PlexGuide..."
-            # Reinstallation process
-            create_directories
-            download_repository
-            move_scripts
-            move_apps
-            check_and_install_docker
-            set_config_version
-            break
-        elif [[ "$response" == "$no_code" ]]; then
-            echo "Installation aborted."
-            exit 0
-        else
-            clear  # Clear the screen for invalid input and repeat
-        fi
-    done
-else
-    echo "No existing installation detected. Proceeding with a new installation..."
-    # New installation process
-    create_directories
-    download_repository
-    move_scripts
-    move_apps
-    check_and_install_docker
-    set_config_version
-    menu_commands
-fi
-
-# Continue with the installation process
-# Add the necessary commands below to complete the installation
+# New installation process
+create_directories
+download_repository
+move_scripts
+move_apps
+check_and_install_docker
+set_config_version
+menu_commands
