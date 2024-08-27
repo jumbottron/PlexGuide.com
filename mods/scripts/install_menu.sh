@@ -5,6 +5,7 @@ RED="\033[0;31m"
 GREEN="\033[0;32m"
 PURPLE="\033[0;35m"
 CYAN="\033[0;36m"
+LIGHT_BLUE="\033[1;34m"
 NC="\033[0m" # No color
 
 prepare_tmp_directory() {
@@ -30,6 +31,7 @@ display_interface() {
     echo ""  # Space below the note
     echo -e "[${RED}A${NC}] PG Alpha"
     echo -e "[${PURPLE}B${NC}] PG Beta"
+    echo -e "[${LIGHT_BLUE}F${NC}] PG Fork"
     echo ""
 }
 
@@ -46,6 +48,11 @@ validate_choice() {
             echo ""
             echo "Selected PG Beta."
             run_install_script "https://raw.githubusercontent.com/plexguide/PlexGuide.com/v11/mods/scripts/install_beta.sh"
+            ;;
+        f)
+            echo ""
+            echo "Selected PG Fork."
+            run_install_script "https://raw.githubusercontent.com/plexguide/PlexGuide.com/v11/mods/scripts/install_fork.sh"
             ;;
         z)
             echo "Exiting the selection interface."
@@ -84,11 +91,12 @@ run_install_script() {
                 chown -R 1000:1000 /pg/scripts /pg/apps
                 chmod -R +x /pg/scripts /pg/apps
                 
-                # Make sure 'plexguide' and other commands have the correct permissions
+                # Make sure 'plexguide', 'pg', 'pgalpha', and 'pgfork' commands have the correct permissions
                 ln -sf /pg/scripts/menu.sh /usr/local/bin/plexguide
                 ln -sf /pg/scripts/menu.sh /usr/local/bin/pg
                 ln -sf /pg/scripts/menu.sh /usr/local/bin/pgalpha
-                chmod +x /usr/local/bin/plexguide /usr/local/bin/pg /usr/local/bin/pgalpha
+                ln -sf /pg/scripts/install_fork.sh /usr/local/bin/pgfork
+                chmod +x /usr/local/bin/plexguide /usr/local/bin/pg /usr/local/bin/pgalpha /usr/local/bin/pgfork
 
                 # Run plexguide automatically after the installation
                 echo "Starting PlexGuide..."
