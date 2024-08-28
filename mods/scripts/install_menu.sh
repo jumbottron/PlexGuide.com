@@ -6,6 +6,7 @@ GREEN="\033[0;32m"
 PURPLE="\033[0;35m"
 CYAN="\033[0;36m"
 LIGHT_BLUE="\033[1;34m"
+YELLOW="\033[1;33m"
 NC="\033[0m" # No color
 
 prepare_tmp_directory() {
@@ -26,6 +27,7 @@ display_interface() {
     echo -e "[${RED}A${NC}] PG Alpha"
     echo -e "[${PURPLE}B${NC}] PG Beta"
     echo -e "[${LIGHT_BLUE}F${NC}] PG Fork"
+    echo -e "[${YELLOW}M${NC}] MergerFS Setup"
     echo -e "[Z] Exit"
     echo ""
 }
@@ -47,6 +49,11 @@ validate_choice() {
         f)
             echo "Selected PG Fork." && echo ""
             run_install_script "https://raw.githubusercontent.com/plexguide/PlexGuide.com/v11/mods/scripts/install_fork.sh"
+            exit 0
+            ;;
+        m)
+            echo "Selected MergerFS Setup." && echo ""
+            run_install_script "https://raw.githubusercontent.com/plexguide/PlexGuide.com/v11/mods/scripts/install_mergerfs.sh"
             exit 0
             ;;
         z)

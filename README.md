@@ -56,14 +56,42 @@ FireFox, Jackett, JellyFin, Lidarr, NetData, NZBGET, Overseer, Ombi, Opera, Plex
 - **Firewall Port Security**: View open ports; close and open additional ports
 - **Dynamic Menu Intergration**: Enables custom options for docker containers
 - **Streamlined Updating**: PG Alpha and Beta Builds Intergrated. Stable will be added later
+- **Personal Apps Management**: Add and deploy apps from personal repositories
+- **MergerFS Integration**: Merge multiple local drives into a single pool
+- **Cloud Drives Management**: Set up and manage cloud storage solutions
 
 ### **In Progress**
 
-- [ ] Enable Personal Apps from Personal Repo  
-- [ ] Incorporate MergerFS to Merge Multiple Local Drives (Main Focus)  
-- [ ] Incorporate CloudDrives (Secondary Focus)  
+- [x] Enable Personal Apps from Personal Repo  
+- [x] Incorporate MergerFS to Merge Multiple Local Drives (Main Focus)  
+- [x] Incorporate CloudDrives (Secondary Focus)  
 - [ ] AppData Backup & Restore  
 - [ ] Add More Applications  
 - [ ] Create Detailed Wiki
 - [ ] Deployment of PlexDebrid/Zurg
 - [ ] VPN Server Capabilities
+
+### **Recently Completed**
+
+- [x] Enable Personal Apps from Personal Repo
+  - Added `personal_apps.sh` script to manage personal apps
+  - Users can now add personal repositories, list available apps, and deploy personal apps
+  - To use, run `bash personal_apps.sh` and follow the menu options
+
+- [x] Incorporate MergerFS to Merge Multiple Local Drives
+  - Added `mergerfs_setup.sh` script to manage MergerFS setup
+  - Users can now easily merge multiple local drives into a single pool
+  - To use, run `bash mergerfs_setup.sh` and follow the menu options
+
+- [x] Incorporate CloudDrives
+  - Added `cloud_drives_setup.sh` script to manage cloud storage solutions
+  - Features include:
+    - Installation and updating of rclone
+    - Configuration of various cloud providers (Google Drive, OneDrive, Dropbox, etc.)
+    - Mounting and unmounting of cloud drives
+    - Integration with MergerFS for unified storage
+    - Automatic mounting on system startup
+    - Logging and status checking of cloud drive mounts
+  - To use, run `bash cloud_drives_setup.sh` and follow the menu options
+
+We welcome contributions and feedback on these features. If you're interested in helping with any of these tasks, please check our [contribution guidelines](link-to-contribution-guidelines) or join our [Discord community](https://discord.gg/Uruj9Ds5) for more information.
