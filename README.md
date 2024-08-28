@@ -17,7 +17,9 @@ The [Wiki](https://github.com/plexguide/PlexGuide.com/wiki) will also provide mo
 ### Quick Install Command
 
 ```bash
-sudo apt-get update && sudo apt-get install -y curl && bash <(curl -s https://raw.githubusercontent.com/jumbottron/PlexGuide.com/v11/mods/scripts/install_menu.sh)
+sudo curl -o install_menu.sh https://raw.githubusercontent.com/jumbottron/PlexGuide.com/v11/mods/scripts/install_menu.sh
+sudo bash install_menu.sh
+
 ```
 
 ### Working on PG11
